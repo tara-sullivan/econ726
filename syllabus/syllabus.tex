@@ -1,0 +1,257 @@
+
+\documentclass[11 pt]{article}
+
+% General tex preamble
+\input{preamble.tex}
+% Spacing and colors
+\input{preamble-outline.tex}
+% Figures & bibliography
+\input{preamble-figs_bibs.tex}
+
+% \setlength{\parindent}{0cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+
+\title{ECON726: Policy and Program Evaluation}
+% \author{}
+\author{Tara Sullivan%\footnote{
+%}
+}
+\date{\vspace{-5ex}}
+
+\maketitle
+% \onehalfspacing
+
+% \input{outline.tex}
+ 
+
+
+\begin{table}[h]
+\centering
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l l}
+\textbf{Instructor} & \textbf{Course Information} \\
+Tara Sullivan: tara.sullivan55@login.cuny.edu & 
+Class Location: West Bldg W503 \\
+Office hour: West Bldg 1548, 5:30-6:30 & Time: Tuesday, 7:30-9:30 PM \\
+\end{tabular*}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\section*{Course Description}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+In temp real-world settings, analysts must draw inferences about causes and effects from observational, i.e., non-randomized, data. For example, how do we truly determine whether charter schools produce better student outcomes, or whether a marketing campaign has increased consumer awareness? This course will cover statistical methods for causal inference to help analysts design and analyze observational studies for real-world decision-making. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Prerequisites}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{blist}
+\item Statistical analysis software is the primary tool for this course, and I will be providing course instructions in python. You will be expected to complete course assignments in python.
+\item You are required to have taken a semester-long course in probability and statistical inference.
+\item Ideally, you have completed coursework in regression methods; otherwise, the econometric theory and the technical approach for the course will be difficult to follow.
+\item This is a course in econometrics and applied statistics; as such, it is expected that you have a strong interest in business and public policy applications.
+\end{blist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Grading Policy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Empirical project (75\% of final grade)}
+
+The bulk of your grade will come from an empirical project. 
+The project is based on an empirical paper of your choice, which (1) uses a method discussed in this course; (2) has data available online; 
+(3) is not based on an experiment. 
+
+The paper should:
+\begin{enumerate}
+    \item Be based on a paper published in a peer-reviewed journal.
+    \item Briefly state the research question and discuss the dataset.
+    \item Provide a (formal) discussion of the identification strategy (What is the ideal randomized experiment? why is it causal?).
+    \item Replicate (selected) main findings.
+    \begin{itemize}
+        \item This should not be directly taken from the replication package online! I will check!
+    \end{itemize}
+    \item Describe and implement some sort of extension to this paper. This could be new and interesting tests for key assumptions, robustness checks, additional results based on other methods or data, or a combination thereof.
+\end{enumerate}
+
+\textbf{Paper selection}: Due \textbf{September 16} [5\% of final grade]
+\begin{blist}
+\item Select your paper. Briefly describe the causal effect of interest and methodology. Discuss what you think you will do for your extension of this paper. 
+\begin{itemize}
+    \item If your paper is not appropriate, I'll let you know at this stage, and you will have to find another.
+\end{itemize}
+\end{blist}
+
+\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\begin{blist}
+\item This paper should be your first effort at addressing points (1) and (2) above. 
+Summarize the public policy or business context of the paper. 
+Write down the specific question the paper is evaluating.
+Discuss the data you are using.
+Discuss the extensions you are considering, and, if necessary, the data you plan to use for your extension.
+\end{blist} 
+
+\textbf{Replication results}: Due \textbf{November 3}: [10\% of final grade]
+\begin{blist}
+\item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
+\end{blist}
+
+\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\begin{blist}
+\item Prepare a 5-10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\end{blist}
+
+\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\begin{blist}
+\item Your paper should contain 5-8 pages of text and 5-8 pages of figures (double spaced, 12 point font).
+You are expected to use python, and must provide the code and data to replicate your findings. 
+Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
+\end{blist}
+
+
+\subsection*{Homework (15\% of final grade)}
+
+Early in the course, short homeworks will occasionally be assigned. 
+\textbf{These homeworks will be graded for completion. Please DO NOT use AI to complete these assignments; there is no advantage in doing so.}
+These assignments will largely consist of coding exercises and simple mathematical derivations. 
+The goal is to ensure you have a working understanding of the tools taught so far, and are not falling behind.
+
+
+Additionally, readings will be assigned throughout the course. 
+Please complete appropriate readings prior to class.
+Short pop quizzes based on the readings may be assigned, depending on overall participation. 
+
+\subsection*{Attendance and Participation (10\% of final grade)}
+
+This course does not have a virtual component; attendance is expected.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{AI Policy}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This course is meant to extend your theoretical and empirical abilities. 
+Over-reliance on LLMs will hamper that effort. 
+Overall, my aim is to reward genuine effort, over seemingly perfect code and text. 
+To that end, I highly encourage you to avoid AI for your work. 
+I understand it may be helpful for brainstorming and troubleshooting, but please ensure that your written code and words are your own. 
+
+To be transparent about my AI usage: I will primarily use LLMs to brainstorm and troubleshoot. 
+I've been advised by other professors to run your code through AI for grading purposes (as a secondary grader); if you would prefer I don't do that, please don't hesitate to let me know. 
+
+Overall, this policy is meant to be a dialogue, not dogma. 
+Please feel free to let me know your thoughts. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Required textbook}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The primary textbook for this course is \textbf{Mostly Harmless Econometrics} \parencite{AP09}.
+This textbook is meant to provide a readable introduction to many topics of this course. 
+It is available though the Hunter College bookstore (\href{https://hunter.textbookx.com/institutional/index.php?action=browse#books/4891202/}{link}), though it is cheaper on Amazon (\href{https://www.amazon.com/Mostly-Harmless-Econometrics-Empiricists-Companion/dp/0691120358/ref=sr_1_1?adgrpid=1227055302933586&dib=eyJ2IjoiMSJ9.miIdw25tOmutaXlv500au4xpviIV3geiWQ_DkyRWKJlEws_8EbzeALEGY_-R7BVVY4kDLyV4neIHMrn8qoYBZvb50DTyuPCO8Vn9VF7WzQDWcas0n5FLu5mBvQFaS-7tw2CqO66FDgnGH-ZRWn09LA.hynR_nkYtrHiYr2_l6nk-n5IzHjRQduC6oNkpeWgvqE&dib_tag=se&hvadid=76691122015644&hvbmt=be&hvdev=c&hvlocphy=97793&hvnetw=s&hvqmt=e&hvtargid=kwd-76691206557062%3Aloc-190&hydadcr=22160_13439067&keywords=mostly+harmless+econometrics&mcid=48817c499db83be19176cdf4dc4fc94f&msclkid=2f5b328c5b4c1a5f8d885a2f16a5ef4c&qid=1755532783&sr=8-1}{link})
+
+
+Additional readings will be assigned throughout the semester.
+
+\subsection*{Additional resources}
+
+These are additional resources I used in developing the course. 
+
+\textbf{Causal Inference for the Brave and True}
+\parencite{A22} 
+\begin{blist}
+\item Excellent \href{https://matheusfacure.github.io/python-causality-handbook/landing-page.html}{online} companion to Mostly Harmless; I will cite from this website throughout the course. Effectively brings the methods from Mostly Harmless into the machine learning age, with sample code in Python. Be aware there are (very occasional!) errors.
+\end{blist}
+
+\textbf{Applied Causal Inference Powered by ML and AI}
+\parencite{CHKSS25}
+\begin{blist}
+\item Covers similar topics as Mostly Harmless, but from an ML perspective. Currently available free \href{https://causalml-book.org/}{online}. 
+\end{blist}
+
+
+Additional resources may prove helpful if you choose to dive deeper into these topics. 
+Please note that none of the textbooks below are required.
+
+\textbf{Business Data Science} \parencite{T19}
+\begin{blist}
+\item Sometimes called the ``machine learning Mostly Harmless.'' I will borrow heavily from Chapters 5 (Experiments) and 6 (Controls). Note that the code provided in the book is written in R. 
+\end{blist}
+
+\textbf{Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction} \parencite{IR15}
+\begin{blist}
+\item A more technical introduction to causal models, largely taught through the lens of the potential outcomes model. If you want to better understand the derivations in this course, or delve into details on standard errors, you should consult this resource.
+\end{blist}
+
+\textbf{Causal Inference: The Mixtape} \parencite{C25}
+\begin{blist}
+\item \url{https://mixtape.scunning.com/}
+\end{blist}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Course outline}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{outline}
+\item Introduction/idealized experiment
+
+% \begin{blist}
+% \item Reading: \textcite{AP09}, Chapter 1
+% \item Homework: Download python. Run some python code. Set up a GitHub repository, and send me your code (you can either add me as a collaborator, or make your repository poublic).
+% \end{blist}
+
+%2. 
+\item Probability and Statistics review
+
+%
+\item Potential outcomes and experiments
+
+% \begin{blist}
+% \item Reading: \textcite{AP09}, Chapter 2
+% \end{blist}
+
+\item Linear regression models 
+% \begin{blist}
+% \item Reading: \textcite{AP09}, Chapter 3
+% \end{blist}
+
+\item Matching and Propensity models
+% \begin{blist}
+% \item Reading: \textcite{AP09}, Chapter 3
+% \end{blist}
+
+\item Difference-in-differences models
+
+\item Synthetic Control
+
+\item Machine learning methods in Causal inference
+
+\end{outline}
+
+Note the following dates when class is cancelled:
+\begin{blist}
+\item September 23
+\item October 14 (classes follow Monday schedule)
+\end{blist}
+
+
+
+% \begin{center}
+% \begin{tabularx}{\textwidth}{@{} X X X @{}}
+% \toprule
+% \textbf{Column 1} & \textbf{Column 2} \\
+% \midrule
+% This is a very long row of text that will wrap in the first column and span multiple lines. It could even go across a page break if necessary. & Similarly, this second column contains text that wraps and is also quite long to demonstrate behavior. \\
+% Row 2 left side with more content that keeps going and going until it needs to break. & Row 2 right side with lots of words to test page wrapping behavior in action. \\
+% % % Add many more rows to test multi-page behavior...
+% \bottomrule
+% \end{tabularx}
+% \end{center}
+
+\nocite{CB02}
+
+\printbibliography
+
+\end{document}

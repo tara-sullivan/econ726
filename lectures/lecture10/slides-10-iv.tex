@@ -1,0 +1,999 @@
+\documentclass[compress, 8pt]{beamer}
+% \documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+% \showcommentstrue % uncomment to show
+\input{preambleB}
+\usepackage[normalem]{ulem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paths to figures
+\usepackage{subcaption}
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+%Information to be included in the title page:
+\title{Instrumental variables}
+\subtitle{ECON726}
+\author[]{Tara Sullivan}
+\institute{
+Tara Sullivan \\
+\textit{tara.sullivan55@login.cuny.edu}
+}
+\date{
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
+}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% For animations using underbrace 
+% Source: https://tex.stackexchange.com/a/565866
+\usepackage{xparse, letltxmacro}
+\LetLtxMacro{\oldunderbrace}{\underbrace}
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+  \IfValueTF{#1}{% IF <overlay-specification> given
+    % using global onlside flag, cf. p82 beamer manual v3.59
+    \oldunderbrace{#2\onslide<#1>}_{#3}\onslide%
+  }{% ELSE
+    \oldunderbrace{#2}_{#3}
+  }%
+}%
+
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\usetikzlibrary{shapes.multipart} % multiline nodes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\titlepage
+% \tikzset{external/figure name={intro_}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Housekeeping}
+
+Agenda:
+\begin{enumerate}
+\item Discuss final project
+
+\item Instrumental variables. Notes from:
+\begin{itemize}
+    \item \emph{Business Data Science}, chapter 6
+    \item \url{https://matheusfacure.github.io/python-causality-handbook/08-Instrumental-Variables.html}
+    \item Notes from PhD course on linear regression (taught by Jim Hamilton)
+    \item Code available here: \url{https://github.com/tara-sullivan/econ726-notebooks/blob/main/notebooks/11-iv.ipynb}
+\end{itemize}
+\end{enumerate}
+
+Notes on emails:
+\begin{itemize}
+    \item Email policy: I'll reply within two business days, and do my best to reply in one 
+    \item Please note that in general, I cannot reply to emails during business hours (8AM - 5PM on weekdays)
+\end{itemize}
+
+Next week: guest lecture on NYC open data
+\begin{itemize}
+    \item I will take attendance!
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Empirical project}
+
+\textbf{Paper selection}: Due \textbf{September 22} [5\% of final grade]
+\begin{itemize}
+\item Done! 
+\end{itemize}
+
+\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\begin{itemize}
+\item Done!
+\end{itemize} 
+
+\textbf{Replication results}: \textbf{November 7}: [10\% of final grade]
+\begin{itemize}
+\item Done! 
+\end{itemize}
+
+\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\begin{itemize}
+\item Prepare a 5-8 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\end{itemize}
+
+\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\begin{itemize}
+\item Your paper should contain 6-10 pages of text, and 3-6 pages of figures (double spaced, 12 point font).
+You must provide the code and data to replicate your findings. 
+Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Replication results}
+
+\begin{itemize}
+    \item I have not had time to grade your replication results yet. I'm hoping to complete that this weekend, though it may take longer
+    \item In general, this will be graded more easily, and the code in your final paper will be graded strictly
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Presentation rubric (preliminary rubric)}
+
+10\% of final grade; 1\% for time limit
+\begin{enumerate}
+    \item 1\%: stay within time limit
+    \item 3\%: Present research question clearly
+    \item 3\%: Present key results clearly
+    \item 3\%: Present extension, or present a substantive critique of paper, focusing on causal analysis; is this paper causal? 
+\end{enumerate}
+Helpful context: 
+\begin{itemize}
+    \item Pretend you were the author and are giving the elevator pitch of this paper
+    \item You essentially have time for 3 slides (maybe 4 if you're stretching it!)
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Final paper (preliminary rubric)}
+
+35\% of final grade
+\vspace{3ex}
+
+Overview of paper: (~6\%)
+\begin{itemize}
+    \item Summarize the public policy or business context of your replication paper. Why are the results valuable?
+    \item Discuss the data you are using in detail. Be specific, and focus on your primary result. What are the raw data sources? What data sets are being merged together? What are the limitations of this data?
+    \item Discuss the primary finding of this paper that you plan on. Be specific (for example, identify what tables or figures are the primary findings)
+    \item When you describe results, you should use both technical language and prose (the significant coefficient X implies a X\% change in outcome)
+\end{itemize}
+
+
+\end{frame} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Final paper rubric (preliminary rubric)}
+
+
+Causality: provide a formal discussion of causality (~9\%)
+\begin{itemize}
+    \item What is the ideal randomized experiment
+    \item What is the method used
+    \item Why this method is causal
+    \begin{itemize}
+         \item The authors will say ”I use differences-in-differences to identify...” You cannot get away with that. You need to motivate why your method is causal. If you don't discuss why your method is causal, you will lose all of these points. 
+     \end{itemize} 
+    \item Include citations to materials from the course. You will likely need to cite alternative materials as well
+    \item Penalty: reference methodologies you don't understand or motivate why they matter
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Final paper rubric (preliminary rubric)}
+
+Code: ~8\%
+\begin{enumerate}
+    \item 5\%: Can I run your code? \textbf{SHARE YOUR CODE WITH CLASSMATES TO CHECK THIS}
+    \item 2\%: Quality of code. Did you distill code to key results? Is your code readable? 
+    \item This will be graded strictly! If I can't run your code with minimal edits, you don't get credit
+\end{enumerate}
+
+Extension: ~12\%
+\begin{enumerate}
+    \item Complete some sort of extension. This should be ambitious. This is your opportunity to differentiate yourself in this class!
+\end{enumerate}
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+\miniframeson
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Endogeneity]{Endogeneity problem}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Instrumental variables}
+
+In big complicated systems, there are many inputs that determine outputs
+\begin{itemize}
+    \item Understanding causation in such systems requires \textbf{randomization}
+    \item [$\implies$] We want events that \textbf{look} like experiments
+\end{itemize}
+
+\vspace{3ex}
+Common situation: the treatment has not been directly randomized, but rather \textbf{indirectly randomized} through experiments on variables that influence policy selection
+\begin{itemize}
+    \item Indirect randomizers are \textbf{instrumental variables}
+\end{itemize}
+
+\vspace{3ex}
+Example: In a drug trial, participants are randomly assigned to be given some drug
+\begin{itemize}
+    \item Problem: Not every treated patient will take the drug
+    \begin{itemize}
+        \item Drug may be painful or inconvenient, or people forget
+    \end{itemize}
+    \item Treatment may be correlated with unobserved factors that influence outcome
+    \begin{itemize}
+        \item Sicker patients may find the drug more painful, and be less likely to take the drug
+        \item In this case, you can't easily control for relevant differences between drug-takers and non-takers
+    \end{itemize}
+\end{itemize}
+``\emph{Intent-to-treat}'' problem
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV as solution to intent-to-treat problem}
+
+Solution to intent-to-treat problem:
+\begin{itemize}
+    \item Randomization changes the \textbf{probability} that a user takes a drug
+    \begin{itemize}
+        \item If participant is not assigned drug access, there's a small or zero probability they take the drug
+        \item If participant is assigned drug access, there's a larger probability they take the drug
+    \end{itemize}
+    \item [$\implies$] IV models how change in probabilities affects outcomes
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Overview of problem}
+
+Set-up:
+\begin{itemize}
+    \item $y$: response of interest
+    \item $p$: treatment variable
+    \item $x$: observable covariates that directly influence $y$
+    \item $z$: instrument; only affects response through influence on treatment
+    \item $e$: unobserved factors that influence treatment and response
+\end{itemize}
+
+% \textbf{To do: include image from pg. 154 of BDS}
+\begin{columns}
+\begin{column}{.45\textwidth}
+\begin{figure}
+\begin{tikzpicture}
+\node (p) {$p$};
+\node [left =of p] (z) {$z$};
+\node [right =of p] (e) {$e$};
+\node [above left =of p] (x) {$x$};
+\node [above right =of p] (y) {$y$};
+\draw (z) edge[->] (p);
+\draw (e) edge [->] (p);
+\draw (x) edge [->] (p);
+\draw (x) edge [->] (y);
+\draw (p) edge [->] (y);
+\draw (e) edge [->] (y);
+\end{tikzpicture}
+\end{figure}
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{figure}
+\begin{tikzpicture}[every text node part/.style={align=center}]
+\node (p) {drug\\treatment};
+\node [left =of p] (z) {drug\\access};
+\node [right =of p] (e) {disease\\status};
+\node [above left =of p] (x) {\\age};
+\node [above right =of p] (y) {recovery\\time};
+\draw (z) edge[->] (p);
+\draw (e) edge [->] (p);
+\draw (x) edge [->] (p);
+\draw (x) edge [->] (y);
+\draw (p) edge [->] (y);
+\draw (e) edge [->] (y);
+\end{tikzpicture}
+\end{figure}
+\end{column}
+\end{columns}
+
+\vspace{3ex}
+Key takeaways from model:
+\begin{itemize}
+    \item Instrument $z$ only impacts outcome $y$ through treatment $p$
+    \item Instrument $z$ is completely independent of unobserved error $e$
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV regression as a structural model}
+
+Write causal model as a regression:
+\begin{equation*}
+    y = g(x, p) + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+where:
+\begin{itemize}
+    \item $g(x, p)$: structural function; represents how $p$ acts causally on $y$
+    \item $\text{Cov} (e, p) \neq 0$: error and policy are correlated
+    \begin{itemize}
+        \item This is different than traditional regression model, where $\EE [e \vert p] = 0$
+        \item Here, unobserved error influences treatment, so you don't have conditional independence
+    \end{itemize}
+\end{itemize}
+
+\vspace{3ex}
+$\text{Cov} (e, p) \neq 0$ is different than traditional regression model
+\begin{itemize}
+    \item If $\text{Cov} (e, p) = 0$, policy is \textbf{exogenous}
+    \item In this set-up, policy is \textbf{endogenous}
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression with endogenous covariates}
+
+Suppose you run a regression, when the true structural form is: 
+\begin{equation*}
+    y = g(x, p) + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+The [non-causal] conditional expectation would be:
+\begin{align*}
+    \EE [y \vert x, p] =& \EE [g(x, p) + e \vert x, p] \\
+    =& \EE [g(x, p) \vert x, p] + \EE [e \vert x, p] \\
+    =& {\color{cyan} g(x, p)} + {\color{orange} \EE [e \vert p]}
+\end{align*}
+Regression would uncover:
+\begin{itemize}
+    \item {\color{cyan} True structural relationship}, plus
+    \item {\color{orange} Omitted variable bias}
+\end{itemize}
+Next, we'll consider an alternative source of endogeneity: simultaneous equation bias
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Simultaneous Equation Bias]{Simultaneous Equation Bias}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example: supply and demand}
+
+Define $Q_t$ as the quantity or oranges sold at time $t$, and $P_t$ be the price of oranges sold at time $t$
+\begin{itemize}
+    \item \textbf{Goal:} estimate the demand curve to determine how a higher price affects quantity demanded by consumers:
+\end{itemize}
+\begin{equation}\label{demand_t}
+    Q_t = \alpha + \beta P_t + \epsilon_t^d
+\end{equation}
+To make math easier, first write \eqref{demand_t} at the mean:
+\begin{align*}
+    \bar{Q} = \alpha + \beta \bar{P} + \bar{\epsilon}
+\end{align*}
+Demeaning $Q_t$ (subtracting the mean) removes the intercept. Let the lowercase letter be the de-meaned variable:
+\begin{equation*}
+    q_t = \beta p_t + \epsilon_t^d
+\end{equation*}
+% \textbf{To do: } finish
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example: supply curve}
+
+Consider analogous supply curve:
+\begin{equation*}
+    q_t = \gamma p_t + \epsilon_t^s
+\end{equation*}
+In this example:
+\begin{itemize}
+    \item $\gamma$ isolates the effect of a price change on how many oranges are brought to the market
+\item Variations in $\epsilon_t^s$ comes from things like weather
+\end{itemize}
+Under classical regression assumptions:
+\begin{align*}
+    \EE [\epsilon_t^d] &= 0 &\EE [ \epsilon_t^s ] &= 0 \\
+    \EE [\epsilon_{t}^{d}]^{2} &= \sigma_{d}^{2} &\EE [\epsilon_{t}^{s}]^{2} &=\sigma_{s}^{2}\\
+    \EE [\epsilon_{t}^{d}\epsilon_{t}^{s}] &= 0
+\end{align*}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Combine demand and supply}
+
+Demand and supply curve \textbf{system of equations}: 
+\begin{align*}
+    \textbf{Demand:} \quad q_t =& \beta p_t + \epsilon_t^d, \\
+    \textbf{Supply:} \quad q_t =& \gamma p_t + \epsilon_t^s
+\end{align*}
+Setting them equal to each other:
+\begin{align*}
+     \gamma p_t + \epsilon_t^s &= \beta p_t + \epsilon_t^d\\
+    \gamma p_t - \beta p_t &= \epsilon_t^d - \epsilon_t^s \\
+    p_t (\gamma - \beta) &= \epsilon_t^d - \epsilon_t^s \\
+    \implies p_t &= \frac{\epsilon_t^d - \epsilon_t^s}{\gamma - \beta}
+\end{align*}
+Consider dynamics associated with this equation:
+\begin{itemize}
+    \item Suppose screwdrivers become a popular drink. This would be a shock to demand, and cause prices to rise:
+    \begin{equation*}
+        \epsilon_t^d \uparrow \implies p_t \uparrow
+    \end{equation*}
+    \item Consider if the weather is particularly good for growing oranges one season:
+    \begin{equation*}
+        \epsilon_t^s \uparrow \implies p_t \downarrow
+    \end{equation*}
+
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Dynamics associated with quantity demanded}
+Demand curve:
+\begin{equation}\label{demand_1}
+    q_t = \beta p_t + \epsilon_t^d
+\end{equation}
+We've shown:
+\begin{equation}\label{price_eq}
+    p_t = \frac{\epsilon_t^d - \epsilon_t^s}{\gamma - \beta}
+\end{equation}
+Substituting \eqref{price_eq} into \eqref{demand_1}:
+\begin{align*}
+    q_t &= \beta p_{t}+\epsilon_{t}^{d} \\
+&= \beta\left(\frac{\epsilon_{t}^{d}-\epsilon_{t}^{s}}{\gamma-\beta}\right)+\epsilon_{t}^{d}\\
+&= \frac{\beta}{\gamma - \beta} \epsilon_t^d - \frac{\beta}{\gamma - \beta} \epsilon_t^s + \epsilon_t^d  \\
+% &= \frac{\beta}{\gamma - \beta} \epsilon_t^d + \frac{\gamma - \beta}{\gamma - \beta} \epsilon_t^d - \frac{\beta}{\gamma - \beta} \epsilon_t^s \\
+&= \left(\frac{\gamma}{\gamma-\beta}\right)\epsilon_{t}^{d}-\left(\frac{\beta}{\gamma-\beta}\right)\epsilon_{t}^{s}
+\end{align*}
+Consider dynamics associated with this equation:
+\begin{itemize}
+    \item Suppose screwdrivers become a popular drink. This would be a shock to demand, and cause prices to rise:
+    \begin{equation*}
+        \epsilon_t^d \uparrow \implies q_t \uparrow
+    \end{equation*}
+    \item Consider if the weather is particularly good for growing oranges one season:
+    \begin{equation*}
+        \epsilon_t^s \uparrow \implies q_t \downarrow
+    \end{equation*}
+
+\end{itemize}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression coefficient}
+
+\begin{equation*}
+\text{plim of the OLS estimate of the price coefficient}=\frac{Cov(p_{i},q_{i})}{Var(p_{i})}.
+\end{equation*}
+This implies:
+\begin{equation*}
+\hat{\beta}=\frac{\sum q_{t}p_{t}}{\sum p_{t}^{2}}=\frac{T^{-1}\sum q_{t}p_{t}}{T^{_{1}}\sum p_{t}^{2}}\overset{p}{\to}\frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)}.
+\end{equation*}
+
+% \textbf{To do: motivate the regression coefficient better?}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Estimated coefficient: numerator}
+
+\begin{equation*}
+    \hat{\beta} \rightarrow \frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)}
+\end{equation*}
+Given our simplified demand and supply equations:
+\begin{align*}
+     p_t &= \frac{\epsilon_t^d - \epsilon_t^s}{\gamma - \beta} \\
+    q_t &= \left(\frac{\gamma}{\gamma-\beta}\right)\epsilon_{t}^{d}-\left(\frac{\beta}{\gamma-\beta}\right)\epsilon_{t}^{s}
+\end{align*}
+Consider the numerator and denominator separately. First the numerator:
+\begin{align*}
+\EE\left(p_{t}q_{t}\right)= & \EE\left[\left(\left(\frac{1}{\gamma-\beta}\right)\epsilon_{t}^{d}-\left(\frac{1}{\gamma-\beta}\right)\epsilon_{t}^{s}\right)\left(\left(\frac{\gamma}{\gamma-\beta}\right)\epsilon_{t}^{d}-\left(\frac{\beta}{\gamma-\beta}\right)\epsilon_{t}^{s}\right)\right]\\
+= & \EE\left[\left(\frac{\gamma}{\left(\gamma-\beta\right)^{2}}\right)\left(\epsilon_{t}^{d}\right)^{2}+\left(\frac{\beta}{\left(\gamma-\beta\right)^{2}}\right)\left(\epsilon_{t}^{s}\right)^{2}\right]\\
+= & \frac{\gamma}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{d}^{2}+\frac{\beta}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{s}^{2}\\
+\end{align*}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Estimated coefficient: denominator}
+
+\begin{equation*}
+    \hat{\beta} \rightarrow \frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)}
+\end{equation*}
+Given our simplified demand and supply equations:
+\begin{align*}
+     p_t &= \frac{\epsilon_t^d - \epsilon_t^s}{\gamma - \beta} \\
+    q_t &= \left(\frac{\gamma}{\gamma-\beta}\right)\epsilon_{t}^{d}-\left(\frac{\beta}{\gamma-\beta}\right)\epsilon_{t}^{s}
+\end{align*}
+Next consider the denominator:
+\begin{align*}
+\EE\left(p_{t}^{2}\right)= & \EE\left[\left(\frac{\epsilon_{t}^{d}}{\gamma-\beta}-\frac{\epsilon_{t}^{s}}{\gamma-\beta}\right)^{2}\right]\\
+= & \EE\left[\frac{1}{\gamma-\beta}\cdot\left(\epsilon_{t}^{d}\right)^{2}+\frac{1}{\gamma-\beta}\left(\epsilon_{t}^{s}\right)^{2}\right]\\
+= & \frac{1}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{d}^{2}+\frac{1}{\left(\gamma-\beta\right)^{2}}\sigma_{s}^{2}\\
+\end{align*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Estimated coefficient}
+
+\begin{equation*}
+    \hat{\beta} \rightarrow \frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)}
+\end{equation*}
+We've shown:
+\begin{align*}
+    \EE\left(p_{t}q_{t}\right) &= \frac{\gamma}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{d}^{2}+\frac{\beta}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{s}^{2} \\
+    \EE\left(p_{t}^{2}\right) &= \frac{1}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{d}^{2}+\frac{1}{\left(\gamma-\beta\right)^{2}}\sigma_{s}^{2}
+\end{align*}
+Combining the above: 
+\begin{align*}
+    \hat{\beta} &\rightarrow \frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)}  \\
+    &= \frac{\frac{\gamma}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{d}^{2}+\frac{\beta}{\left(\gamma-\beta\right)^{2}}\cdot\sigma_{s}^{2}}{\frac{1}{\gamma-\beta}\cdot\sigma_{d}^{2}+\frac{1}{\gamma-\beta}\sigma_{s}^{2}}\\
+= & \frac{\gamma\sigma_{d}^{2}+\beta\sigma_{s}^{2}}{\sigma_{d}^{2}+\sigma_{s}^{2}}
+\end{align*}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Estimated coefficient: intuition}
+
+\begin{equation*}
+    \hat{\beta} \rightarrow \frac{\EE\left(p_{t}q_{t}\right)}{\EE\left(p_{t}^{2}\right)} = \frac{\gamma\sigma_{d}^{2}+\beta\sigma_{s}^{2}}{\sigma_{d}^{2}+\sigma_{s}^{2}}
+\end{equation*}
+Consider the implications of the above limit:
+\begin{itemize}
+     \item If $\sigma_{s}^{2}\to\infty$,
+then $plim\left(\hat{\beta}\right)=\beta$. 
+Graphically, this dynamic
+implies that large shocks to supply causes the regression line to
+look like the demand line.
+\item Similarly, if $\sigma_{d}^{2}\to\infty$,
+then $plim\left(\hat{\beta}\right)=\gamma$.
+ \end{itemize}  
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Endogeneity}
+
+A regressor is \textbf{endogenous} if it is not predetermined
+\begin{itemize}
+     \item Math terms: not contemporaneously orthogonal to the error term
+     \item If regressor is correlated with the error term
+ \end{itemize}
+% is, it is not . If the
+% equation includes an intercept, the orthogonality condition is violated
+% and hence the regressor is endogenous if and only if the regressor
+% is correlated with the error term. 
+When a quantity is regressed on a constant and price, it does not
+estimate the demand nor the supply curve because \textbf{price} is \textbf{endogenous} (correlated with the error term) in both the demand and supply equations. 
+\begin{itemize}
+    \item Regressor and error term are related to each other through a \textbf{system of equations}
+    \item Endogeneity follows from \textbf{simultaneous
+equation bias}
+\end{itemize}
+
+Neither the demand nor the supply curve is consistently estimated
+in the above regression because we cannot infer from the data whether
+the change in price and quantity is due to a demand or a supply shift.
+\begin{itemize}
+    \item Suggests that it might be possible to estimate the demand curve
+if some of the factors that shift the supply curve are observable.
+If we only were observing shocks to the supply, demand elasticity
+can be estimated. 
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[IV]{Instrumental variables}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV example}
+
+Demand and supply curve \textbf{system of equations}: 
+\begin{align*}
+    \textbf{Demand:} \quad q_t =& \beta p_t + \epsilon_t^d, \\
+    \textbf{Supply:} \quad q_t =& \gamma p_t + \epsilon_t^s
+\end{align*}
+Consider the variable $w_{t}$, the number of freezing days in Florida
+in year $t$:
+\begin{itemize}
+     \item $w_t$ correlated with price $p_t$
+     \item $w_t$ is \textbf{NOT} correlated with $\epsilon_t^d$ 
+ \end{itemize} 
+Can use $w_t$ to divide $\epsilon_{t}^{s}$ into an observable factor $(w_{t})$ that is correlated with $p_{t}$, and an unobservable factor $(\zeta_{t})$ that is uncorrelated with $w_{t}$ and $\epsilon_{t}^{d}$:
+\[
+q_{t}=\gamma_{1}p_{t}+\gamma_{2}w_{t}+\zeta_{t}.
+\]
+% .\footnote{This decomposition is always possible. If the least squares projection
+% of $\epsilon_{t}^{s}$ on $w_{t}$ is $\gamma w_{t}$, define $\zeta_{t}=\epsilon_{t}^{s}-\gamma w_{t}$. Then, by definition, $\zeta_{t}$ is uncorrelated with $w_{t}$.} 
+Supply side shift is uncorrelated with the error term in the demand equation (i.e. it is \textbf{predetermined}):
+% This supply side shift is predetermined (i.e. uncorrelated with the
+% error term) in the demand equation. In this way, the supply side equation
+% can now be written as:
+% \footnote{Denote that in this example, $w_{t}$ is in deviations from the sample
+% mean. Otherwise we would need to include a constant in this regression. }
+\begin{itemize}
+    \item Including $w_{t}$ is meant to extract from price movements a component
+that is related to weather (the observed supply shifter), but is uncorrelated
+with demand shift
+\item This decomposition can be used to estimate the
+demand curve by examining the relationship between quantity demanded
+and the exogenous component of price. 
+\end{itemize}
+A \textbf{predetermined} variable that is correlated with the endogenous regressor is called an
+\textbf{instrumental variable}, or an \textbf{instrument}. 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Choosing instruments}
+
+Instruments must be \textbf{relevant}
+\begin{equation*}
+    \EE\left(w_{t}\epsilon_{t}^{s}\right)\neq0
+\end{equation*}
+\begin{itemize}
+    \item Shocks in weather impact supply
+\end{itemize}
+
+\vspace{3ex}
+Instruments must be \textbf{valid}
+\begin{equation*}
+    \EE\left(w_{t}\epsilon_{t}^{d}\right)=0
+\end{equation*}
+\begin{itemize}
+    \item Shocks in weather don't have any impact on demand
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Estimation]{IV estimation}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Intent-to-treat set-up}
+
+
+Set-up:
+\begin{itemize}
+    \item $y$: response of interest
+    \item $p$: treatment variable
+    \item $x$: observable covariates that directly influence $y$
+    \item $z$: instrument; only affects response through influence on treatment
+    \item $e$: unobserved factors that influence treatment and response
+\end{itemize}
+
+% \textbf{To do: include image from pg. 154 of BDS}
+\begin{columns}
+\begin{column}{.45\textwidth}
+\begin{figure}
+\begin{tikzpicture}
+\node (p) {$p$};
+\node [left =of p] (z) {$z$};
+\node [right =of p] (e) {$e$};
+\node [above left =of p] (x) {$x$};
+\node [above right =of p] (y) {$y$};
+\draw (z) edge[->] (p);
+\draw (e) edge [->] (p);
+\draw (x) edge [->] (p);
+\draw (x) edge [->] (y);
+\draw (p) edge [->] (y);
+\draw (e) edge [->] (y);
+\end{tikzpicture}
+\end{figure}
+\end{column}
+\begin{column}{.55\textwidth}
+\begin{figure}
+\begin{tikzpicture}[every text node part/.style={align=center}]
+\node (p) {drug\\treatment};
+\node [left =of p] (z) {drug\\access};
+\node [right =of p] (e) {disease\\status};
+\node [above left =of p] (x) {\\age};
+\node [above right =of p] (y) {recovery\\time};
+\draw (z) edge[->] (p);
+\draw (e) edge [->] (p);
+\draw (x) edge [->] (p);
+\draw (x) edge [->] (y);
+\draw (p) edge [->] (y);
+\draw (e) edge [->] (y);
+\end{tikzpicture}
+\end{figure}
+\end{column}
+\end{columns}
+
+\vspace{3ex}
+Key takeaways from model:
+\begin{itemize}
+    \item Instrument $z$ only impacts outcome $y$ through treatment $p$
+    \item Instrument $z$ is completely independent of unobserved error $e$
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Two-stage least squares (2SLS) set-up}
+
+Set-up (ignore covariates $x$ for now):
+\begin{itemize}
+    \item $y$: response of interest
+    \item $p$: treatment variable
+    % \item $x$: observable covariates that directly influence $y$
+    \item $e$: unobserved factors that influence treatment and response
+    \item $z$: instrument; only affects response through influence on treatment
+    \begin{itemize}
+        \item Relevance: $z$ impacts $y$ only through $p$
+        \item Valid: $z$ is independent of $e$: $\EE [e \vert z] = \EE [e] = 0$
+    \end{itemize}
+\end{itemize}
+\vspace{3ex}
+Given structural model:
+\begin{equation*}
+    y = g(p) + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+
+\vspace{3ex}
+Can write expectation of structural model \textbf{conditional on instrument}:
+\begin{align*}
+    \EE [y \vert z] =& \EE [g(p) + e \vert z] \\
+    =& \EE [g(p) \vert z] + \EE [e \vert z] \\
+    =& \EE [g(p) \vert z]
+\end{align*}
+$\implies$ given $z$, $y$ has conditional distribution with mean equal to average of $g(p)$ given $z$
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2SLS motivation}
+
+Given structural model:
+\begin{equation*}
+    y = g(p) + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+Suppose we have a linear treatment model, where $g(p) = \gamma p$
+\begin{equation*}
+    y = \gamma p + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+Expectation of structural model \textbf{conditional on instrument}:
+\begin{align*}
+    \EE [y \vert z] =& \EE [\gamma p + e \vert z] \\
+    =& \gamma \EE [p \vert z] 
+\end{align*}
+$\implies$ Can estimate $\gamma$ with a two-step algorithm (adding covariates $x$ to the conditioning set)
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2SLS Algorithm}
+
+\textbf{1. First-stage regression:}
+Regress treatment on instrument (and covariates) using OLS:
+\begin{equation*}
+    \EE [p \vert x, z] = \alpha_p + z_i \tau + \mathbf{x}_i^\prime \boldsymbol{\beta}_p
+\end{equation*}
+Save predicted policy:
+\begin{equation*}
+    \hat{p}_i = \hat{\alpha}_p + z_i \hat{\tau} + \mathbf{x}_i^\prime \boldsymbol{\hat{\beta}}_p
+\end{equation*}
+
+\vspace{3ex}
+\textbf{2. Second-stage regression:} Regress response $y$ on predicted policy $\hat{p}_i$ and covariates:
+\begin{equation*}
+    \EE [y \vert \hat{p}_i, \mathbf{x}_i] = \alpha_y + \hat{p}_i \gamma + \mathbf{x}_i^\prime \boldsymbol{\beta}_y
+\end{equation*}
+Can interpret $\hat{\gamma}$ as causal effect of $p$ on $y$
+
+\vspace{3ex}
+Intuition:
+\begin{itemize}
+    \item First stage create version of $p$ without omitted variable bias
+    \item Second stage uses this modified $p$ to estimate causal effects
+\end{itemize}
+
+\vspace{1ex}
+Note: standard errors need to be adjusted account for using $\hat{p}$ inputs (technically need to adjust ``sandwich'' estimator). Use a pre-packaged IV program
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV by hand (cont.)}
+
+Linear treatment model with instrument $z$:
+\begin{equation*}
+    y = \gamma p + e, \quad \text{Cov} (e, p) \neq 0
+\end{equation*}
+Write in terms of covariance:
+\begin{align*}
+    \text{Cov} (y, z) &= \text{Cov} (\gamma p + e, z) \\
+    &= \gamma \text{Cov} (p, z) + \text{Cov} (e, p) \\
+    &= \gamma \text{Cov} (p, z)
+\end{align*}
+Because instrument $z$ is independent of error $e$. Dividing each side by $\text{Var} (z)$:
+\begin{align*}
+    \frac{\text{Cov} (y, z)}{\text{Var} (z)} =& \gamma \frac{\text{Cov} (p, z}{\text{Var} (z)} \\
+    \implies \gamma =& \frac{\frac{\text{Cov} (y, z)}{\text{Var} (z)}}{\frac{\text{Cov} (p, z)}{\text{Var} (z)}}
+    = \frac{\text{Reduced form}}{\text{First stage}}
+\end{align*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV by hand}
+
+\begin{equation*}
+    \gamma = \frac{\frac{\text{Cov} (y, z)}{\text{Var} (z)}}{\frac{\text{Cov} (p, z)}{\text{Var} (z)}}
+    = \frac{\text{Reduced form}}{\text{First stage}}
+\end{equation*}
+
+Numerator (reduced form): regression of $y$ on $z$
+\begin{itemize}
+    \item ``Impact'' of instrument $y$ on outcome $y$
+    \item Only happens via $p$
+\end{itemize}
+Denominator (first stage): regression of $p$ on $z$
+\begin{itemize}
+    \item Captures impact of instrument $z$ on treatment $p$
+\end{itemize}
+
+% IV as partial derivatives:
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV as partial derivatives}
+
+\begin{equation*}
+    \gamma = \frac{\frac{\text{Cov} (y, z)}{\text{Var} (z)}}{\frac{\text{Cov} (p, z)}{\text{Var} (z)}}
+    = \frac{\text{Reduced form}}{\text{First stage}}
+\end{equation*}
+Consider the partial derivatives:
+\begin{equation*}
+    \gamma = \frac{\frac{\partial y}{\partial z}}{\frac{\partial p}{\partial z}}
+    = \frac{\partial y}{\partial z} \cdot \frac{\partial z}{\partial p}
+    = \frac{\partial y}{\partial p}
+\end{equation*}
+What this is showing to us is more subtle than most people appreciate. It is also cooler than most people appreciate. 
+\begin{itemize}
+    \item Find the impact of instrument $z$ on outcome $y$
+    \item Find the effect of instrument $z$ on treatment $p$
+    \item Scale the effect of $z$ on $y$ by the effect of $z$ on $p$
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{IV as wald estimator}
+
+If instrument $z$ is binary, you can estimate effects using the \textbf{Wald estimator}
+\begin{equation*}
+    \gamma = \frac{\EE [y \vert z = 1] - \EE [y \vert z= 0]}{\EE [p \vert z = 1] - \EE [p \vert z=0]}
+\end{equation*}
+Intuition:
+\begin{itemize}
+    \item Measure the effect of $z$ on $y$
+    \item By definition, $z$ only impacts $y$ through $p$
+    \item Scale this effect by the effect of $z$ on $p$
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Choosing instruments}
+
+Instruments need to be reasonable. Example: using weather in the north Atlantic to estimate fish prices in NYC
+\begin{itemize}
+    \item Need to confident that weather in the north Atlantic does not impact peoples' willingness to consume fish in New York
+\end{itemize}
+
+\vspace{3ex}
+There was an explosion in IV papers over the 2000s-2010s, some of which used somewhat unbelievable instruments
+\begin{itemize}
+    \item IV is very popular in tech, where randomization can nudge users to treatment, which they may or may not adopt
+    \item In general, IV is most believable when some degree of randomization is employed (i.e. when young men were drafted to the Vietnam lottery)
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Weak instruments}
+
+When using IV, you are indirectly estimating ATE. 
+\begin{itemize}
+    \item If your instrument is not directly randomized, you need to choose carefully
+\end{itemize}
+
+Weak instruments:
+\begin{itemize}
+    \item An instrument is weak if the instrument $z$ is weakly correlated with the treatment $p$
+    \item Helpful to look through a computational example to understand this
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+\end{document}

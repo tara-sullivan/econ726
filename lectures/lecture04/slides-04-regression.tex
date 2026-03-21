@@ -1,0 +1,934 @@
+\documentclass[compress, 8pt]{beamer}
+% \documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+% \showcommentstrue % uncomment to show
+\input{preambleB}
+\usepackage[normalem]{ulem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paths to figures
+\usepackage{subcaption}
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+%Information to be included in the title page:
+\title{Linear regression}
+\subtitle{ECON726}
+\author[]{Tara Sullivan}
+\institute{
+Tara Sullivan \\
+\textit{tara.sullivan55@login.cuny.edu}
+}
+\date{
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
+}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% For animations using underbrace 
+% Source: https://tex.stackexchange.com/a/565866
+\usepackage{xparse, letltxmacro}
+\LetLtxMacro{\oldunderbrace}{\underbrace}
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+  \IfValueTF{#1}{% IF <overlay-specification> given
+    % using global onlside flag, cf. p82 beamer manual v3.59
+    \oldunderbrace{#2\onslide<#1>}_{#3}\onslide%
+  }{% ELSE
+    \oldunderbrace{#2}_{#3}
+  }%
+}%
+
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\titlepage
+% \tikzset{external/figure name={intro_}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Housekeeping}
+
+\textbf{Last week's homework:}
+\begin{itemize}
+    \item I will try to provide comments on your paper ideas
+    \item Please email me or set up office hours if you would like to discuss
+\end{itemize}
+
+\vspace{3ex}
+No class next week!
+
+\vspace{3ex}
+\textbf{Homework}
+\begin{itemize}
+    \item Read MHE 3.3.1
+    \begin{itemize}
+        \item Review 3.1. and 3.2., if you're still shaky on the concepts
+    \end{itemize}
+    \item Submit initial paper selection by \textbf{Monday evening}
+\end{itemize}
+
+onelibrary - login with netid
+* include journal issue 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Review - Empirical project}
+
+The project is based on an empirical paper of your choice which:
+\begin{enumerate}
+     \item Uses a method discussed in this course
+     \item Has data available online
+     \item Is not based on an experiment
+ \end{enumerate} 
+ 
+
+\vspace{2ex}
+The paper should:
+\begin{enumerate}
+    \item Be based on a paper published in a peer-reviewed journal
+    \item Briefly state the research question and discuss the dataset 
+    \item Provide a (formal) discussion of the identification strategy (What is the ideal randomized experiment? What sort of bias would na{\"i}ve  approaches introduce? Why is this methodology causal?)
+    \item Replicate (selected) main findings
+    \item Describe and implement some sort of extension to this paper. This could be new and interesting tests for key assumptions, robustness checks, additional results based on other methods or data, or combination thereof
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}{Review - Empirical Project Timeline}
+
+\textbf{Paper selection}: Due \textbf{\sout{September 16} September 22} [5\% of final grade]
+\begin{itemize}
+\item Select your paper. Briefly describe the causal effect of interest and methodology. Discuss what you think you will do for your extension of this paper. 
+\end{itemize}
+
+\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\begin{itemize}
+\item This paper should be your first effort at addressing points (1) and (2) above. 
+Summarize the public policy or business context of the paper. 
+Write down the specific question the paper is evaluating.
+Discuss the data your are using (both your replication data, and data for your extension)
+Discuss the extensions you are considering, and, if necessary, where you will be getting that data. 
+\end{itemize} 
+
+\textbf{Replication results}: Due \textbf{November 4}: [10\% of final grade]
+\begin{itemize}
+\item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
+\end{itemize}
+
+\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\begin{itemize}
+\item Prepare a 5-10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\end{itemize}
+
+\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\begin{itemize}
+\item Your paper should contain 5-8 pages of text, and 5-8 pages of figures (double spaced, 12 point font).
+You are expected to use python, and must provide the code and data to replicate your findings. 
+Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Paper ideas assignment}
+
+First: please provide any feedback or advice to your classmates!
+\begin{itemize}
+    \item How was the process of looking for a paper?
+    \item Any advice you'd like to share?
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Initial paper selection}
+
+
+\textbf{Assignment due:} Initial paper selection (\textbf{5\% of your final grade})
+\begin{itemize}
+    \item Very similar assignment to the last homework (``Paper Ideas'')
+    \item Submit your initial paper selection by \textbf{Monday evening}
+    \item I will provide comments on whether your paper seems appropriate or not, or whether it will be difficult
+    \begin{itemize}
+        
+        \item Perhaps try to find a paper more methodologically in line with this class. 
+    \end{itemize}
+
+\end{itemize}
+
+Next week: no class, so continue to think about your paper topic!
+\begin{itemize}
+    \item I will try to respond to your initial paper selection
+    \item We can iterate if your paper isn't quite right
+    \item If you get the okay to pursue this paper, spend the extra time trying to set up the replication, or start to read the paper in detail
+\end{itemize}
+
+Recall the main methods we will be covering in this course:
+\begin{itemize}
+    \item Propensity score matching
+    \item Differences-in-differences
+    \item Synthetic Control
+\end{itemize}
+
+It will be easiest for you if you select a paper that uses one of these methods! But you're welcome to try using other methods, particularly if you're passionate about the topic.
+
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Initial paper selection: brightspace assignment}
+
+% Submit one paper you are considering for your replication project (it can be the paper from the previous assignment). Briefly describe the causal effect of interest and methodology, and what you may do for your extension. For all papers, please submit:
+
+% A link to the (published) version of the paper
+% A link to the replication code or data
+% What is the causal question of interest in this paper?
+% What is the main method used to study this causal question?
+
+% Notes:
+
+% This is your initial selection of a paper. Submitting this assignment on time will be worth 5\% of your final grade.&nbsp;
+% You will be able to change your paper selection later. The goal is to answer the questions above.
+% Extension notes: You will not be held to your extension choice. But start thinking about what you may do. Perhaps a robustness check of the assumptions. Or perhaps you will try to repeat this methodology in a different context, using similar or modified. Maybe you'll want to add in new control variables, and see if that changes the results. Just start thinking creatively about how you can modify the results of a paper (look at the conclusion for hints of what can be done!)
+
+
+
+% \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+\miniframeson
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[DiD]{Differences-in-Differences Overview}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{diff_in_diff}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[SC]{Synthetic Control Overview}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{synthetic_control}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[CEF]{Conditional Expectations Function}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF theorems}
+
+Law of iterated expectations:
+\begin{equation*}
+    \EE [Y ] = \EE \left[ \EE[Y \vert X] \right]
+\end{equation*}
+
+CEF decomposition property: \begin{align*}
+    Y_i &= \EE[Y_i \vert X_i] + \epsilon_i,
+\end{align*}
+CEF prediction property:
+\begin{align*}
+\EE[Y_i \vert X_i] = \arg \min_{m(X_i)} \EE \left[(Y_i - m(X_i))^2\right]
+\end{align*}
+ANOVA theorem:
+\begin{equation*}
+    \Var{Y_i} = \Var{\EE[Y_i \vert X_i]} + \EE \left[ \Var{Y_i \vert X_i} \right]
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Theorems}
+
+
+Why are these theorems helpful?
+\begin{itemize}
+    \item Decompositions are helpful for summarizing data
+    \item Work in populations as well as samples
+    \item Do not rely on the linearity of CEF assumptions
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Regression]{Linear Regression}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+The \textbf{regression function} is the best-fitting line generated by minimizing expected squared errors.
+\begin{itemize}
+    \item ``Regression'' on its own doesn't say anything about causality
+    \item Today, we are just considering the population regression coefficients, derived from the population least squares problem. 
+\end{itemize}
+
+\vspace{3ex}
+Regression is closely tied to the conditional expectations function (CEF)
+\begin{itemize}
+    \item In MHE, the authors discuss how the link between the CEF and regression function can be explained in three ways
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Say we have some \textbf{dependent variable} $Y_i$, and $K \times 1$ vector of covariates $\XX_i$ (with elements $X_{ki}$):
+\begin{equation*}
+\XX_i = \begin{bmatrix} X_{1i} \\ X_{2i} \\ \vdots \\ X_{ki} \\ \vdots \\ X_{Ki} \end{bmatrix}
+\end{equation*}
+The \textbf{regression function} is the best-fitting line generated by minimizing expected squared errors. In math, find the $\beta$ that solves this function:
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i b\right)^2 \right]
+\end{equation*}
+
+% Right now, we're not looking at causality; 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{First order condition}
+
+In calculus, you solve minimization (or maximization) problems by setting the derivative equal to zero. This is called the first order condition. 
+
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i b\right)^2 \right]
+\end{equation*}
+
+To find the value of $b$ that minimizes the regression function, take the derivative with respect to $b$, and set that equal to zero. This is called the \textbf{first order condition} for solving this minimization problem:
+\begin{equation*}
+    \EE [X_i (Y_i - X_i^\prime b)] = 0
+\end{equation*}
+You can do some simple linear algebra to find the solution:
+\begin{align*}
+    0 &= \EE[X_i (Y_i - X_i^\prime b)] \\
+    0 &= \EE [X_i Y_i - X_i X_i^\prime b] \\
+    0 &= \EE [X_i Y_i] - \EE [X_i X_i^\prime b]\\
+    \EE [X_i X_i^\prime b] &= \EE [X_i Y_i] \\
+    b \EE [X_i X_i^\prime] &=\EE [X_i Y_i] \\
+    b &= \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i]
+\end{align*}
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Population residual}
+Regression coefficient solves:
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i b\right)^2 \right]
+\end{equation*}
+First order condition:
+\begin{equation*}
+    \EE [X_i (Y_i - X_i^\prime b)] = 0
+\end{equation*}
+Solution:
+\begin{equation*}
+    \beta = \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i]
+\end{equation*}
+Note: by construction of the first order condtion, the population residual, $e_i$, is uncorrelated with (orthogonal to) the regressors, $X_i$:
+\begin{equation*}
+    \EE [X_i \underbrace{(Y_i - X_i^\prime b)}_{e_i}] = 0
+\end{equation*}
+The population residual, the part of $Y_i$ that is unexplained by the linear combination of $X_i$, is, by definition, uncorrelated with $X_i$
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Matrix formation of OLS}
+
+Suppose the relationship between $Y_i$ and $Z_i$ can be written as:
+\begin{equation*}
+    Y_i = b_0 + b_1 Z_i + e_i
+\end{equation*}
+We define our matrices $X_i$ and $b$ as:
+\begin{equation*}
+    X_i = \begin{bmatrix} 1 \\ Z_i \end{bmatrix},
+    \quad\quad
+    b = \begin{bmatrix} b_0 \\ b_1 \end{bmatrix}
+\end{equation*}
+We can write this in matrix form as:
+\begin{align*}
+    Y_i =& \begin{bmatrix} 1 &Z_{i} \end{bmatrix} \cdot \begin{bmatrix} b_0 \\ b_1 \end{bmatrix} + e_i \\
+    =& X_i^\prime b + e_i
+\end{align*}
+
+
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Deriving OLS coefficients}
+
+% First order condtion 
+% \begin{align*}
+%     b =& \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i] \\
+%     =& \EE \left[
+%         \begin{matrix} 1 \\ Z_{i} \end{matrix}
+%         \begin{matrix} 1 & Z_i \end{matrix}
+%     \right]
+%     \EE \left[
+%         \begin{matrix} 1 \\ Z_i \end{matrix}
+%         \begin{matrix} Y_i \end{matrix}
+%     \right] \\
+%     =& \EE \left[
+%         \begin{matrix} 1 & Z_i \\ Z_i & Z_i^2 \end{matrix}
+%     \right]
+%     \EE \left[
+%         \begin{matrix} Y_i \\ Z_i \cdot Y_i \end{matrix}
+%     \right] \\
+% \end{align*} 
+
+
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression and CEF - Best Linear Predictor}
+
+\textbf{Thm. 3.1.5: The best linear predictor theorem}: The function $X_i^\prime \beta$ is the best \textbf{linear} predictor of $Y_i$ given $X_i$, in an MMSE
+
+\vspace{1ex}
+\emph{Proof:} Recall the population least squares problem:
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i b\right)^2 \right]
+\end{equation*}
+$\beta = \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i]$ solves this problem, and thus is the best \textbf{linear} predictor of $Y_i$ given $X_i$
+
+\vspace{3ex}
+Context:
+\begin{itemize}
+    \item The CEF, $\EE [Y_i \vert X_i]$, is the best MMSE predictor of $Y_i$ given $X_i$ in the class of all functions of $X_i$
+    \item The population regression is the best MMSE predictor of $Y_i$ given $X_i$ in the class of \textbf{linear} functions of $X_i$
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression and CEF - Regression CEF Theorem}
+
+\textbf{Thm. 3.1.6: The regression CEF theorem}: The function $X_i^\prime \beta$ is the best \textbf{linear} approximation of $\EE [Y_i \vert X_i]$ given $X_i$, in an MMSE sense. In math:
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(\EE[Y_i \vert X_i] - \XX_i^\prime b\right)^2 \right]
+\end{equation*}
+
+\vspace{1ex}
+\emph{Proof: } We know $\beta$ solves the population least squares problem:
+\begin{equation*}
+    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i^\prime b\right)^2 \right]
+\end{equation*}
+Write:
+\begin{align*}
+     \left(Y_i - \XX_i b\right)^2 
+     &= %\left(
+         % \left(
+             \left(Y_i {\color<1>{red} -\EE [Y_i \vert X_i] + \EE [Y_i \vert X_i]} - \XX_i^\prime b\right)^2 
+         % \right)
+     %\right) 
+     \\
+     \onslide<2->{
+     &= \left(
+         \left(
+         Y_i -\EE [Y_i \vert X_i]\right) + \left(\EE [Y_i \vert X_i] - \XX_i^\prime b\right)
+     \right)^2} \\
+     \onslide<3->{
+     &= 
+         {\color<4>{red} \left(Y_i -\EE [Y_i \vert X_i]\right)^2}
+         + \left(\EE [Y_i \vert X_i] - \XX_i^\prime b\right)^2 
+         - {\color<5>{red} 2 \left(Y_i -\EE [Y_i \vert X_i]\right) \left(\EE [Y_i \vert X_i] - \XX_i^\prime b\right)}
+         }      
+ \end{align*} 
+ \begin{itemize}
+     \onslide<4->{\item First term doesn't involve $b$}
+     \onslide<5->{\item Last term is zero by CEF decomposition property}
+ \end{itemize}
+\onslide<6->{$\implies$ CEF approximation is the same as the least squares approximation}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression and CEF}
+
+Link between CEF and regression:
+\begin{itemize}
+    \item Regression provides the best \textbf{linear} predictor for the dependent variable $Y_i$ in the same way the CEF is the best unrestricted predictor of the dependent variable
+
+    \item If we're trying to predict $\EE[Y_i \vert X_i]$ (not $Y_i$), then regression provides the best linear approximation (even if $\EE [Y_i \vert X_i]$ is nonlinear)
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF of log weekly wages}
+
+\begin{figure}
+\includegraphics[scale=0.8]{img/CEF-example.png}
+\end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Linear approximation of CEF}
+
+\begin{figure}
+\includegraphics[scale=0.3]{img/fig-3-1-2.pdf}
+\end{figure}
+\begin{itemize}
+    \item Regression line is the linear approximation of the (bumpy, nonlinear) CEF
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression of grouped data}
+
+Use the law of iterated expectations on the regression coefficient $\beta$:
+\begin{align*}
+\beta =& \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i] \\
+=& \EE \left[ \left. \EE [X_i X_i^\prime]^{-1} \EE [X_i Y_i] \right\vert X_i \right]\\
+=& \EE [X_i X_i^\prime]^{-1} \EE [X_i \EE [Y_i \vert X_i]]
+\end{align*}
+Regression coefficients can be obtained by using $\EE [Y_i \vert X_i]$ as a dependent variable instead of $Y_i$ itself
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression of grouped data}
+
+\begin{figure}
+\includegraphics[scale=0.25]{img/fig-3-1-3.pdf}
+\end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Causality]{Regression and causality}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression and causality}
+
+Regression gives the best linear approximation to the CEF, in a MMSE sense
+\begin{itemize}
+    \item But when does a regression represent something causal?
+\end{itemize}
+
+\vspace{2ex}
+A regression is \textbf{causal} when the CEF it approximates is causal
+\begin{itemize}
+    \item Helpful to think of a CEF being causal by using the potential outcomes framework
+    \item CEF is causal when it describes differences in average potential outcomes for a fixed reference population
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Review - Potential Outcomes framework}
+
+Consider the relationship between future earnings $Y_i$ and whether $i$ attends college, denoted by $D_i$
+ 
+\begin{table}
+\begin{tabular}{ll}
+$D_i \in \{0, 1\}$ &Binary treatment variable for individual $i$ \\ 
+$Y_i$ &Measure of earnings for individual $i$\\
+% \pause
+$Y_{1i}$ &Earnings if individual $i$ goes to college ($D_i=1$) \\
+&Alternative notation: $Y_i(1)$, $Y_i^1$, $y_{i1}$ \\
+$Y_{0i}$ &Earnings if individual $i$ does not go to college ($D_i=0$)  \\
+&Alternative notation: $Y_i(0)$, $Y_i^0$, $y_{i0}$ \\\\
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    \item $Y_{0i}$ is earnings of an individual had they not gone to college, \emph{irrespective of whether they actually went}
+    \item Causal effect college attendance for individual $i$ is the difference $Y_{1i} - Y_{0i}$
+\end{itemize}
+
+% \pause
+\vspace{2ex}
+Observed outcome $Y_i$ can be written as:
+\begin{align*}
+    Y_i =& \begin{cases}
+    Y_{1i} &\text{if} D_i = 1 \\
+    Y_{0i} &\text{if} D_i = 0
+    \end{cases} \\
+    =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i
+\end{align*}
+We can see $Y_{0i}$ or $Y_{1i}$ in the data, but never both
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Review - Fundamental problem of causal inference}
+
+\begin{columns}
+
+\column{0.75\linewidth}
+
+\textbf{Problem:}
+\begin{itemize}
+    \item If an individual is treated ($D_i = 1$), we never observe the outcome in which they are not treated ($Y_{i0}$)
+    \item If an individual is not treated ($D_i = 0$), we never observe the outcome in which they are treated ($Y_{1i}$)
+\end{itemize}
+
+\vspace{2ex}
+\textbf{\color{HunterPurple} The causal effect $\mathbf{Y_1 - Y_0}$ is unidentifiable}
+
+\begin{table}
+\begin{tabular}{lll}
+Group &$Y_1$ &$Y_0$ \\
+$D = 1$ &Observable as $Y$ &Unobservable counterfactual \\
+$D = 0$ &Unobservable counterfactual &Observable as $Y$
+\end{tabular}
+\end{table}
+
+% \pause
+\column{0.25\linewidth}
+\begin{figure}
+% \input{img/potential_outcomes.tex}
+\includegraphics[height=2in]{img/potential_outcomes.png}
+\end{figure}
+
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Na{\"i}ve comparison: $\EE [Y \vert D = 1] - \EE [Y \vert D=0]$}
+
+
+Let's consider the averages of $Y_{1i}$, $Y_{0i}$, and $Y_i$:
+\begin{align*}
+\EE [ Y \vert D = 1 ] =& \EE [Y_0 + (Y_1 - Y_0) D \vert D = 1]
+&&\because Y = Y_0 + (Y_1 - Y_0) D \\
+=& \alert<2>{\EE[Y_1 \vert D = 1]}\\
+\EE[Y \vert D = 0] 
+% =& E [Y_0 + (Y_1 - Y_0) D \vert D = 0] \\
+=& \alert<2>{\EE[Y_0 \vert D = 0]}
+\end{align*}
+
+\vspace{2ex}
+
+We can re-write the observed difference in health outcomes as:
+\begin{align*}
+\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
+\onslide<2->{=& \alert<2>{\EE [Y_1 \vert D=1]} - \alert<2>{\EE [Y_0 \vert D=0]} \\}
+\onslide<3->{=& \EE [Y_1 \vert D=1] \alert<3>{- \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\}
+\onslide<4->{=& \underbrace<5->{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{Avg. treatment effect on treated}} 
+\onslide<4->{+} \underbrace<5->{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}}
+\end{align*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Na{\"i}ve comparison (cont.)}
+
+Observed difference in earnings equals the average treatment effect (ATE) on the treated plus selection bias:
+\begin{align*}
+\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
+% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+=& \underbrace{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{ATE on treated}} 
++ \underbrace{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}
+\end{align*}
+ATE on treated is the average causal effect of college attendance on those who went to college:
+\begin{equation*}
+    \EE [Y_1 \vert D=1] - \EE [Y_0 \vert D = 1] = \EE [Y_1 - Y_0 \vert D = 1]
+\end{equation*}
+Selection bias:
+\begin{equation*}
+    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]
+\end{equation*}
+\textbf{What do you think selection bias looks like in this example?}
+
+\pause
+\begin{itemize}
+    \item The difference in $Y_{0i}$ between those who went to college and those who didn't 
+    \item Consider someone who went to college. Now assume that person didn't go. Their expected earnings may be higher than those of someone who didn't go to college at all 
+    \begin{itemize}
+        \item[$\implies$] Those who didn't go to college, on average, have lower values of $Y_{0i}$
+
+        \item[$\implies$] Selection bias is positive
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Random assignment and selection bias}
+
+Random assignment ($Y_0, Y_1 \perp D$) will solve the selection problem
+\begin{itemize}
+    \item Causes selection bias to equal zero
+\end{itemize}
+\begin{align*}
+    \EE [Y_1 \vert D = 1] = \EE[Y_1 \vert D = 0] = \EE [Y_1] \quad
+    \text{and}& \quad \EE [Y_0 \vert D = 0] = \EE [Y_0 \vert D = 1] = \EE [Y_0] \\
+    \implies&
+    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D = 0] = 0 \\
+    \implies&
+    \text{Selection bias is 0} \\
+    \implies&
+    \text{Na{\"i}ve comparison = ATE on treated}
+\end{align*}
+What do we do when we don't have random assignment?
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional Independence Assumption}
+
+Independence of potential outcomes and the treatment:
+\begin{itemize}
+     \item [$\implies$] ($Y_0, Y_1 \perp D$)
+     \item [$\implies$] randomization
+\end{itemize} 
+What happens when we don't have independence? Meaning the occurrence of $D$ influences the occurrence of $Y_0$ and $Y_1$ (or vice versa)?
+
+\vspace{3ex}
+Perhaps we can condition on certain variables $X$, such that the treatment $D_i$ and the potential outcomes $Y_{1i}, Y_{0i}$ LOOK independent
+\begin{equation*}
+    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+\end{equation*}
+
+\vspace{3ex}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional independence}
+
+Conditional independence assumption: 
+\begin{equation*}
+    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+\end{equation*}
+Intuitively: occurrence of $D_i$ does not influence the occurrence of $Y_{0i}$ or $Y_{1i}$, or vice versa, conditional on knowing $X_i$:
+\begin{align*}
+    \EE[Y_{0i} \vert D_i, X_i] &= \EE [Y_{0i} \vert X_i] \\
+    \EE[Y_{1i} \vert D_i, X_i] &= \EE [Y_{1i} \vert X_i] 
+\end{align*}
+
+\begin{columns}
+\column{0.4\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (D) {D};
+\node [draw, circle, below =of D] (Y) {Y};
+\node [draw, circle, right =of D] (X) {X};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\column{0.6\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {College attendance};
+\node [draw, below =of D] (Y) {Earnings};
+\node [draw, right =of D] (X) {Ability};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\end{columns}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Selection bias under CIA}
+
+Under conditional independence assumption, selection bias disappears conditional on $X_i$:
+\begin{align*}
+    \EE [Y_{0i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0]
+    =& \EE [Y_{0i} \vert X_i, D_i = 0] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    =& 0
+\end{align*}
+So we can write the difference in observed outcomes \textbf{conditional on $X_i$} as:
+\begin{align*}
+    \EE [Y_i \vert X_i, D_i = 1] - \EE [Y_i \vert X_i, D_i = 0] 
+    &= \EE [Y_{1i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    &= \EE [Y_{1i} \vert X_i] - \EE [Y_{0i} \vert X_i] \\
+    &= \EE [Y_{1i} - Y_{0i} \vert X_i]
+\end{align*}
+Given the CIA, comparisons of average earnings (conditional on $X_i$) have a causal interpretation
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{When treatment takes on more than two values}
+
+Expanding CIA assumption to relations that can take on more than two values, such as when $s_i = \{0, 1, \dots, 16\}$ equals years of schooling:
+\begin{equation*}
+    Y_{si} = f_i (s)
+\end{equation*}
+Individual specific function:
+\begin{itemize}
+    \item Potential earnings that person $i$ would receive after obtaining $s$ years of education
+    \item What would $i$ learn for any value of schooling
+\end{itemize}
+
+\vspace{2ex}
+If $s$ could only take on two values, $s=12$ and $s=16$, then we're considering the value of college vs. no college:
+\begin{equation*}
+    Y_{0i} = f_i(12), \quad \quad Y_{1i} = f_i(16)
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA with non-binary treatment}
+
+CIA in this more general set-up:
+\begin{equation*}
+    Y_{si} \perp s_i \vert X_i, \quad \forall s_i
+\end{equation*}
+\begin{itemize}
+    \item In randomized experiments (RCTs), $s_i$ is randomly assigned based on covariates $X_i$
+    \item In observational studies, the CIA means $s_i$ is \textbf{as good as randomly assigned} conditional on $X_i$
+\end{itemize}
+Under conditional independence assumption, comparisons of average earnings across schooling levels have a causal interpretation:
+\begin{equation*}
+    \EE [Y_i \vert X_i, s_i = s] - \EE[Y_i \vert X_i, s_i = s - 1] = \EE [f_i(s) - f_i(s - 1) \vert X_i]
+\end{equation*}
+For example, average causal effect of high school graduation:
+\begin{align*}
+    \EE [Y_i \vert X_i, s_i = 12] - \EE[Y_i \vert X_i, s_i = 11] =& \EE [f_i (12) \vert X_i, s_i = 12] - \EE [f_i (11) \vert X_i, s_i = 11] \\
+    =& \EE [f_i(12) - f_i(11) \vert X_i, s_i = 12] 
+\end{align*}
+\begin{itemize}
+    \item Here, selection bias would come from the differences in potential earnings of high school graduates and non-graduates
+    \item Under CIA, high school graduation is independent of potential earnings conditional on $X_i$, so selection bias disappears
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA and regression}
+
+Regression is an empirical strategy that turns CIA into causal effects:
+\begin{itemize}
+    \item Assume $f_i(s)$ is linear in $s$, and the same for everyone, except for an additive term $\eta_i$:
+    \begin{equation*}
+        f_i(s) = \alpha + \rho s + \eta_i
+    \end{equation*}
+    \item \textbf{Linear constant effects model}: equation is linear, and the functional relationship is the same for everyone
+    \item Only individual-specific part of $f_i(s)$ is mean-zero $\eta_i$, which captures unobserved factors that determine potential earnings
+\end{itemize}
+Observed value will be:
+\begin{equation*}
+    Y_i = \alpha + \rho s_i + \eta_i, 
+\end{equation*}
+Note that $s_i$ is correlated with $\eta_i$: $\EE [\eta_i \vert s_i] \neq 0$. If we ran this regression, we'd expect selection bias to impact our results.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA and regression (cont.)}
+
+Assume CIA holds, and $\eta_i$ has the form:
+\begin{equation*}
+    \eta_i = X_i^\prime \gamma + v_i
+\end{equation*}
+where: 
+\begin{itemize}
+    \item $\gamma$ is a vector of population regression coefficients that satisfies $\EE [\eta_i \vert X_i] = X_i^\prime \gamma$
+    \item $v_i$ and $X_i$ are uncorrelated by construction
+\end{itemize}
+Then, because of the CIA:
+\begin{align*}
+    \EE [f_i(s) \vert X_i, s_i] &= \EE[f_i (s) \vert X_i] \\
+    &= \alpha + \rho s + \EE [\eta_i \vert X] \\
+    &= \alpha + \rho s + X_i^\prime \gamma
+\end{align*}
+The residual in the linear causal model $v_i$ is uncorrelated with $s_i$ and $X_i$, and $\rho$ is the causal effect of interest:
+\begin{equation*}
+    Y_i = \alpha + \rho s_i + X_i^\prime + v_i
+\end{equation*}
+
+\end{frame}
+
+
+
+
+\end{document}
+
+
+
+
+

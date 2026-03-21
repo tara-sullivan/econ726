@@ -1,0 +1,761 @@
+\documentclass[compress, 8pt]{beamer}
+% \documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+% \showcommentstrue % uncomment to show
+\input{preambleB}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paths to figures
+\usepackage{subcaption}
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+%Information to be included in the title page:
+\title{Probability Review}
+\subtitle{ECON726}
+\author[]{Tara Sullivan}
+\institute{
+Tara Sullivan \\
+\textit{tara.sullivan55@login.cuny.edu}
+}
+\date{
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
+}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% For animations using underbrace 
+% Source: https://tex.stackexchange.com/a/565866
+\usepackage{xparse, letltxmacro}
+\LetLtxMacro{\oldunderbrace}{\underbrace}
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+  \IfValueTF{#1}{% IF <overlay-specification> given
+    % using global onlside flag, cf. p82 beamer manual v3.59
+    \oldunderbrace{#2\onslide<#1>}_{#3}\onslide%
+  }{% ELSE
+    \oldunderbrace{#2}_{#3}
+  }%
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\titlepage
+% \tikzset{external/figure name={intro_}}
+\end{frame}
+
+\begin{frame}{Housekeeping}
+
+Homework 1:
+\begin{itemize}
+    \item Please revise your submission if you have a 0/1
+\end{itemize}
+
+\vspace{3ex}
+Python instruction:
+\begin{itemize}
+    \item Next week, we'll do some python introduction alongside statistical review
+    \item Please bring your computer if you'd like to follow along.
+\end{itemize}
+
+\vspace{3ex}
+Update about final project:
+\begin{itemize}
+    \item This course will be taught in python; methods will be taught in python
+    \item You can use any language your want on your final project (obviously I recommend using python)
+\end{itemize}
+
+\vspace{3ex}
+Homework this week:
+\begin{itemize}
+    \item Start thinking about what paper you'd like to replicate!
+    \item Read \emph{Mostly Harmless} Chapter 1 \& 2
+    \item Probability review questions; please submit a \textbf{handwritten} response
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+\miniframeson
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Introduction]{Probability and Causality}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Probability and Causality}
+
+At first glance, it's strange that causality and probability are closely intertwined. 
+
+\begin{itemize}
+    \item Causality: cause and effect; law-like
+    \item Probability: uncertainty
+\end{itemize}
+
+\pause
+\vspace{2ex}
+Causal reasoning is often used in situations that are rife with uncertainty
+\begin{itemize}
+    \item Drunk driving causes accidents
+    \item If you don't study in college, you will fail
+\end{itemize}
+
+\pause
+\vspace{2ex}
+$\implies$ Causal theory must account for uncertainty
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Probability and Causality (cont.)}
+
+Many quantitative fields use probability theory as the backbone of their causal theory
+
+\vspace{3ex}
+Want to account for:
+\begin{itemize}
+    \item Presence of causal connections
+    \item Relative strength of those connections
+    \item Ways of inferring connections from noisy data
+\end{itemize}
+
+\vspace{3ex}
+Probability theory allows us to tolerate unexplained exceptions in causal expressions
+\begin{enumerate}
+    \item My neighbors roof gets wet whenever mine does
+    \item If I hose my roof then it will get wet
+\end{enumerate}
+Contradictory statements are allowed under probability theory
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Understanding probability}
+
+We'll do a fast review of probability!
+\begin{itemize}
+    \item First, we discuss the basic laws of probability in terms of events
+    \begin{itemize}
+        \item Axioms of probability and basic laws
+        \item Independence
+        \item Conditional probability
+    \end{itemize}
+    \item We then talk about random variables
+    \begin{itemize}
+        \item Informally, random variables are just a way of assigning a numerical value to a probabilistic event
+        \item Probability distributions
+        % \item Expected value and conditional expected value
+    \end{itemize}
+    \item When appropriate, I'll discuss the concept of directed acyclic graphs (DAGs)
+    \begin{itemize}
+        \item Fundamental to machine learning theory and causal theory!
+
+    \end{itemize}
+
+\end{itemize}
+
+Easiest way to approach this:
+\begin{itemize}
+    \item Keep concrete examples in mind (rolling one die, rolling two dice)
+    \item Focus on discrete, be confident things generalize to continuous
+\end{itemize}
+
+
+Great resource, if you like to read or want to learn more: \emph{Causality} by Judea Pearl (especially chapter 1)
+
+\end{frame}
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{part01}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Independence}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Independence}
+
+Two events are \textbf{independent} if the occurrence of $A$ does not impact the occurrence of $B$, and vice versa.
+
+\vspace{3ex}
+Very powerful concept. Recall our discussion last class about randomization:
+\begin{itemize}
+    \item We introduced the potential outcomes model, where $Y_0$ and $Y_1$ are the potential outcomes of $Y$
+    \item If the treatment $D$ is independent of potential outcomes $(Y_0, Y_1)$, we write:
+    \begin{equation*}
+        Y_0, Y_1 \perp D
+    \end{equation*}
+    \item Treatment $D$ is randomly assigned if $D$ is independent of the potential outcomes
+    \begin{itemize}
+        \item[$\implies$] Randomization makes treatment and control groups comparable
+        \item[$\implies$] Selection bias is zero
+        \item[$\implies$] The average of observed differences in outcomes equals the average treatment effect
+    \end{itemize}
+\end{itemize}
+
+\vspace{3ex}
+To rigorously define independence, it helps to first define conditional probability. 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional probability}
+
+For two events $A$, and $B$, the conditional probability of $A$ given $B$, $\PP (A \vert B)$, is the probability of $A$ if $B$ is known. 
+This is defined as:
+\begin{equation*}
+\PP (A \vert B) = \frac{\PP (A \text{ AND } B)}{\PP (B)} =  \frac{\PP (A \cap B)}{\PP (B)} = \frac{\PP (A, B)}{\PP (B)}
+\end{equation*}
+
+\vspace{2ex}
+% Example: Suppose you are selecting a card from a standard deck of 52 cards. What is the probability that the card is even, given that the card is red?
+
+% \begin{align*}
+%     \PP(\text{Red}) &= \frac{26}{52} \\
+%     \PP(\text{Even AND Red}) &= \frac{10}{52} \\
+%     \PP(\text{Even} \vert \text{Red}) &= \frac{10/52}{26/52} = \frac{10}{26} = \frac{5}{13}
+% \end{align*}
+
+Example: Suppose you are selecting a card from a standard deck of 52 cards. What is the probability that the card is a heart, given that the card is red?
+\begin{align*}
+    \PP(\text{Red}) &= \frac{26}{52} \\
+    \PP(\text{Heart AND Red}) &= \frac{13}{52} \\
+    \PP(\text{Heart} \vert \text{Red}) &= \frac{13/52}{26/52} = \frac{1}{2} 
+\end{align*}
+Example: Suppose you have a standard deck of 52 cards. What is the probability that a card is black, given that it's a club? 
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional probability and independence}
+\begin{enumerate}
+    \item Conditional probability definition:
+\begin{equation*}
+\alert<3>{\PP (A \vert B)} = \alert<3>{\frac{\PP (A, B)}{\PP (B)}}   
+\end{equation*}
+\item Two events are independent if the occurrence of A does not impact the occurrence of B, and vice versa.
+\end{enumerate}
+
+\onslide<2->
+\vspace{3ex}
+Intuitively, it follows that if $A$ and $B$ are independent, then the probability of $A$ is unchanged if you know $B$. This implies:
+\begin{equation*}
+    \alert<4>{\PP (A \vert B) = \PP(A)}
+\end{equation*}
+
+\onslide<3->
+Using the definition of conditional probability:
+\begin{align*}
+    \frac{\PP (A, B)}{\PP (B)} =& \PP (A \vert B) \\
+    \onslide<4->{\implies \frac{\PP (A, B)}{\alert<5>{\PP (B)}} =&\alert<4>{\PP (A)}\\}
+    \onslide<5->{\implies \PP (A, B) =& \PP(A) \alert<5>{\PP(B)}}
+\end{align*}
+
+\onslide<6->
+Formally: Events are \textbf{independent} if and only if their joint probability equals the product of their probabilities
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Independence Example}
+
+Consider rolling a die twice
+\begin{itemize}
+    \item $X$: the outcome of roll 1
+    \item $Y$: the outcome of roll 2
+\end{itemize}
+Intuitively, it makes sense that the occurrence of $X$ does not impact the occurrence of $Y$, and vice versa.
+\begin{itemize}
+    \item $X$ and $Y$ are independent
+\end{itemize}
+What is the probability that the second roll equals 2, given that you know the first roll equals 1?
+\begin{align*}
+    \PP (Y = 2 \vert X = 1) &= \PP (Y = 2)
+\end{align*}
+In general, because $X$ and $Y$ are independent:
+\begin{equation*}
+    \PP (Y \vert X) = \PP (Y)
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Independence examples (cont.)}
+
+Given events:
+\begin{itemize}
+    \item Month $M \in \{\text{Jan}, \text{Feb}, \dots, \text{Dec}\}$
+    \item Weather $W \in \{\text{sunny}, \text{rainy}\}$
+    \onslide<3->{\alert<3>{\item Day of the week $D \in \{\text{Mon.}, \dots, \text{Sun}\}$}}
+\end{itemize}
+Suppose:
+\begin{align*}
+    \PP (W = \text{sunny}) &= 0.9 \\
+    \PP (W = \text{sunny} \vert M = \text{Aug.}) &= 0.93 \\
+    \PP (W = \text{sunny} \vert M = \text{Jan.}) &= 0.83 \\
+    \onslide<3->{\PP (W = \text{sunny} \vert D = \text{Tues.}) &= 0.9 \\}
+    \onslide<3->{\PP (W = \text{sunny} \vert D = \text{Fri.}) &= 0.9}
+\end{align*}
+Are month and weather independent? \onslide<2->{\alert<2>{No}, month and weather are \alert<2>{dependent}:
+\begin{equation*}
+    \PP (W \vert M) \neq \PP (W)
+ \end{equation*} 
+ }
+ \onslide<3->{Are weather and day of the week independent?} \onslide<4->{\alert<4>{Yes}:
+ \begin{equation}
+     \PP (W \vert D) = \PP (W)
+ \end{equation}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional Probability Rules}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Recall laws of probability}
+
+\textbf{1. Complement Rule}: For any event A in the possible outcomes, the probability of A not happening (sometimes called the complement of $A$, or $A^C$) is:
+\begin{equation*}
+    \PP (\text{NOT } A) = \PP (A^C) = 1 - \PP(A)
+\end{equation*}
+
+\textbf{2. Union of events}: For any events $A$ and $B$ (note: I'm not saying anything about these events being mutually exclusive): 
+\begin{align*}
+    \PP (A \text{ OR } B) = \PP (A \cup B) =& \PP (A) + \PP (B) - \PP (A \text{ AND } B) \\
+    =& \PP (A) + \PP (B) - \PP (A \cap B)
+\end{align*}
+
+\textbf{3. Marginalization}: For any sets $B_1, B_2, \dots, B_n$ that partition the universe of possible outcomes, $\PP (A)$ can be written as:
+\begin{equation*}
+    \PP (A) = \sum_{i=1}^n \PP (A \cap B_i) = \PP (A \cap B_1) + \PP (A \cap B_2) + \dots + \PP (A \cap B_n) 
+\end{equation*}
+
+\vspace{3ex}
+Let's consider how some of these laws apply to conditional probability!
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional probability}
+
+In general, conditional probabilities are still probabilities, so the rules on the previous page still apply. For example:
+
+
+\vspace{3ex}
+\textbf{Complement Rule}: For any event A in the possible outcomes, the probability of A not happening (sometimes called the complement of $A$, or $A^C$) is:
+\begin{equation*}
+    \PP (\text{NOT } A) = \PP (A^C) = 1 - \PP(A)
+\end{equation*}
+This law applies under conditional probability:
+\begin{equation*}
+    \PP (A^C \vert B) = 1 - \PP(A \vert B)
+\end{equation*}
+
+\pause
+\vspace{3ex}
+Example: Suppose we have a drug test for marijuana. We know it correctly identifies non-users as non-users 80\% of the time:
+\begin{equation*}
+    \PP (\text{Test negative} \vert \text{Non-user}) = 0.8
+\end{equation*}
+What is the probability that the drug test incorrectly identifies a non-user as a user? (This is called the \textbf{False Positive Rate}).
+\pause
+\begin{equation*}
+    \PP (\text{Test positive} \vert \text{Non-user}) = 1 - 0.8 = 0.2    
+\end{equation*}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Laws of Probability - Law of Total Probability}
+
+Now we have our definition of conditional probability:
+\begin{equation*}
+\PP (A \vert B) = \frac{\PP (A \cap B)}{\PP (B)} \implies \PP (A \cap B) = \PP (A \vert B) \PP (B)
+\end{equation*}
+
+Recall \textbf{marginalization}: For any sets $B_1, B_2, \dots, B_n$ that partition the universe of possible outcomes, $\PP (A)$ can be written as:
+\begin{equation*}
+    \PP (A) = \sum_{i=1}^n \PP (A \cap B_i) = \PP (A \cap B_1) + \PP (A \cap B_2) + \dots + \PP (A \cap B_n) 
+\end{equation*}
+
+Note that we can re-write this rule using the definition of conditional probability:
+\begin{equation*}
+    \PP (A) = \sum_{i=1}^n (A \vert B_i) \PP (B_i)
+\end{equation*}
+This is the \textbf{Law of Total Probability}.
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Law of Total Probability Example}
+
+Suppose we have a drug test for marijuana.
+\begin{equation*}
+     M = \begin{cases} 1 &\text{ if person uses marijuana} \\
+     0 &\text{ if person does not use marijuana} \end{cases}
+     \quad\quad
+     P = \begin{cases} 1 &\text{ if test result is positive} \\
+     0 &\text{ if test result is negative} \end{cases}
+ \end{equation*} This test has a 90\% \href{https://en.wikipedia.org/wiki/Sensitivity_and_specificity}{true positive rate}, meaning that if someone does use marijuana, the test will accurately predict them as a user 90\% of the time.
+\begin{equation*}
+    \PP (\text{Positive} \vert \text{User}) = \PP (P = 1 \vert M =1 ) = 0.9
+\end{equation*}
+The test also has a true negative rate equal to 80\%. This means that someone who does not use marijuana is receives a negative test result 80\% of the time:
+\begin{align*}
+    \PP (\text{Negative} \vert \text{Non-user}) =& \PP (P = 0 \vert M = 0) = 0.8
+\end{align*}
+Finally, suppose the prevalence of marijuana usage in the population is 5\%. This means 5\% of people use marijuana:
+\begin{equation*}
+    \PP (\text{User}) = \PP (M = 1) = 0.05
+\end{equation*}
+For a randomly selected person, what is the probability the test is positive, $\PP (P = 1)$?
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Law of Total Probability Example}
+
+Using the law of total probability, we can re-write $\PP (B)$ as:
+\begin{align*}
+    \PP (P = 1) &= \PP (P = 1 \vert M = 0 ) \PP (M = 0) + \PP (P = 1 \vert M = 1) \PP (M=1)
+\end{align*}
+Using the true positive rate and the prevalence, we can re-write this as:
+\begin{align*}
+    \PP (P = 1) &= \PP (P = 1 \vert M = 0 ) \PP (M = 0) + 0.9 \cdot 0.05
+\end{align*}
+By the \textbf{complement rule}, we know:
+\begin{align*}
+    \PP (M = 0) &= 1 - \PP (M = 1) = 1 - 0.05 = 0.95
+\end{align*}
+The complement rule also applies to conditional probability, so we know the \textbf{False positive rate}:
+\begin{align*}
+    \PP (P = 1 \vert M = 0 ) &= 1 - \PP (P = 0 \vert M = 0) = 1 - 0.8 = 0.2
+\end{align*}
+Meaning:
+\begin{align*}
+    \PP (P = 1) &= 0.2 \cdot 0.95 + 0.9 \cdot 0.05 \\
+    &= 0.19 + 0.045 \\
+    &= 0.235
+\end{align*}
+Therefore, the probability a randomly selected person tests positive is 23.5\%
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Laws of Probability - Bayes Rules}
+
+Definition of conditional probability for events $A$ and $B$:
+\begin{equation*}
+    \PP (A \vert B) = \frac{\PP (A, B)}{\PP (B)}
+\end{equation*}
+We can use the definition of conditional probability to define joint probabilities in an intuitive way. Note:
+\begin{align*}
+    \PP(A \vert B) \PP(B) &= \PP (A, B) \\
+    \PP(B \vert A) \PP(A) &= \PP (A, B) \\
+\end{align*}
+Together, these equations imply \textbf{Bayes' Rule}:
+\begin{equation*}
+    \PP (A \vert B) = \frac{\PP (B \vert A) \PP(A)}{\PP(B)}
+\end{equation*}
+Bayes rule is powerful because it allows you to invert conditional probabilities!
+\begin{itemize}
+    \item $A$: Patient has a disease (cause)
+    \item $B$: Patient tested positive for a disease (effect)
+    \item Bayes rule allows one to find the probability of a cause given its effect
+\end{itemize}
+Easiest to see if we walk through an example
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Bayes Rule example - drug testing}
+
+
+Using the previous example, What is the probability that a randomly selected person who tests positive actually uses marijuana?
+
+\vspace{3ex}
+The \href{https://en.wikipedia.org/wiki/Positive_and_negative_predictive_values}{\textbf{positive predictive value (PPV)}} predicts the proportion of positive test results are true positives.
+\begin{equation*}
+    \PP (\text{User} \vert \text{Positive}) = \PP (M = 1 \vert P = 1)
+\end{equation*}
+Can use Bayes' Theorem to solve this:
+\begin{align*}
+    \PP (M = 1 \vert P = 1) &= \frac{\PP  (P = 1 \vert M = 1) \PP (M = 1)}{\PP (P = 1)} \\
+    % &= \frac{\PP  (P = 1 \vert M = 1) \PP (M = 1)}{
+        % \PP (P = 1 \vert M = 0 ) \PP (M = 0) + \PP (P = 1 \vert M = 1) \PP (M=1)} 
+        % &= \PP ()
+\end{align*}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Bayes Rule example - drug testing (cont.)}
+
+True positive rate: 
+\begin{equation*}
+    \PP (\text{Positive} \vert \text{User}) = \PP (P = 1 \vert M =1 ) = 0.9
+\end{equation*}
+Prevalence:
+\begin{equation*}
+    \PP (\text{User}) = \PP (M = 1) = 0.05
+\end{equation*}
+Predicted positive:
+\begin{align*}
+    \PP (P = 1) &= 0.235
+\end{align*}
+Solving using Bayes Theorem:
+\begin{align*}
+    \PP (M = 1 \vert P = 1) &= \frac{\PP  (P = 1 \vert M = 1) \PP (M = 1)}{\PP (P = 1)} \\
+    &= \frac{0.9 \cdot 0.05}{0.235} \\
+    &= 0.19
+        % &= \PP ()
+\end{align*}
+If someone tests positive, the probability that they are a cannabis user is only 19\%—because in this group, only 5\% of people are users, and most positives are false positives coming from the remaining 95\%. 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Bayes Rule example - drug testing (cont.)}
+
+\begin{figure}
+\includegraphics[scale=0.3]{img/bayes_rule.png}
+\end{figure}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conditional Independence}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional Independence example}
+
+Consider the binary variables:
+\begin{itemize}
+    \item $R \in \{0, 1\}$: Student $R$ aced the test
+    \item $S \in \{0, 1\}$: Student $S$ aced the test
+    \item $T \in \{0, 1\}$: The test is hard
+\end{itemize}
+    
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (T) {T};
+\node [draw, circle, below right =of T] (S) {S};
+\node [draw, circle, below left =of T] (R) {R};
+\draw (T) edge[->] (R);
+\draw (T) edge[->] (S);
+\end{tikzpicture}
+\end{figure}
+
+Are $R$ and $S$ independent? Independence means, for example:
+\begin{equation*}
+    \PP (R = 1\vert S=1) = \PP (R = 1)
+\end{equation*}
+In words, if we know student $S$ aced the test, does that give us any information about whether student $R$ aced the test?
+
+\pause
+\begin{itemize}
+    \item These variables are \textbf{[unconditionally] dependent}; the occurrence of one impacts the occurrence of the other
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional independence example (cont.)}
+
+\begin{itemize}
+    \item $R \in \{0, 1\}$: Student $R$ aced the test
+    \item $S \in \{0, 1\}$: Student $S$ aced the test
+    \item $T \in \{0, 1\}$: The test is hard
+\end{itemize}
+
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (T) {T};
+\node [draw, circle, below right =of T] (S) {S};
+\node [draw, circle, below left =of T] (R) {R};
+\draw (T) edge[->] (R);
+\draw (T) edge[->] (S);
+\end{tikzpicture}
+\end{figure}
+
+Are $R$ and $S$ independent, conditional on the difficulty of the test? Conditional independence means, for example:
+\begin{equation*}
+    \PP (R = 1\vert S=1, T=0) = \PP (R = 1 \vert T=0)
+\end{equation*}
+In words, if we know that the test was easy, does the additional information that student $S$ aced the test tell us anything about whether student $R$ aced the test?
+\begin{itemize}
+    \item If all the information you could glean from $S$ is subsumed in knowing the value of $T$, then $R$ and $S$ are independent $conditional$ on $T$
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional Independence}
+
+
+For any random variables $X$, $Y$, and $Z$, $X$ and $Y$ are \textbf{conditionally independent} given $Z$ if:
+\begin{equation*}
+    \PP (X = x \vert Y = y, Z = z) = \PP (X = x \vert Z = z)
+\end{equation*}
+In words, this means that learning $Y$ does not provide any additional information about $X$, once we learn $Z$. We'll often summarize conditional independence as:
+\begin{equation*}
+    X \perp Y \vert Z
+\end{equation*}
+\begin{itemize}
+    \item Note this must hold for all values of $X$, $Y$, and $Z$ for conditional independence to hold
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional dependence}
+
+\begin{itemize}
+    \item $X \in \{0, 1\}$: There is an accident at an intersection
+    \item $Y \in \{0, 1\}$: There is a long red light at an intersection
+    \item $Z \in \{0, 1\}$: There is traffic at an intersection
+\end{itemize}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (Z) {Z};
+\node [draw, circle, above right =of T] (Y) {Y};
+\node [draw, circle, above left =of T] (X) {X};
+\draw (X) edge[->] (Z);
+\draw (Y) edge[->] (Z);
+\end{tikzpicture}
+\end{figure}
+
+Are $X$ and $Y$ independent of one another? Independence implies, for example, that knowing there has been an accident doesn't influence your probability that there is a long traffic light. 
+    \begin{equation*}
+    \PP (X =1 \vert Y=1) = \PP (X=1)
+    \end{equation*}
+ 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\begin{itemize}
+    \item $X \in \{0, 1\}$: There is an accident at an intersection
+    \item $Y \in \{0, 1\}$: There is a long red light at an intersection
+    \item $Z \in \{0, 1\}$: There is traffic at an intersection
+\end{itemize}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (Z) {Z};
+\node [draw, circle, above right =of T] (Y) {Y};
+\node [draw, circle, above left =of T] (X) {X};
+\draw (X) edge[->] (Z);
+\draw (Y) edge[->] (Z);
+\end{tikzpicture}
+\end{figure}
+
+\begin{itemize}
+    \item Consider the probability of an accident, given that there is traffic: $\PP (X = 1 \vert Z = 1)$
+    \item Now consider the case where know this intersection has a long traffic light, in addition to traffic. You now have reason to think the long light is the cause of the traffic, not a potential accident. Is there reason to think:
+
+    \begin{equation*}
+    \PP (X =1 \vert Z=1) > \PP (X=1 \vert Y=1, Z=1)
+    \end{equation*}
+
+    \item \textbf{Conditional dependence} can happen when two causes have the same effect. You don't want to control on everything!
+\end{itemize}
+
+
+
+
+\end{frame}
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \section{Expectation}
+% \miniframesoff
+% \begin{frame}
+%     \tableofcontents[currentsection]
+% \end{frame}
+% \miniframeson
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{}
+
+
+
+% \end{frame}
+
+
+
+
+
+
+
+\end{document}

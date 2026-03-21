@@ -1,0 +1,850 @@
+\documentclass[compress, 8pt]{beamer}
+% \documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+% \showcommentstrue % uncomment to show
+\input{preambleB}
+\usepackage[normalem]{ulem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Paths to figures
+\usepackage{subcaption}
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+%Information to be included in the title page:
+\title{Linear regression + Matching}
+\subtitle{ECON726}
+\author[]{Tara Sullivan}
+\institute{
+Tara Sullivan \\
+\textit{tara.sullivan55@login.cuny.edu}
+}
+\date{
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
+}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% For animations using underbrace 
+% Source: https://tex.stackexchange.com/a/565866
+\usepackage{xparse, letltxmacro}
+\LetLtxMacro{\oldunderbrace}{\underbrace}
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+  \IfValueTF{#1}{% IF <overlay-specification> given
+    % using global onlside flag, cf. p82 beamer manual v3.59
+    \oldunderbrace{#2\onslide<#1>}_{#3}\onslide%
+  }{% ELSE
+    \oldunderbrace{#2}_{#3}
+  }%
+}%
+
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\titlepage
+% \tikzset{external/figure name={intro_}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Housekeeping}
+
+\textbf{Paper selection assignment:}
+\begin{itemize}
+    \item Great work! Many of you have chosen excellent papers
+\end{itemize}
+
+\vspace{3ex}
+\textbf{Homework}
+\begin{itemize}
+    \item Read MHE 3.3 (Matching and Propensity Score)
+    \begin{itemize}
+        \item Review 3.1. and 3.2., if you're still shaky on the concepts
+    \end{itemize}
+    \item Read your paper. You won't understand everything; that's okay.
+    \begin{itemize}
+        \item Maybe try to teach yourself a bit about the methodology. Read the relevant MHE chapter, or start reading about synthetic control
+        \item There is a language to papers. You're doing your best to understand it, even if you aren't fluent
+    \end{itemize}
+    
+    \item \textbf{Are you sure you want to do this paper? Does this seem like something you can do?}
+\end{itemize}
+
+\vspace{3ex}
+\textbf{Today}
+\begin{itemize}
+    \item Discuss paper selection
+    \item Finish linear regression
+    \item Introduction to matching
+    \item Review examples in jupyter notebooks
+    (\href{https://github.com/tara-sullivan/econ726-notebooks/blob/main/notebooks/04-regression.ipynb}{regression}; \href{https://github.com/tara-sullivan/econ726-notebooks/blob/main/notebooks/05-matching.ipynb}{matching})
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Review - Empirical Project Timeline}
+
+\textbf{Paper selection}: Due \textbf{\sout{September 16} September 22} [5\% of final grade]
+\begin{itemize}
+\item Done! 
+\end{itemize}
+
+\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\begin{itemize}
+\item This paper should be your first effort at addressing points (1) and (2) above. 
+Summarize the public policy or business context of the paper. 
+Write down the specific question the paper is evaluating.
+Discuss the data your are using (both your replication data, and data for your extension)
+Discuss the extensions you are considering, and, if necessary, where you will be getting that data. \textbf{New: I'll ask you to verify that you've read the paper}
+\end{itemize} 
+
+\textbf{Replication results}: Due \textbf{November 4}: [10\% of final grade]
+\begin{itemize}
+\item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
+\end{itemize}
+
+\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\begin{itemize}
+\item Prepare a 5-10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\end{itemize}
+
+\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\begin{itemize}
+\item Your paper should contain 5-8 pages of text, and 5-8 pages of figures (double spaced, 12 point font).
+You are expected to use python, and must provide the code and data to replicate your findings. 
+Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Paper selection}
+
+Thoughts on the selection process
+\begin{itemize}
+    \item How confident are you in your paper? 
+    \item Were you able to find a topic you were excited in?
+    \item Is there a causal question you'd rather look at, but you couldn't find a paper for?
+\end{itemize}
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+\miniframeson
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Causality]{Regression and causality}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression and causality}
+
+Regression gives the best linear approximation to the CEF, in a MMSE sense
+\begin{itemize}
+    \item But when does a regression represent something causal?
+\end{itemize}
+
+\vspace{2ex}
+A regression is \textbf{causal} when the CEF it approximates is causal
+\begin{itemize}
+    \item Helpful to think of a CEF being causal by using the potential outcomes framework
+    \item CEF is causal when it describes differences in average potential outcomes for a fixed reference population
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Na{\"i}ve comparison}
+
+Observed difference in earnings equals the average treatment effect (ATE) on the treated plus selection bias:
+\begin{align*}
+\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
+% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+=& \underbrace{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{ATE on treated}} 
++ \underbrace{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}
+\end{align*}
+
+Random assignment ($Y_0, Y_1 \perp D$) will solve the selection problem
+\begin{itemize}
+    \item Causes selection bias to equal zero
+\end{itemize}
+\begin{align*}
+    \EE [Y_1 \vert D = 1] = \EE[Y_1 \vert D = 0] = \EE [Y_1] \quad
+    \text{and}& \quad \EE [Y_0 \vert D = 0] = \EE [Y_0 \vert D = 1] = \EE [Y_0] \\
+    \implies&
+    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D = 0] = 0 \\
+    \implies&
+    \text{Selection bias is 0} \\
+    \implies&
+    \text{Na{\"i}ve comparison = ATE on treated}
+\end{align*}
+What do we do when we don't have random assignment?
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional Independence Assumption}
+
+Independence of potential outcomes and the treatment:
+\begin{itemize}
+     \item [$\implies$] ($Y_0, Y_1 \perp D$)
+     \item [$\implies$] randomization
+\end{itemize} 
+What happens when we don't have independence? Meaning the occurrence of $D$ influences the occurrence of $Y_0$ and $Y_1$ (or vice versa)?
+
+\vspace{3ex}
+Perhaps we can condition on certain variables $X$, such that the treatment $D_i$ and the potential outcomes $Y_{1i}, Y_{0i}$ LOOK independent
+\begin{equation*}
+    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+\end{equation*}
+
+\vspace{3ex}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional independence}
+
+Conditional independence assumption: 
+\begin{equation*}
+    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+\end{equation*}
+Intuitively: occurrence of $D_i$ does not influence the occurrence of $Y_{0i}$ or $Y_{1i}$, or vice versa, conditional on knowing $X_i$:
+\begin{align*}
+    \EE[Y_{0i} \vert D_i, X_i] &= \EE [Y_{0i} \vert X_i] \\
+    \EE[Y_{1i} \vert D_i, X_i] &= \EE [Y_{1i} \vert X_i] 
+\end{align*}
+
+\begin{columns}
+\column{0.4\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (D) {D};
+\node [draw, circle, below =of D] (Y) {Y};
+\node [draw, circle, right =of D] (X) {X};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\column{0.6\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {College attendance};
+\node [draw, below =of D] (Y) {Earnings};
+\node [draw, right =of D] (X) {Ability};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\end{columns}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Selection bias under CIA}
+
+Under conditional independence assumption, selection bias disappears conditional on $X_i$:
+\begin{align*}
+    \EE [Y_{0i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0]
+    =& \EE [Y_{0i} \vert X_i, D_i = 0] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    =& 0
+\end{align*}
+So we can write the difference in observed outcomes \textbf{conditional on $X_i$} as:
+\begin{align*}
+    \EE [Y_i \vert X_i, D_i = 1] - \EE [Y_i \vert X_i, D_i = 0] 
+    &= \EE [Y_{1i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    &= \EE [Y_{1i} \vert X_i] - \EE [Y_{0i} \vert X_i] \\
+    &= \EE [Y_{1i} - Y_{0i} \vert X_i]
+\end{align*}
+Given the CIA, comparisons of average earnings (conditional on $X_i$) have a causal interpretation
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{When treatment takes on more than two values}
+
+Expanding CIA assumption to relations that can take on more than two values, such as when $s_i = \{0, 1, \dots, 16\}$ equals years of schooling:
+\begin{equation*}
+    Y_{si} = f_i (s)
+\end{equation*}
+Individual specific function:
+\begin{itemize}
+    \item Potential earnings that person $i$ would receive after obtaining $s$ years of education
+    \item What would $i$ learn for any value of schooling
+\end{itemize}
+
+\vspace{2ex}
+If $s$ could only take on two values, $s=12$ and $s=16$, then we're considering the value of college vs. no college:
+\begin{equation*}
+    Y_{0i} = f_i(12), \quad \quad Y_{1i} = f_i(16)
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA with non-binary treatment}
+
+CIA in this more general set-up:
+\begin{equation*}
+    Y_{si} \perp s_i \vert X_i, \quad \forall s_i
+\end{equation*}
+\begin{itemize}
+    \item In randomized experiments (RCTs), $s_i$ is randomly assigned based on covariates $X_i$
+    \item In observational studies, the CIA means $s_i$ is \textbf{as good as randomly assigned} conditional on $X_i$
+\end{itemize}
+Under conditional independence assumption, comparisons of average earnings across schooling levels have a causal interpretation:
+\begin{equation*}
+    \EE [Y_i \vert X_i, s_i = s] - \EE[Y_i \vert X_i, s_i = s - 1] = \EE [f_i(s) - f_i(s - 1) \vert X_i]
+\end{equation*}
+For example, average causal effect of high school graduation:
+\begin{align*}
+    \EE [Y_i \vert X_i, s_i = 12] - \EE[Y_i \vert X_i, s_i = 11] =& \EE [f_i (12) \vert X_i, s_i = 12] - \EE [f_i (11) \vert X_i, s_i = 11] \\
+    =& \EE [f_i(12) - f_i(11) \vert X_i, s_i = 12] 
+\end{align*}
+\begin{itemize}
+    \item Here, selection bias would come from the differences in potential earnings of high school graduates and non-graduates
+    \item Under CIA, high school graduation is independent of potential earnings conditional on $X_i$, so selection bias disappears
+\end{itemize}
+
+\end{frame}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{}
+
+% Unconditional average effects under CIA:
+% \begin{align*}
+%     \EE [Y_i \vert X_i, s_i = 12] - \EE[Y_i \vert X_i, s_i = 11] =& \EE [f_i (12) \vert X_i, s_i = 12] - \EE [f_i (11) \vert X_i, s_i = 11] \\
+%     =& \EE [f_i(12) - f_i(11) \vert X_i, s_i = 12]
+% \end{align*}
+% Computationally, what does this mean?
+% \begin{itemize}
+%     \item 
+% \end{itemize}
+
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA and regression}
+
+Regression is an empirical strategy that turns CIA into causal effects:
+\begin{itemize}
+    \item Assume $f_i(s)$ is linear in $s$, and the same for everyone, except for an additive term $\eta_i$:
+    \begin{equation*}
+        f_i(s) = \alpha + \rho s + \eta_i
+    \end{equation*}
+    \item \textbf{Linear constant effects model}: equation is linear, and the functional relationship is the same for everyone
+    \item Only individual-specific part of $f_i(s)$ is mean-zero $\eta_i$, which captures unobserved factors that determine potential earnings
+\end{itemize}
+Observed value will be:
+\begin{equation*}
+    Y_i = \alpha + \rho s_i + \eta_i, 
+\end{equation*}
+Note that $s_i$ is correlated with $\eta_i$: $\EE [\eta_i \vert s_i] \neq 0$. If we ran this regression, we'd expect selection bias to impact our results.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CIA and regression (cont.)}
+
+Assume CIA holds, and $\eta_i$ has the form:
+\begin{equation*}
+    \eta_i = X_i^\prime \gamma + v_i
+\end{equation*}
+where: 
+\begin{itemize}
+    \item $\gamma$ is a vector of population regression coefficients that satisfies $\EE [\eta_i \vert X_i] = X_i^\prime \gamma$
+    \item $v_i$ and $X_i$ are uncorrelated by construction
+\end{itemize}
+Then, because of the CIA:
+\begin{align*}
+    \EE [f_i(s) \vert X_i, s_i] &= \EE[f_i (s) \vert X_i] \\
+    &= \alpha + \rho s + \EE [\eta_i \vert X] \\
+    &= \alpha + \rho s + X_i^\prime \gamma
+\end{align*}
+The residual in the linear causal model $v_i$ is uncorrelated with $s_i$ and $X_i$, and $\rho$ is the causal effect of interest:
+\begin{equation*}
+    Y_i = \alpha + \rho s_i + X_i^\prime \gamma + v_i
+\end{equation*}
+$\implies$ if we assume CIA holds in this linear causal model, $\rho$ is a causal coefficient
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression takeaways}
+
+We just discussed how CIA + linear causal model yields a causal interpretation of CEF
+\begin{itemize}
+    \item Linear causal model: $Y_i = \alpha + \rho s_i + \eta_i$
+    \item If CIA holds given some variables $X_i$: $Y_{0i}, Y_{1i} \perp s_i \vert X_i$
+    \item Our regression function has a causal interpretation: $Y_i = \alpha + \rho s_i + X_i^\prime \gamma + v_i$
+    \begin{itemize}
+        \item $\rho$ is the causal effect of $s_i$ on $Y_i$
+    \end{itemize}
+    \item CEF given by:
+    \begin{equation*}
+        \EE [Y_i \vert X_i, s_i] = \alpha + \rho s_i + X_i^\prime \gamma
+    \end{equation*}
+\end{itemize}
+
+% \textbf{TO DO:} regression example in pyhton; use companion website
+\vspace{3ex}
+\textbf{Thing to note:}
+\begin{itemize}
+    \item CIA is the same as unconfoundedness is the same as selection on observables
+    \item In regression, CIA is the same as exogeneity
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Matching]{Matching}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{}
+
+
+
+% Linear causal model seems like a strong assumption. How realistic is it to assume that policy responses are linear?
+% \begin{itemize}
+%     \item Luckily, you don't always need to worry about that to run regressions
+%     \item You can think of linear regression of $Y_i$ on $X_i$ and $s_i$ as providing the best \textbf{linear approximation} to the underlying CEF
+%     \item 
+% \end{itemize}
+
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Motivating example}
+
+Consider the universe of applicants to the U.S. military:
+\begin{itemize}
+    \item $Y_i$: average earnings
+    \item $D_i$: dummy variable indicating whether $i$ served in the military
+\end{itemize}
+We may be interested in the average effect of treatment on the treated (ToT):
+\begin{equation*}
+    \EE [Y_{1i} - Y_{0i]} \vert D_i = 1]
+\end{equation*}
+Difference between:
+\begin{itemize}
+    \item Average earnings of soldiers (observable)
+    \item Average earnings of soldiers, had they not served (unobservable)
+\end{itemize}
+Na{\"i}ve comparisons will be biased:
+\begin{align*}
+\EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i=0] 
+=& \underbrace{\EE [Y_{1i} - Y_{0i} \vert D_i = 1]}_{\text{ATE on treated}} 
++ \underbrace{\EE [Y_{0i} \vert D_i = 1] - \EE [Y_{0i} \vert D_i=0]}_{\text{Selection bias}}
+\end{align*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Motivating example: CIA}
+
+Conditional independence assumption:
+\begin{equation*}
+    Y_{0i}, Y_{1i} \perp D_i \vert X_i
+\end{equation*}
+Assuming CIA, selection bias disappears after conditioning on $X_i$:
+\begin{align*}
+    \delta_{ToT} &= \EE[Y_{1i} - Y_{0i} \vert D_i = 1] \\
+    \onslide<2->{
+    &= \EE \left[ \left. 
+    \EE[Y_{1i} - Y_{0i} \alert<2>{\vert X_i,} D_i = 1]
+    \right\vert D_i = 1
+     \right] &\because \text{LIE}
+     } \\
+    \onslide<3->{
+        &= \EE \left[ \left.
+            \EE [Y_{1i} \vert X_i, D_i=1]
+            - \alert<4>{\EE [Y_{0i} \vert X_i, D_i=1]}
+            \right\vert D_i = 1
+        \right]
+    } \\
+    \onslide<4->{
+        &= \EE \left[ \left.
+            {\color<5>{Green}\EE [Y_{1i} \vert X_i, D_i=1]}
+            - \alert<4>{{\color<5>{Orange} \EE [Y_{0i} \vert X_i, D_i=0]}}
+            \right\vert D_i = 1
+        \right]        
+    } \\
+    \onslide<6->{
+        &= \EE \left[ \left.
+            {\color<6>{Green}\EE [Y_{i} \vert X_i, D_i=1]}
+            - {\color<6>{Orange} \EE [Y_{i} \vert X_i, D_i=0]}              
+            \right\vert D_i = 1
+        \right]
+    }
+\end{align*}
+\onslide<4->{
+    By CIA:
+    \begin{equation*}
+        \alert<4>{\EE [Y_{0i} \vert X_i, D_i = 0]
+        = \EE [Y_{0i} \vert X_i, D_i = 1]}
+    \end{equation*}
+}
+\onslide<5->{
+    By definition of $Y_{i} = Y_{0i} + D_i (Y_{1i} - Y_{0i})$:
+    \begin{align*}
+        {\color<6>{Orange}\EE [Y_{i} \vert X_i, D_i = 0]} 
+        &= \EE [Y_{0i} + D_i (Y_{1i} - Y_{0i}) \vert X_i, D_i = 0] \\
+        &= {\color<5-6>{Orange} \EE [Y_{0i} \vert X_i, D_i = 0] } \\
+        {\color<6>{Green}\EE [Y_{i} \vert X_i, D_i = 1]} 
+        &= {\color<5-6>{Green} \EE [Y_{1i} \vert X_i, D_i = 1]} 
+    \end{align*}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\begin{align*}
+    \delta_{ToT}
+        &= 
+        \EE \left[ \left.
+            \underbrace<4>{
+            \underbrace<2>{\color<2>{Green}\EE [Y_{i} \vert X_i, D_i=1]}_{}
+            - \underbrace<3>{\color<3>{Orange}\EE [Y_{i} \vert X_i, D_i=0]}_{}
+            }_{}
+            \right\vert D_i = 1
+        \right] \\
+        \onslide<5->{
+        &= \EE \Big[ {\color<5>{MainBlue}\delta_X} \Big\vert D_i=1\Big]
+        } 
+\end{align*}
+Consider the parts of this estimator:
+\begin{itemize}
+    \item[]<2-> {\color<2>{Green}$\EE [Y_{i} \vert X_i, D_i=1]$}: \quad \textbf{For a given $X_i$}, take the average over all observed \textbf{treated} $Y_i$
+
+    \item[]<3-> {\color<3>{Orange}$\EE [Y_{i} \vert X_i, D_i=0]$}: \quad \textbf{For a given $X_i$}, take the average over all observed \textbf{untreated} $Y_i$
+\end{itemize}
+\onslide<4->{
+\vspace{2ex}
+    Define $\delta_X$ to be the average difference in oberved $Y_i$ for treated and untreated with a given value $X_i$:
+    \begin{equation*}
+        {\color<5>{MainBlue}\delta_X} \equiv
+        \underbrace<4>{\EE [Y_{i} \vert X_i, D_i=1]
+        - \EE [Y_{i} \vert X_i, D_i=0]}_{}
+    \end{equation*}
+    \begin{itemize}
+        \item Example: difference in mean earnings by veteran status at each value of $X_i$
+    \end{itemize}
+}
+% \onslide<5->{
+%     Effect of treatment on the treated can be written as:
+%     \begin{equation*}
+%         \delta_ToT = \EE \left[ . \right\vert D_i \right]
+%     \end{equation*}
+% }
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Effect of treatment on the treated under CIA: 
+\begin{align*}
+    \delta_{ToT} &= \EE \left[ \left.
+            {\EE [Y_{i} \vert X_i, D_i=1]}
+            - {\EE [Y_{i} \vert X_i, D_i=0]}        
+            \right\vert D_i = 1
+        \right] \\
+        &= \EE \left[ \left. 
+            \delta_X
+        \right\vert D_i = 1\right] \\
+    \text{where} & \\
+        \delta_X &= {\EE [Y_{i} \vert X_i, D_i=1]}
+            - {\EE [Y_{i} \vert X_i, D_i=0]}
+\end{align*}
+Let's say there was some variable $X_i$ that represents an indicator of whether an applicant is ``high ability'' or ``lower ability''
+\begin{itemize}
+    \item $X_i = 0$ means $i$ is low ability 
+    \item $X_i = 1$ means $i$ is high ability
+\end{itemize}
+We'll assume CIA: $\{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i$ 
+\begin{itemize}
+    \item Intuitively, what does this mean? Is this a good assumption? Is it realistic?
+\end{itemize}
+
+The matching estimand can be written as:
+\begin{align*}
+    \delta_{ToT} = \EE [Y_{1i} - Y_{0i} \vert D_i = 1] &= \EE [\delta_X \vert D_i = 1] \\
+    &= \sum_{x \in \{0, 1\}} \delta_x \PP(X_i = x \vert D_i = 1 ) \\
+    &= \delta_0 \PP (X_i = 0 \vert D_i = 1)
+    + \delta_1 \PP (X_i = 1 \vert D_i = 1)
+\end{align*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\begin{align*}
+    \delta_{ToT} &= \EE [\delta_X \vert D_i = 1] \\
+    &= 
+        {\color<2>{Orange}\delta_{X_i = 0}} 
+        {\color<4>{Orange}\PP (X_i = 0 \vert D_i = 1)}
+    + 
+        {\color<3>{Green}\delta_{X_i = 1}} 
+        {\color<5>{Green}\PP (X_i = 1 \vert D_i = 1)}
+\end{align*}
+How do these elements connect to data? 
+\begin{table}
+\begin{tabular}{rl}
+\onslide<2->{
+    {\color<2>{Orange} $\delta_{X_i = 0}$}
+    &Difference in observed $Y_i$ for treated and untreated with $X_i = 0$\\
+    &{\small\color{DarkGray}(Average difference in wages by veteran status for \textbf{low} ability $i$)} \\
+}
+\onslide<3->{
+    {\color<3>{Green} $\delta_{X_i = 1}$}
+    &Difference in observed $Y_i$ for treated and untreated with $X_i = 1$\\
+    &{\small\color{DarkGray}(Average difference in wages by veteran status for \textbf{high} ability $i$)} \\
+}
+\onslide<4->{
+    {\color<4>{Orange} $\PP (X_i = 0 \vert D_i = 1)$}
+    &Probability $X_i = 0$ conditional on being treated\\
+    &{\small\color{DarkGray}(Fraction of veterans that are \textbf{low} ability)} \\
+}
+\onslide<5->{
+    {\color<5>{Green} $\PP (X_i = 1 \vert D_i = 1)$}
+    &Probability $X_i = 1$ conditional on being treated\\
+    &{\small\color{DarkGray}(Fraction of veterans that are \textbf{high} ability)} \\
+}
+
+\end{tabular}
+\end{table}
+\onslide<6->
+{Intuitively, what is this matching estimate?
+\begin{itemize}
+    \item $X_i$-specific treatment-control comparisons, weighted together to produce a single overall treatment effect
+\end{itemize}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Effect of treatment on the treated under CIA: 
+\begin{align*}
+    \delta_{ToT} &= \EE \left[ \left.
+            {\EE [Y_{i} \vert X_i, D_i=1]}
+            - {\EE [Y_{i} \vert X_i, D_i=0]}        
+            \right\vert D_i = 1
+        \right] \\
+        &= \EE \left[ \left. 
+            \delta_X
+        \right\vert D_i = 1\right] \\
+    \text{where} & \\
+        \delta_X &= {\EE [Y_{i} \vert X_i, D_i=1]}
+            - {\EE [Y_{i} \vert X_i, D_i=0]}
+\end{align*}
+Now instead of $X_i$ being a dummy, assume $X_i$ is the result of test of ability/intelligence
+\begin{itemize}
+    \item $X_i \in \{0, 1, \dots, 100\}$ and measures ability
+\end{itemize}
+We'll assume CIA: $\{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i$ 
+\begin{itemize}
+    \item Intuitively, what does this mean? Is this a good assumption? Is it realistic?
+\end{itemize}
+The matching estimand can be written as:
+\begin{align*}
+    \delta_{ToT} %= \EE [Y_{1i} - Y_{0i} \vert D_i = 1] 
+    &= \EE [\delta_X \vert D_i = 1] \\
+    &= \sum_{x=0}^{100} \delta_x \PP(X_i = x \vert D_i = 1 ) \\
+    &= \delta_0 \PP (X_i = 0 \vert D_i = 1)
+    + \delta_1 \PP (X_i = 1 \vert D_i = 1)
+    + \dots + \delta_{100} \PP (X_i = 100 \vert D_i = 1)
+\end{align*}
+Intuitively, what is this matching estimate?
+\begin{itemize}
+    \item $X_i$-specific treatment-control comparisons, weighted together to produce a single overall treatment effect
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Now instead of $X_i$ isn't a single variable, but instead a vector of (discrete) variables
+\begin{itemize}
+    \item Year of birth, test score, year of application to the military, educational attainment at the time of application
+\end{itemize}
+Think of each realized $X_i=x$ as a particular combination of all these variables
+\begin{itemize}
+    \item {\color{DarkGray}For example, $X_i = z$ might describe an applicant born in 1970, who scored a 95 on an ability test, and graduated from college}
+\end{itemize}
+We'll assume CIA: $\{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i$ 
+\begin{itemize}
+    \item Intuitively, what does this mean? Is this a good assumption? Is it realistic?
+\end{itemize}
+The matching estimand can be written as:
+\begin{align*}
+    \delta_{ToT} %= \EE [Y_{1i} - Y_{0i} \vert D_i = 1] 
+    &= \EE [\delta_X \vert D_i = 1] \\
+    &= \sum_{x} \delta_x \PP(X_i = x \vert D_i = 1 ) 
+\end{align*}
+Intuitively, what is this matching estimate?
+\begin{itemize}
+    \item The $\delta_{x}$ are $x$-specific treatment-control comparisons
+    \begin{itemize}
+        \item {\color{DarkGray}For $X_i = z$, compare average wage difference of veterans and non-veterans who were born in 1970, who scored a 95 on an ability test, and graduated from college}
+        \item Difference in average wages by veteran status for those with the same $X_i$
+    \end{itemize}
+    \item Weighted together to produce a single overall treatment effect
+    \begin{itemize}
+        \item {\color{DarkGray} Calculate weights based on the distribution of characteristics $X_i$ among veterans}
+    \end{itemize}
+\end{itemize}
+% Note: this basically generalizes to continuous $X_i$, but the math is much harder
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Unconditional Average Treatment Effect}
+
+Conditional treatment effect on treated:
+\begin{align*}
+    \delta_{ToT} = \EE [Y_{1i} - Y_{0i} \vert D_i = 1] &= \EE [\delta_X \vert D_i = 1] \\
+    &= \sum_{x \in \{0, 1\}} \delta_x \PP(X_i = x \vert D_i = 1 ) \\
+    &= \delta_0 \PP (X_i = 0 \vert D_i = 1)
+    + \delta_1 \PP (X_i = 1 \vert D_i = 1)
+\end{align*}
+\begin{itemize}
+    \item How much the typical soldier gained or lost as a result of enlisting
+\end{itemize}
+
+\vspace{2ex}
+Can also write unconditional average treatment effect:
+\begin{align*}
+    \delta_{ATE} &= \EE \left[ 
+        \EE [Y_{1i} \vert X_i, D_i = 1]
+        - \EE [Y_{0i} \vert X_i, D_i = 0]
+    \right] \\
+    &= \EE [Y_{1i} - Y_{0i}] \\
+    &= \sum_x \delta_x \PP(X_i = x)
+\end{align*}
+\begin{itemize}
+    \item How much the typical applicant would gain or lose as a result of enlisting
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Matching and regression}
+
+Matching and regression are related:
+\begin{itemize}
+    \item Both are comparing outcomes (differences in $Y_i$) over treatment groups, controlling for covariates $X_i$
+    \item These methods differ in implementation
+\end{itemize}
+Regression estimates of matching strategy:
+\begin{equation*}
+    Y_i = \sum_x d_{ix} \alpha_x + \delta_R D_i + e_i
+\end{equation*}
+where:
+\begin{itemize}
+    \item $d_{ix} = \mathbf{1} [X_i = x]$: dummy variable that equals 1 if $X_i = x$, 0 otherwise
+    \item $\alpha_x$: regression effect for $X_i = x$
+    \item $\delta_R$: regression estimand
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Matching and regression differences}
+
+In general, estimates from matching and from regression will often be similar, but not identical.
+\begin{itemize}
+    \item Regression can be thought of as a type of matching strategy
+    \begin{itemize}
+        \item Average effects are calculated by covariates $X$: $\delta_X$
+        \item These effects are weighed to produce a weighted average
+    \end{itemize}
+
+    \item Difference in how weights are determined. For ATE on treated:
+    \begin{itemize}
+        \item Matching: weights are determined by distribution of covariates on treated
+        \item Regression: uses treatment-variance weighted average
+        \item These will differ unless treatment is independent of covariates
+    \end{itemize}
+
+\end{itemize}
+
+\vspace{3ex}
+Note: neither regression nor covariate matching estimands give any weights to covariate cells that do not contain treated and control observations
+\begin{itemize}
+    \item Often called \textbf{common support}
+\end{itemize}
+\end{frame}
+
+
+
+
+
+\end{document}

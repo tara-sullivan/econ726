@@ -1,0 +1,809 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{}
+%
+%Let's say we have some data $X_1, X_2, \dots, X_n$. These are independent and identically distributed:
+%\begin{itemize}
+%    \item The occurrence of $X_i$ doesn't impact the occurrence of $X_j$, and vice versa, for all $i$, $j$ in $1, \dots, N$
+%    \item Identically distributed means they can be though of as drawn from the same marginal distribution. If this is outside of your comfort level, think of all these $X_i$ as having the same mean and variance
+%\end{itemize}
+%Sample mean:
+%\begin{equation*}
+%    \bar{X}_n = \sum_{i=1}^n X_i = \frac{X_1 + X_2 + \dots + X_n}{n}
+%\end{equation*}
+%The sample is drawn from some population random variable $X$, with the population mean:
+%\begin{equation*}
+%    \mu = \EE [X]
+%\end{equation*}
+%
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Treatment assignment}
+
+An individual $i$ participates in this lab experiment, to see whether a certain drug causes them to grow a beard.
+They will be randomly assigned to one of two groups:
+\begin{itemize}
+\item <2-> Control group ($D_i = 0$)
+\item <3-> Treatment group ($D_i = 1$)
+\end{itemize}
+\begin{figure}
+\begin{tikzpicture}
+\node (i) {\includegraphics[scale=0.075]{img/man.png}};;
+\onslide<2->{\node [below left= of i] (D0) {\includegraphics[scale=0.075]{img/man_no.png}};}
+\onslide<3->{\node [below right= of i] (D1) {\includegraphics[scale=0.075]{img/man_yes.png}};}
+\onslide<2->{\draw (i) edge[-]  node[sloped, align=center]{Control \\ $D_i = 0$} (D0);}
+\onslide<3->{\draw (i) edge[-] node[sloped, align=center]{Treatment \\ $D_i = 1$} (D1);}
+%\node [draw, below =of D] (Y) {Outcome ($Y$)};
+% \node [draw, circle, below left =of T] (R) {R};
+%\draw (D) edge[->] (Y);
+% \draw (T) edge[->] (S);
+\end{tikzpicture}
+\end{figure} 
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Potential outcome}
+
+Each participant $i$ has a hypothetical outcome under treatment and control
+\begin{itemize}
+\item $Y_i (0)$: Outcome for individual $i$ if they were assigned to the control group
+\item $Y_i (1)$: Outcome for individual $i$ if they were assigned to the treated group
+\end{itemize}
+
+\begin{table}
+\begin{tabular}{ccccc}
+Participant &Control &Potential outcome &Treatment &Potential outcome \\
+$i$   
+&$D_i = 0$   & $Y_i(0)$
+&$D_i = 1$   &$Y_i(1)$\\
+\includegraphics[scale=0.035]{img/man.png}
+\onslide<2,4>{
+	& \includegraphics[scale=0.035]{img/man_no.png}  
+	&\includegraphics[scale=0.035]{img/man.png}
+}
+\onslide<3->{
+	& \includegraphics[scale=0.035]{img/man_yes.png}  
+	&\includegraphics[scale=0.035]{img/man_beard.png}
+}
+%$i$ &$Y_i (0)$ &$Y_i (1)$
+\end{tabular}
+\end{table}
+\onslide<4->{
+\textbf{Key:} Each individual $i$ in the data has a potential outcome under treatment and a potential outcome under control,  irrespective of which group they are assigned to
+\begin{itemize}
+\item For individuals assigned to the control group,  their treatment potential outcome is unobservable (but hypothetically exists!)
+\item For individuals assigned to the treatment group,  their control potential outcome  is unobservable
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Potential outcome and observable data}
+
+\begin{table}
+\begin{tabular}{cccccc}
+&Participant &Treatment &Control potential &Treatment potential &Observed \\  
+& & &outcome &outcome &outcome \\
+&&$D_i$   & $Y_i(0)$ &$Y_i(1)$ &$Y_i$\\
+\hline
+1 
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_bw.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} \\
+\hline
+2 
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_no.png}  
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_beard_bw.png} 
+&\includegraphics[scale=0.035]{img/man.png} \\
+\hline
+3
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_bw.png} 
+&\includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man.png} \\
+\hline
+4
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_beard_bw.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} \\
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Causal effects}
+
+\begin{table}
+\begin{tabular}{cccccc}
+&Participant &Treatment &Control potential &Treatment potential &Observed \\  
+& & &outcome &outcome &outcome \\
+&&$D_i$   & $Y_i(0)$ &$Y_i(1)$ &$Y_i$\\
+\hline
+1 
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_bw.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} \\
+\hline
+2 
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_no.png}  
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_beard_bw.png} 
+&\includegraphics[scale=0.035]{img/man.png} \\
+\hline
+3
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_bw.png} 
+&\includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man.png} \\
+\hline
+4
+& \includegraphics[scale=0.035]{img/man.png} 
+&\includegraphics[scale=0.035]{img/man_yes.png}  
+& \includegraphics[scale=0.035]{img/man_beard_bw.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} 
+&\includegraphics[scale=0.035]{img/man_beard.png} \\
+\end{tabular}
+\end{table}
+
+Causal effects of interest:
+\begin{align*}
+\text{Average treatment effect (ATE)}  =& \EE [Y_i (1) - Y_i (0)] \\
+\text{Average treatment effect on the treated (ATT) } =& \EE [Y_i (1) - Y_i (0) \vert D_i = 1]
+\end{align*}
+\textbf{Problem:} You cannot observe potential outcomes $\{Y_i (0), Y_i(1)\}$ for everyone 
+\begin{itemize}
+\item \emph{Solution}: Randomization allows us to uncover certain causal effects
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Potential outcomes under randomization}
+
+
+Randomization implies that the potential outcomes $\{Y_i (0),  Y_i (1)\}$ are \textbf{independent} of treatment assignment $D_i$:
+\begin{itemize}
+\item Two variables are independent if the occurrence of one does not impact the occurrence of the other, and vice versa
+\item Nothing about your underlying potential outcomes determines likeliness to take the treatment 
+\end{itemize}
+
+\vspace{2ex}
+In this example, in a lab setting, independence of treatment assignment and potential outcomes means your assignment to treatment doesn't impact your control potential outcome or treatment potential outcome, and vice versa
+\begin{itemize}
+\item You have randomization of the treatment \textbf{assignment}; 
+\end{itemize}
+
+\vspace{2ex}
+You \emph{would not} have independence of treatment and potential outcomes if participants got to choose whether they take the drug or not
+\begin{itemize}
+\item Only those who wanted to grow a beard would take the drug
+\item When participants can \textbf{select} whether they want to be treated,  that leads to \textbf{selection bias} when estimating causal effects
+\end{itemize}
+
+\vspace{2ex}
+
+
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Potential outcomes under randomization}
+%
+%In the policy world,  you often \textbf{do not} have independence
+%\begin{itemize}
+%\item Consider the impact of college education on wages.  People \emph{choose} whether to go to college,  you college attendance is not independent of potential outcomes
+%\end{itemize}
+%
+%\textbf{TO DO: TRANSITION TO EXPERIMENTAL IDEA}
+%
+%If we just look at differences in observed outcomes,  there are often underlying differences in participants that causes one to have outcomes that different than the other; this is selection 
+%
+%* if the treatment is going to college,  the population of people who choose to go to college may be different than those who don't. 
+%
+%You can't just compare groups who are treated and untreated and make causal claims
+
+
+
+
+
+%\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Experimental Ideal]{Experimental ideal}
+{
+\hypersetup{linkcolor=black}
+\miniframesoff
+\begin{frame}
+\tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Causal diagram}
+
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {Treatment ($D_i$)};
+\node [draw, below =of D] (Y) {Outcome ($Y_i$)};
+% \node [draw, circle, below left =of T] (R) {R};
+\draw (D) edge[->] (Y);
+% \draw (T) edge[->] (S);
+\end{tikzpicture}
+\end{figure}
+
+Let's generalize our example a bit. Suppose we observe two variables:
+\begin{itemize}
+    \item Some treatment dummy variable $D_i$, that takes on values 0 or 1
+    \item Some outcome variable $Y_i$ we're interested in
+\end{itemize}
+
+\vspace{2ex}
+\textbf{Goal:} measure the effect that treatment ($D_i = 1$) has on outcome ($Y_i$).
+\begin{itemize}
+\item A similar lab experiment example,  where $D_i$ indicates whether someone takes a drug,  and $Y_i$ is some health outcomes
+\end{itemize}
+
+\vspace{2ex}
+Assume:
+\begin{itemize}
+    \item $D_i$ is perfectly randomized (so $D_i$ is independent of potential outcomes $\{Y_i (0), Y_i (1)\}$)
+    \item The effect of $D_i$ on $Y_i$ is the same for the whole population
+    \item No other variable influences $Y_i$ (like in a perfect lab experiment) 
+\end{itemize}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Randomized experiment}
+
+\begin{columns}
+\begin{column}{.55\textwidth}
+\begin{tabular}{c|c|c}
+\textbf{Treatment} ($D_i$) &\textbf{Participant} &\textbf{Outcome} ($Y_i$)\\ 
+\hline
+0 &\includegraphics[scale=0.025]{img/man_no.png} &{\color<2>{OTIPink}$Y_1$} \\
+\hline
+0 &\includegraphics[scale=0.025]{img/man_no.png} &{\color<2>{OTIPink}$Y_2$} \\
+\hline
+0 &\includegraphics[scale=0.025]{img/man_no.png} &{\color<2>{OTIPink}$Y_3$} \\
+\hline
+1 &\includegraphics[scale=0.025]{img/man_yes.png} &{\color<3>{OTIOrange}$Y_4$} \\
+\hline
+1 &\includegraphics[scale=0.025]{img/man_yes.png} &{\color<3>{OTIOrange}$Y_5$} \\
+\hline
+1 &\includegraphics[scale=0.025]{img/man_yes.png} &{\color<3>{OTIOrange}$Y_6$}
+\end{tabular}
+
+\vspace{3ex}
+\onslide<2->{
+\color<2>{OTIPink}\begin{equation*}{\color<4>{OTIPink}\EE [Y \vert D = 0]} = \frac{1}{3} (Y_1 + Y_2 + Y_3)]\end{equation*}
+}
+\onslide<3->{
+\color<3>{OTIOrange}\begin{equation*}{\color<4>{OTIOrange}\EE [Y \vert D = 1]} = \frac{1}{3} (Y_4 + Y_5 + Y_6)]\end{equation*}
+}
+\onslide<4->{
+\begin{equation*}
+    {\color<4>{cyan} \text{ATE} = {\color<4>{OTIOrange}\EE[Y \vert D = 1]} - {\color<4>{OTIPink}\EE [Y \vert D = 0]}}
+\end{equation*}
+}
+\end{column}
+
+\begin{column}{.45\textwidth}
+Treatment $D_i$ is randomly assigned and \textbf{independent} of potential outcomes $\{Y_i (0), Y_i (1)\}$
+\begin{itemize}
+    \item Occurrence of $D_i$ does not impact potential outcomes,  and vice versa
+\end{itemize}
+
+\vspace{2ex}
+Can estimate the average treatment effect (ATE) using a \textbf{na{\"i}ve comparison}: 
+\begin{itemize}
+    \onslide<2->{\item \color<2>{OTIPink}Average outcome for the control}
+    \onslide<3->{\item \color<3>{OTIOrange}Average outcome for the treated}
+    \onslide<4->{\item \color<4>{cyan}Taking the difference}
+\end{itemize}
+
+%\vspace{2ex}
+%\onslide<5->{\textbf{IMPORTANT TAKEWAY}: Your ability estimate effects this way hinges on \textbf{independence} of treatment and outcome}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Observed differences in outcomes under potential outcome framework}
+
+%%\begin{figure}
+%%\begin{tikzpicture}
+%%\node [draw] (D) {Treatment ($D_i$)};
+%%\node [draw, below =of D] (Y) {Outcome ($Y_i$)};
+%%% \node [draw, circle, below left =of T] (R) {R};
+%%\draw (D) edge[->] (Y);
+%%% \draw (T) edge[->] (S);
+%%\end{tikzpicture}
+%%\end{figure}
+%
+%We can estimate the average treatment effect (ATE) from the observed outcomes:
+%\begin{itemize}
+%    \item $\EE[Y_i \vert D_i = 1]$: Average of all the observed outcomes $Y_i$ when $D_i=1$
+%    \item $\EE [Y_i \vert D_i = 0]$: Average all the observed outcomes $Y_i$ when $D_i = 0$
+%\end{itemize}
+%
+%\vspace{2ex}
+%ATE is difference between observed outcomes (na{\"i}ve comparison):
+%\begin{equation*}
+%    \text{ATE} = \EE[Y_i \vert D_i = 1] - \EE [Y_i \vert D_i = 0]
+%\end{equation*}
+%
+%\vspace{2ex}
+Why do we need independence of treatment assignment ($D_i$) and potential outcomes $\left( \{Y_i (0), Y_i (1)\}\right)$?
+
+\vspace{2ex}
+We'll skip some (relatively straightforward) math,  that uses the fact that 
+\begin{equation*}
+Y_i = D_i \cdot Y_i (1) + (1 - D_i) Y_i (0)
+\end{equation*}
+Observed difference in outcomes equals causal effect of interest plus selection bias:
+\begin{align*}
+\underbrace{\EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i = 0]}_{\text{Observed difference in outcomes}}
+% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+=& \underbrace{\EE [Y_i (1) - Y_i (0) \vert D_i = 1]}_{\text{Avg.  treatment effect on treated}} 
++ \underbrace{\EE [Y_i (0) \vert D_i = 1] - \EE [Y_i (0) \vert D_i=0]}_{\text{Selection bias}}
+\end{align*}
+
+Under independence of the potential outcomes and treatment,  selection bias equals zero, and the observed difference in outcomes equals the causal effect of interest:
+\begin{itemize}
+\item In math,  selection bias means the control potential outcome for a treated individual is different than that of a control individual
+\end{itemize}
+But what does this mean in practice?
+
+
+
+%
+%$\EE[Y_i (1) \vert D = 1]$
+%%\begin{itemize}
+%%\item 
+%%\end{itemize}
+%% \begin{equation*}
+%%	\underbrace{\EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i = 0]}_{\text{observed difference in outcomes}}
+%%	= 
+%% \end{equation*}
+%
+%\begin{equation*}
+%\underbrace{\EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i = 0]}_{\text{Observed difference in outcomes}}
+%= \underbrace{\EE [Y_{i} (1) - Y_{i} (0)]}_{\text{Average treatment effect (ATE)}}
+%+ \EE []
+%\end{equation*}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Average Treatment Effect (ATE) in randomized experiment}
+
+Observed difference in outcomes equals causal effect of interest plus selection bias:
+\begin{align*}
+\underbrace{\EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i = 0]}_{\text{Observed difference in outcomes}}
+% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+=& \underbrace{\EE [Y_i (1) - Y_i (0) \vert D_i = 1]}_{\text{Avg.  treatment effect on treated}} 
++ \underbrace{\EE [Y_i (0) \vert D_i = 1] - \EE [Y_i (0) \vert D_i=0]}_{\text{Selection bias}}
+\end{align*}
+
+Consider the section bias when measuring the effect of college attendance on wages:
+\begin{itemize}
+\item $\EE [Y_i (0) \vert D_i = 1]$: the wage someone went to college would have \emph{if they hadn't gone}
+\item $\EE [Y_i (0) \vert D_i=0]$: the wage of someone who didn't go to college
+\end{itemize}
+These objects are equal under independence of treatment assignment ($D_i$) and potential outcomes $\left( \{Y_i (0), Y_i (1)\}\right)$
+
+\vspace{2ex}
+BUT there's often reason to believe that selection bias in non-zero
+\begin{itemize}
+\item What if people who go to college are ``higher ability'' (broadly defined)
+\item [$\implies$] They would earn a higher wage than those in the control group, even if they hadn't gone to college:
+\begin{equation*}
+\EE [Y_i (0) \vert D_i = 1] > \EE [Y_i (0) \vert D_i = 0]
+\end{equation*}
+\item [$\implies$] Selection bias is positive
+\end{itemize}
+Let's consider a simplified case where selection bias is non-zero
+
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{}
+
+% \begin{figure}
+% \begin{tikzpicture}
+% \node [draw, circle] (D) {D};
+% \node [draw, circle, below =of D] (Y) {Y};
+% % \node [draw, circle, below left =of T] (R) {R};
+% \draw (D) edge[->] (Y);
+% % \draw (T) edge[->] (S);
+% \end{tikzpicture}
+% \end{figure}
+
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Causal effects under randomization with covariates}
+
+
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {Treatment ($D_i$)};
+\node [draw, below =of D] (Y) {Outcome ($Y_i$)};
+\node [draw, right =of D] (X) {Gender ($X_i$)};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+Now suppose: 
+\begin{itemize}
+    \item $D_i$: dummy variable (like taking a drug in an experiment)
+    \item $Y_i$: outcome (like whether the drug causes patients to grow facial hair)
+    \item $X_i$: whether the participant is female ($X_i=1$ means female)
+    \begin{itemize}
+        \item To keep things simple, we assume $X_i$ is a single binary variable,  but it could represent many covariates, discrete and continuous
+    \end{itemize}
+\end{itemize}
+
+\vspace{2ex}
+Assume:
+\begin{itemize}
+    \item $D_i$ is perfectly randomized \textbf{by gender}
+	\begin{itemize}
+	\item This means potential outcomes $\{Y_i (0),  Y_i (1)\}$ are independent of treatment $D_i$,  \textbf{conditional on $X_i$}
+	\end{itemize}
+    \item The effect of $D_i$ on $Y_i$ is the same for everyone within a gender
+    \item No other variable influences $Y_i$  
+\end{itemize}
+
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Causal effects with data}
+
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {Treatment ($D_i$)};
+\node [draw, below =of D] (Y) {Outcome ($Y_i$)};
+\node [draw, right =of D] (X) {Gender ($X_i$)};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+% Then we can estimate the average treatment effect (ATE) by gender from the observed outcomes:
+% \begin{itemize}
+%     \item $\bar{Y} (D=1)$: Average of all the oberved outcomes $Y$ when $D=1$
+%     \item $\bar{Y} (D=0)$: Average all the outcomes $Y$ when $D = 0$
+%     \item ATE is difference between these two values
+% \end{itemize}
+
+Then we can estimate the average treatment effect (ATE) by gender from the observed outcomes:
+\begin{itemize}
+    \item $\EE[Y_i \vert D_i = 1, X_i =1]$: Average of observed outcomes $Y$ when the participant is female and takes the drug
+    \item $\EE [Y_i \vert D_i = 0, X_i=1]$: Average of observed outcomes $Y$ when the participant is female and does not take the drug
+
+\end{itemize}
+\vspace{2ex}
+ATE for females is difference between these two values:
+\begin{equation*}
+    \text{ATE} = \EE[Y_i \vert D_i = 1, X_i=1] - \EE [Y_i \vert D_i = 0, X_i=1]
+\end{equation*}
+
+\end{frame}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[t]{Randomization by covariate $X$}
+
+\begin{columns}
+\begin{column}{.75\textwidth}
+\begin{tabular}{cccc}
+\textbf{Treatment} ($D_i$) &\textbf{Participant} &\textbf{Female} ($X_i$) &\textbf{Outcome} ($Y_i$) \\
+0 & \includegraphics[scale=0.025]{img/man_no.png} &0 &{\color<3>{OTIPink}$Y_1$} \\
+0 & \includegraphics[scale=0.025]{img/man_no.png} &0 &{\color<3>{OTIPink}$Y_2$} \\
+1 & \includegraphics[scale=0.025]{img/man_yes.png} &0 &{\color<3>{OTIOrange}$Y_3$} \\
+1 & \includegraphics[scale=0.025]{img/man_yes.png} &0 &{\color<3>{OTIOrange}$Y_4$} \\
+0 & \includegraphics[scale=0.025]{img/woman_no.png} &1 &{\color<2>{OTIPink}$Y_5$} \\
+0 & \includegraphics[scale=0.025]{img/woman_no.png} &1 &{\color<2>{OTIPink}$Y_6$} \\
+1 & \includegraphics[scale=0.025]{img/woman_yes.png} &1 &{\color<2>{OTIOrange}$Y_7$} \\
+1 & \includegraphics[scale=0.025]{img/woman_yes.png} &1 &{\color<2>{OTIOrange}$Y_8$} \\
+\end{tabular}
+\end{column}
+\end{columns}
+\vspace{2ex}
+\only<2-3>{
+Average effect for females:
+\begin{equation*}
+\delta_{X_i = 1} 
+= \EE [Y_i \vert D_i = 1, X_i = 1] - \EE [Y_i \vert D_i=0, X_i = 1] 
+= {\color<2>{OTIOrange} \frac{1}{2} (Y_7 + Y_8)} - {\color<2>{OTIPink}\frac{1}{2} (Y_5 + Y_6)}
+\end{equation*} 
+}
+\only<3>{
+Average effect for males:
+\begin{equation*}
+\delta_{X_i = 0} 
+= \EE [Y_i \vert D_i = 1, X_i = 0] - \EE [Y_i \vert D_i=0, X_i = 0] 
+= {\color<3>{OTIOrange}\frac{1}{2} (Y_3 + Y_4)} - {\color<3>{OTIPink}\frac{1}{2} (Y_1 + Y_2)}
+\end{equation*} 
+}
+
+\only<4>{
+Population average effects can be found by weighing the effects for males ($\delta_{X_i = 0}$) and for females ($\delta_{X_i = 1}$):
+\begin{itemize}
+    \item This is a weighted average, with weights determined by the number of males and females in the sample
+\end{itemize}
+}
+\only<5>{
+Ability to estimate effects hinges on \textbf{independence} of treatment and potential outcome \textbf{conditional on $X$}
+\begin{itemize}
+    \item Given gender ($X_i$),  treatment ($D_i$) is randomly assigned
+    \item [$\implies$] In policy questions, we want to find covariates $X_i$, such that treatment LOOKS randomly assigned; this is the \textbf{conditional independence assumption (CIA)}
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditional independence assumption}
+
+Conditional independence assumption: occurrence of treatment $D_i$ does not influence the occurrence of potential outcomes $\{Y_{0i}, Y_{1i}\}$, or vice versa, conditional on knowing $X_i$:
+
+\begin{columns}
+\column{0.4\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (D) {D};
+\node [draw, circle, below =of D] (Y) {Y};
+\node [draw, circle, right =of D] (X) {X};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\column{0.6\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {College attendance};
+\node [draw, below =of D] (Y) {Earnings};
+\node [draw, right =of D] (X) {Ability};
+\draw (D) edge[->] (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+
+\end{columns}
+
+Consider measuring the impact of college attendance on future earnings:
+\begin{itemize}
+    \item Suppose people are ``high ability'' or ``low ability''
+    \item Assume treatment (college attendance) is as good as randomly assigned, conditional on ability, $X_i$
+\end{itemize}
+$\implies$ You can estimate the effect of college attendance on wages by:
+\begin{itemize}
+    \item Finding the average effect for high ability people
+    \item Finding the average effect for low ability people
+    \item Weighing these average effects, based on the distribution of ability in the population
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Selection bias under conditional independence assumption (CIA)}
+
+Observed difference in outcomes equals causal effect of interest plus selection bias:
+\begin{multline*}
+\underbrace{\EE [Y_i \vert D_i = 1, \alert{X_i}] - \EE [Y_i \vert D_i = 0,  \alert{X_i}]}_{\text{Observed difference in outcomes given $X_i$}} \\
+% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+= \underbrace{\EE [Y_i (1) - Y_i (0) \vert D_i = 1, \alert{X_i}]}_{\text{Avg.  treatment effect on treated}} 
++ \underbrace{\EE [Y_i (0) \vert D_i = 1, \alert{X_i}] - \EE [Y_i (0) \vert D_i=0, \alert{X_i}]}_{\text{Selection bias}}
+\end{multline*}
+
+Under CIA, selection bias disappears conditional on $X_i$:
+\begin{align*}
+    \underbrace{\underbrace{\EE [Y_{i} (0) \vert X_i, D_i = 1]}_{\text{Control potential outcome for treated group}} =\underbrace{ \EE [Y_{i} (0) \vert X_i, D_i = 0]}_{\text{Outcome for control group}}}_{\text{Selection bias equals zero}}
+\end{align*}
+$\implies$ Difference in observed outcomes \textbf{conditional on $X_i$} equals causal effect of interest:
+\begin{align*}
+    \EE [Y_i \vert X_i, D_i = 1] - \EE [Y_i \vert X_i, D_i = 0] 
+    % &= \EE [Y_{1i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    % &= \EE [Y_{1i} \vert X_i] - \EE [Y_{0i} \vert X_i] \\
+    &= \EE [Y_{i} (1) - Y_{i} (0) \vert D_i = 1, X_i]
+\end{align*}
+Given the CIA, comparisons of observed outcomes $Y_i$ (conditional on $X_i$) have a causal interpretation
+\begin{itemize}
+    \item Holding $X_i$ contact, treatment assignment \textbf{looks} random
+    \item Selection bias disappears
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Policy Analysis]{Causal Policy Analysis}
+\miniframesoff
+{
+\hypersetup{linkcolor=black}
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+}
+\miniframeson
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Non-randomized data}
+
+So far we have covered:
+\begin{itemize}
+    \item Potential outcomes framework, and the fundamental problem of causal inference
+    \item Measuring causal effects under randomization
+    \item Measuring causal effects under the conditional independence assumption
+    \begin{itemize}
+        \item Conditional on covariates $X_i$, treatment \textbf{looks} like its randomized 
+    \end{itemize}
+\end{itemize}
+
+\vspace{3ex}
+In policy, we can rarely estimate clean treatment effects from na{\"i}ve comparisons:
+\begin{enumerate}
+    \item Randomization is difficult, if not impossible
+    \item Other variables $X$ (including unobservable variables) may impact treatment $D$
+    \item Measuring $Y$, $X$, and even $D$ might be imperfect 
+\end{enumerate}
+
+% \vspace{3ex}
+% \textbf{Difficulty 1 - Randomization} 
+
+% \vspace{3ex}
+% Let's say you want to look at the impact of education attainment on earnings: 
+% \begin{itemize}
+%     \item You randomly assign high school students to go to college or not, and compare what their wages post college are
+%     \item Simple and ethical, right?
+% \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Policy analysis}
+
+Key for policy analysis: \textbf{conditional independence assumption}
+\begin{itemize}
+    \item Consider what the ideal experiment is, even if you can't estimate
+    \item Determine how you can find other variables $X_i$ such that treatment \emph{looks} random (i.e. apply the conditional independence assumption)
+    \item Estimate treatment effects
+\end{itemize}
+
+\vspace{3ex}
+Methods for getting around non-randomized data?
+\begin{itemize}
+    \item Differences-in-differences
+    % \item Propensity score matching
+    \item Synthetic control
+\end{itemize}
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Randomization}
+
+% \textbf{Difficulty 1 - Randomization} 
+
+% \vspace{3ex}
+% Let's say you want to look at the impact of education attainment on earnings: 
+% \begin{itemize}
+%     \item You randomly assign high school students to go to college or not, and compare what their wages post college are
+%     \item Simple and ethical, right?
+% \end{itemize}
+
+% \vspace{3ex}
+% Solution:
+% \begin{itemize}
+%     \item Consider what the ideal experiment is, even if you can't estimate
+%     \item Determine how you can find other variables $X_i$ such that treatment \emph{looks} random (i.e. apply the conditional independence assumption)
+% \end{itemize}
+
+% \end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}[t]{Confounding variables}
+
+% \begin{figure}
+% \begin{tikzpicture}
+% \node [draw, circle] (D) {D};
+% \node [draw, circle, below =of D] (Y) {Y};
+% \node [draw, circle, right =of D] (X) {X};
+% \draw (D) edge[->] (Y);
+% \draw (X) edge[->] (Y);
+% \draw (X) edge[->] (D);
+% \end{tikzpicture}
+% \end{figure}
+
+% \textbf{Difficulty 2 - Confounding variables}: Other variables $X$ may impact treatment $D$
+
+% \vspace{3ex}
+% Let's say you want to look at the impact of education attainment on earnings:
+% \begin{itemize}
+%     \item $D$: College attendance
+%     \item $X$: Ability
+%     \item $Y$: Earnings post-college
+% \end{itemize}
+
+% \vspace{3ex}
+% The occurrence of $D$ is impacted by $X$
+% \begin{itemize}
+%     \item [$\implies$] We cannot compare the wages of those who graduated college and those who did not, and call that the causal impact of college
+% \end{itemize}
+% \end{frame}
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}[t]{Measurement error}
+
+% \begin{figure}
+% \begin{tikzpicture}
+% \node [draw, circle] (D) {D};
+% \node [draw, circle, below =of D] (Y) {Y};
+% \node [draw, circle, right =of D] (X) {X};
+% \draw (D) edge[->] (Y);
+% \draw (X) edge[->] (Y);
+% \draw (X) edge[->] (D);
+% \end{tikzpicture}
+% \end{figure}
+
+% \textbf{Difficulty 3 - Measurement error}: Other variables $X$ (and $D$ and $Y$) may be hard to measure
+
+% \vspace{3ex}
+% How do you even measure Ability $X$?
+% \begin{itemize}
+%     \item Ability is a squishy concept! It's difficult to measure
+%     \item Could try using proxies for ability, like standardized test scores
+%     \item Any measure would be imperfect, and could be capturing other factors besides true ``ability'' to earn a given wage
+    
+% \end{itemize}
+
+% \end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{How do we get around non-randomized data?}
+
+
+
+% \end{frame}

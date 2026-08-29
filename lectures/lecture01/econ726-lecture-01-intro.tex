@@ -104,30 +104,49 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 % \input{01-intro}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Course overview}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Causal Inference on Observational Data}
 
-\textbf{Description:} In real-world settings, analysts must draw inferences about causes and effects from observational, i.e., non-randomized, data. For example, 
+\textbf{Description:} In real-world settings, analysts and policymakers must draw inferences about causes and effects from observational (non-randomized) data. For example:
 
 \begin{itemize}
 
+\item Does congestion pricing improve traffic in the central business district?
+\item Does zoning reform lead to more houses being built?
+\item Do speeding cameras make street safer for pedestrians?
 \item How do we truly determine whether charter schools produce better student outcomes?
 
 \item Whether a marketing campaign has increased consumer awareness? 
 
 \end{itemize}
 
-
 \vspace{2em}
 This course will cover statistical methods for \textbf{causal inference} to help analysts design and analyze observational studies, for real-world decision-making. 
-
-\vspace{2em}
-\pause
-\textbf{Informal goal:}
 \begin{itemize}
-    \item Understand the tenants of causal inference
-    \item Challenge yourself to learn a new methodology well
-    \item Learn some basic python
+    \item In plain language, causal inference involves using statistical tools and data to evaluate causal questions
+\end{itemize}
+
+% \vspace{2em}
+% First: what is a causal question?
+
+% % \begin{itemize}
+%     \item Start by discussing causality in an experimental sense, and how that ties to 
+% \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Course goals}
+
+\begin{itemize}
+    \item Understand the central tenants of causal inference
+    \item Challenge yourself to learn a causal methodology well (both theoretically and in practice)
+    \begin{itemize}
+        \item The empirical project is something you should be able to talk about in job interviews
+    \end{itemize}
+    \item Learn what it means to share runnable code
     \item Communicate results effectively
+    \item Learn some basic python
 \end{itemize}
 
 
@@ -151,9 +170,6 @@ This course will cover statistical methods for \textbf{causal inference} to help
 \pause
 \vspace{1em}
 \item Statistical analysis software is the primary tool for this course, and I will be providing course instructions in \textbf{python}. 
-\begin{itemize}
-    \item You will be expected to complete course assignments in python*
-\end{itemize}
 
 \end{itemize}
 
@@ -163,11 +179,11 @@ This course will cover statistical methods for \textbf{causal inference} to help
 \begin{frame}{Grading}
 
 \begin{itemize}
-    \item Empirical project: 75\% of final grade
+    \item Empirical project: 80\% of final grade
 
 
     \vspace{2em}
-    \item Homework/quizzes: 15\% of final grade
+    \item Homework/quizzes: 10\% of final grade
 
     \vspace{2em}
     \item Attendance and participation: 10\% of final grade
@@ -185,7 +201,6 @@ The project is based on an empirical paper of your choice which:
      \item Is not based on an experiment*
  \end{enumerate} 
  
-
 \vspace{2ex}
 The paper should:
 \begin{enumerate}
@@ -193,7 +208,7 @@ The paper should:
     \item Briefly state the research question and discuss the dataset 
     \item Provide a (formal) discussion of the identification strategy (What is the ideal randomized experiment? What sort of bias would na{\"i}ve  approaches introduce? Why is this methodology causal?)
     \item Replicate (selected) main findings
-    \item Describe and implement some sort of extension to this paper. This could be new and interesting tests for key assumptions, robustness checks, additional results based on other methods or data, or combination thereof
+    \item Describe and implement some sort of extension to this paper. This could be new and interesting tests for key assumptions, robustness checks, additional results based on other methods or data, replicating results in a different programming language, or combination thereof
 \end{enumerate}
 
 \end{frame}
@@ -201,34 +216,32 @@ The paper should:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
 
-\textbf{Paper selection}: Due \textbf{September 16} [5\% of final grade]
+\textbf{Paper selection}: Due \textbf{September 21} [5\% of final grade]
 \begin{itemize}
 \item Select your paper. Briefly describe the causal effect of interest and methodology. Discuss what you think you will do for your extension of this paper. 
 \end{itemize}
 
-\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\textbf{Project plan}: Due \textbf{October 12} [15\% of final grade] 
 \begin{itemize}
-\item This paper should be your first effort at addressing points (1) and (2) above. 
-Summarize the public policy or business context of the paper. 
-Write down the specific question the paper is evaluating.
-Discuss the data your are using (both your replication data, and data for your extension)
-Discuss the extensions you are considering, and, if necessary, where you will be getting that data. 
+\item This paper should be your first effort at addressing points (1) and (2) above.
+Summarize the public policy or business context of the paper. Write down the
+specific question the paper is evaluating. Discuss the data your are using (both your replication data, and data for your extension) Discuss the extensions you are considering, and, if necessary, where you will be getting that data. Verify that you’ve read the paper
 \end{itemize} 
 
-\textbf{Replication results}: Due \textbf{November 4}: [10\% of final grade]
+\textbf{Replication results}: Due \textbf{November 7}: [10\% of final grade]
 \begin{itemize}
 \item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
 \end{itemize}
 
-\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\textbf{Presentation}: Due \textbf{December 1} \& \textbf{December 8} [10\% of final grade]
 \begin{itemize}
-\item Prepare a 5-10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\item Prepare a 5-8 minute presentation on your paper. Focus on the research question, main result, and one extension. 
 \end{itemize}
 
-\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\textbf{Final Paper}: Due \textbf{December 11} [40\% of final grade]
 \begin{itemize}
-\item Your paper should contain 5-8 pages of text, and 5-8 pages of figures (double spaced, 12 point font).
-You are expected to use python, and must provide the code and data to replicate your findings. 
+\item Your paper should contain 6-10 pages of text, and 3-6 pages of figures (double spaced, 12 point font).
+You must provide the code and data to replicate your findings. 
 Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
 \end{itemize}
 
@@ -274,6 +287,8 @@ Overall, my aim is to reward genuine effort, over seemingly perfect code and tex
 \item To that end, I highly encourage you to avoid AI for your work. 
 I understand it may be helpful for brainstorming and troubleshooting, but please ensure that your written code and words are your own. 
 
+\item Further, \textbf{unthinking AI usage will be heavily penalized}. If I can tell that you thoughtlessly used an AI, that will result in a zero on your assignment (or that part of your assignment).
+
 \item To be transparent about my AI usage: I will primarily use LLMs to brainstorm and troubleshoot. 
 I've been advised by other professors to run your code through AI for grading purposes (as a secondary grader); if you would prefer I don't do that, please don't hesitate to let me know. 
 
@@ -299,7 +314,8 @@ Please feel free to let me know your thoughts.
 % \end{itemize}
 
 %2. 
-\item Probability and Statistics review
+\item Probability review
+\item Statistics review
 
 %
 \item Potential outcomes and experiments
@@ -365,10 +381,17 @@ A number of other resources exist on this topic:
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Schedule today}
+\begin{itemize}
+    \item High-level overview of potential outcomes framework and causal questions
+    \item Brief review of methodologies I recommend you use for your paper
+\end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \miniframesoff
-\section[Intro Causal Inference]{Introduction to Causal Inference and Randomization}
+\section[Intro Potential Outcomes]{Introduction to Potential Outcomes Model}
 \miniframesoff
 \begin{frame}
     \tableofcontents[currentsection]
@@ -449,257 +472,314 @@ On average, the health of people who stayed in a hospital is \textbf{lower}
 \textbf{Do hospitals cause bad health?}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Potential Outcomes framework}
 
-The question is whether $Y$ is \textbf{affected} by hospital care. 
-A helpful framework for thinking about these problems is the \textbf{potential outcomes framework}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Na{\"i}ve comparison and selection problem}
+
+In general: Suppose you want to study the impact of a treatment on an outcome:
+\begin{itemize}
+\item  Clinical example: the treatment could be a drug, and the outcome could be some health outcome
+\item Policy example: the treatment could be college attendance,  and the outcome could be future wages
+\end{itemize}
+% \textbf{Goal:} understand and measure the causal impact of the treatment on the outcome
+
+\vspace{2ex}
+One solution: \textbf{na{\"i}ve comparison}
+\begin{itemize}
+\item  
+ Look at people who receive the treatment, and people who do not, and measure differences in the outcome
+\item  Average the wages of people who went to college,  and the wages of people who didn't go to college,  and take the difference
+\end{itemize}
+
+\vspace{2ex} \textbf{Problem:} people who select to receive the treatment and those who select not to receive the treatment are often different
+\begin{itemize}
+\item When measuring causal effects,  this leads to \textbf{selection bias}
+\item People who select to go to college may be more likely to have higher wages than those who do not,  irrespective of college attendance. 
+\end{itemize}
+
+\vspace{2ex}
+Helpful framework for formalizing this problem and finding a solution: \textbf{potential outcomes framework}
+
+\end{frame}
+
+\input{potential-outcomes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[DiD]{Differences-in-Differences Overview}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{diff_in_diff}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[SC]{Synthetic Control Overview}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{synthetic_control}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Potential Outcomes framework}
+
+% The question is whether $Y$ is \textbf{affected} by hospital care. 
+% A helpful framework for thinking about these problems is the \textbf{potential outcomes framework}
  
-\begin{table}
-\begin{tabular}{ll}
-$D_i \in \{0, 1\}$ &Binary treatment variable for individual $i$ \\ 
-$Y_i$ &Measure of health status for individual $i$\\
-\pause
-$Y_{1i}$ &Health outcome if individual $i$ stays in the hospital ($D_i=1$) \\
-&Alternative notation: $Y_i(1)$, $Y_i^1$, $y_{i1}$ \\
-$Y_{0i}$ &Health outcome if individual $i$ stays in the hospital ($D_i=0$)  \\
-&Alternative notation: $Y_i(0)$, $Y_i^0$, $y_{i0}$ \\\\
-\end{tabular}
-\end{table}
+% \begin{table}
+% \begin{tabular}{ll}
+% $D_i \in \{0, 1\}$ &Binary treatment variable for individual $i$ \\ 
+% $Y_i$ &Measure of health status for individual $i$\\
+% \pause
+% $Y_{1i}$ &Health outcome if individual $i$ stays in the hospital ($D_i=1$) \\
+% &Alternative notation: $Y_i(1)$, $Y_i^1$, $y_{i1}$ \\
+% $Y_{0i}$ &Health outcome if individual $i$ stays in the hospital ($D_i=0$)  \\
+% &Alternative notation: $Y_i(0)$, $Y_i^0$, $y_{i0}$ \\\\
+% \end{tabular}
+% \end{table}
 
-\begin{itemize}
-    \item $Y_{0i}$ is the health status of an individual had they not gone to the hospital, \emph{irrespective of whether they actually went}
-    \item Causal effect of hospitalization for individual $i$ is the difference $Y_{1i} - Y_{0i}$
-\end{itemize}
+% \begin{itemize}
+%     \item $Y_{0i}$ is the health status of an individual had they not gone to the hospital, \emph{irrespective of whether they actually went}
+%     \item Causal effect of hospitalization for individual $i$ is the difference $Y_{1i} - Y_{0i}$
+% \end{itemize}
 
-\pause
-\vspace{2ex}
-Observed outcome $Y_i$ can be written as:
-\begin{align*}
-    Y_i =& \begin{cases}
-    Y_{1i} &\text{if} D_i = 1 \\
-    Y_{0i} &\text{if} D_i = 0
-    \end{cases} \\
-    =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i
-\end{align*}
-\end{frame}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Fundamental problem of causal inference}
-
-\begin{columns}
-
-\column{0.75\linewidth}
-
-\textbf{Problem:}
-\begin{itemize}
-    \item If an individual is treated ($D_i = 1$), we never observe the outcome in which they are not treated ($Y_{i0}$)
-    \item If an individual is not treated ($D_i = 0$), we never observe the outcome in which they are treated ($Y_{1i}$)
-\end{itemize}
-
-\vspace{2ex}
-\textbf{\color{HunterPurple} The causal effect $\mathbf{Y_1 - Y_0}$ is unidentifiable}
-
-\begin{table}
-\begin{tabular}{lll}
-Group &$Y_1$ &$Y_0$ \\
-$D = 1$ &Observable as $Y$ &Unobservable counterfactual \\
-$D = 0$ &Unobservable counterfactual &Observable as $Y$
-\end{tabular}
-\end{table}
-
-\pause
-\column{0.25\linewidth}
-\begin{figure}
-% \input{img/potential_outcomes.tex}
-\includegraphics[height=2in]{img/potential_outcomes.png}
-\end{figure}
-
-\end{columns}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Na{\"i}ve comparison: $\EE [Y \vert D = 1] - \EE [Y \vert D=0]$}
-
- Recall that:
-\begin{itemize}
-    \item The expectations operator $\EE [\cdot]$ is the average of a random variable
-    \item The conditional expectations operator $\EE [\cdot \vert \cdot]$ takes the average over particular values. So $\EE [Y \vert D=1]$ is the average value of $Y$ when for observations where $D = 1$
-    \item The math symbol for ``because'' is $\because$
-    \item We can drop the individual subscript $i$ for convenience
-\end{itemize}
-
-\vspace{2ex}
-Let's consider the averages of $Y_{1i}$, $Y_{0i}$, and $Y_i$:
-\begin{align*}
-\EE [ Y \vert D = 1 ] =& \EE [Y_0 + (Y_1 - Y_0) D \vert D = 1]
-&&\because Y = Y_0 + (Y_1 - Y_0) D \\
-=& \alert<3>{\EE[Y_1 \vert D = 1]}\\
-\EE[Y \vert D = 0] 
-% =& E [Y_0 + (Y_1 - Y_0) D \vert D = 0] \\
-=& \alert<3>{\EE[Y_0 \vert D = 0]}
-\end{align*}
-
-\vspace{2ex}
-
-\onslide<2->
-We can re-write the observed difference in health outcomes as:
-\begin{align*}
-\onslide<3->{\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
-=& \alert<3>{\EE [Y_1 \vert D=1]} - \alert<3>{\EE [Y_0 \vert D=0]} \\}
-\onslide<4->{=& \EE [Y_1 \vert D=1] \alert<4>{- \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\}
-\onslide<5->{=& \underbrace<6->{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{Avg. treatment effect on treated}} 
-\onslide<5->{+} \underbrace<6->{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}}
-\end{align*}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Na{\"i}ve comparison (cont.)}
-
-Observed difference in health outcomes equals the average treatment effect (ATE) on the treated plus selection bias:
-\begin{align*}
-\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
-% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
-=& \underbrace{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{ATE on treated}} 
-+ \underbrace{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}
-\end{align*}
-ATE on treated is the average causal effect of hospitalization on those who were hospitalized:
-\begin{equation*}
-    \EE [Y_1 \vert D=1] - \EE [Y_0 \vert D = 1] = \EE [Y_1 - Y_0 \vert D = 1]
-\end{equation*}
-Selection bias:
-\begin{equation*}
-    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]
-\end{equation*}
-\textbf{What do you think selection bias looks like in this example?}
-
-\pause
-\begin{itemize}
-    \item The difference in $Y_{0i}$ between those who were and were not hospitalized
-    \item The sick are more likely than the healthy to be hospitalized
-    \begin{itemize}
-        \item[$\implies$] Those who were hospitalized have worse values of $Y_{0i}$
-
-        \item[$\implies$] Selection bias is negative
-    \end{itemize}
-\end{itemize}
-\end{frame}
+% \pause
+% \vspace{2ex}
+% Observed outcome $Y_i$ can be written as:
+% \begin{align*}
+%     Y_i =& \begin{cases}
+%     Y_{1i} &\text{if} D_i = 1 \\
+%     Y_{0i} &\text{if} D_i = 0
+%     \end{cases} \\
+%     =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i
+% \end{align*}
+% \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Random assignment and selection bias}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Fundamental problem of causal inference}
 
-Random assignment will solve the selection problem! 
+% \begin{columns}
 
-\vspace{2ex}
-Assume potential outcomes are independent of the treatment ($Y_0, Y_1 \perp D$):
-\begin{align*}
-    \implies&
-    \EE [Y_1 \vert D] = \EE [Y_1] \quad\quad
-    \text{and} \quad\quad \EE [Y_0 \vert D] = \EE [Y_0] \\
-    \implies&
-    \EE [Y_1 \vert D] = \EE [Y_0 \vert D] \\
-    \implies&
-    \EE [Y_1 \vert D] - \EE [Y_0 \vert D] = 0 \\
-    \implies&
-    \text{Selection bias is 0} \\
-    \implies&
-    \text{Na{\"i}ve comparison = ATE on treated}
-\end{align*}
-$\implies$ Randomization makes treatment and control comparable.
+% \column{0.75\linewidth}
 
-\vspace{2ex}
-Na{\"i}ve comparison under randomization:
-\begin{align*}
-    \EE [Y \vert D = 1] - \EE [Y \vert D=0]  
-    =& \EE [Y_1 \vert D = 1] - \EE [Y_0 \vert D = 0] \\
-    =& \EE [Y_1 \vert D = 1] - \EE [Y_0 \vert D = 1] \\
-    =& \EE [Y_1 - Y_0 \vert D = 1] \\
-    =& \EE [Y_1 - Y_0] \\
-    =& \EE [Y_1] - \EE [Y_0]
-    % =& \EE [Y_1 - Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0] \\
-    % =& \EE [Y_1 - Y_0 \vert D = 1] \\
-    % =& \EE [Y_1 \vert D = 1]
-\end{align*}
-Randomization $\implies$ ATE on treated equals ATE
+% \textbf{Problem:}
+% \begin{itemize}
+%     \item If an individual is treated ($D_i = 1$), we never observe the outcome in which they are not treated ($Y_{i0}$)
+%     \item If an individual is not treated ($D_i = 0$), we never observe the outcome in which they are treated ($Y_{1i}$)
+% \end{itemize}
 
+% \vspace{2ex}
+% \textbf{\color{HunterPurple} The causal effect $\mathbf{Y_1 - Y_0}$ is unidentifiable}
 
-\end{frame}
+% \begin{table}
+% \begin{tabular}{lll}
+% Group &$Y_1$ &$Y_0$ \\
+% $D = 1$ &Observable as $Y$ &Unobservable counterfactual \\
+% $D = 0$ &Unobservable counterfactual &Observable as $Y$
+% \end{tabular}
+% \end{table}
 
+% \pause
+% \column{0.25\linewidth}
+% \begin{figure}
+% % \input{img/potential_outcomes.tex}
+% \includegraphics[height=2in]{img/potential_outcomes.png}
+% \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Randomization}
+% \end{columns}
 
-Randomization makes treatment and control groups comparable
-\begin{itemize}
-    \item This is why randomization is often considered the ``gold standard in causal analysis''
-\end{itemize}
+% \end{frame}
 
-\vspace{2ex}
-Randomization is hard in practice!
-\begin{itemize}
-    \item Randomization does hold in the hospitalization example
-    \item How could you test whether randomization holds?
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Na{\"i}ve comparison: $\EE [Y \vert D = 1] - \EE [Y \vert D=0]$}
 
-\end{itemize}
+%  Recall that:
+% \begin{itemize}
+%     \item The expectations operator $\EE [\cdot]$ is the average of a random variable
+%     \item The conditional expectations operator $\EE [\cdot \vert \cdot]$ takes the average over particular values. So $\EE [Y \vert D=1]$ is the average value of $Y$ when for observations where $D = 1$
+%     \item The math symbol for ``because'' is $\because$
+%     \item We can drop the individual subscript $i$ for convenience
+% \end{itemize}
 
-\vspace{2ex}
-In this class we will discuss:
-\begin{itemize}
-    \item Importance of randomization from a theoretical perspective
-    \item What to do when randomization does not hold
-\end{itemize}
+% \vspace{2ex}
+% Let's consider the averages of $Y_{1i}$, $Y_{0i}$, and $Y_i$:
+% \begin{align*}
+% \EE [ Y \vert D = 1 ] =& \EE [Y_0 + (Y_1 - Y_0) D \vert D = 1]
+% &&\because Y = Y_0 + (Y_1 - Y_0) D \\
+% =& \alert<3>{\EE[Y_1 \vert D = 1]}\\
+% \EE[Y \vert D = 0] 
+% % =& E [Y_0 + (Y_1 - Y_0) D \vert D = 0] \\
+% =& \alert<3>{\EE[Y_0 \vert D = 0]}
+% \end{align*}
 
-\end{frame}
+% \vspace{2ex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Optional - Randomization and regression}
+% \onslide<2->
+% We can re-write the observed difference in health outcomes as:
+% \begin{align*}
+% \onslide<3->{\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
+% =& \alert<3>{\EE [Y_1 \vert D=1]} - \alert<3>{\EE [Y_0 \vert D=0]} \\}
+% \onslide<4->{=& \EE [Y_1 \vert D=1] \alert<4>{- \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\}
+% \onslide<5->{=& \underbrace<6->{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{Avg. treatment effect on treated}} 
+% \onslide<5->{+} \underbrace<6->{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}}
+% \end{align*}
 
-Assume treatment effects are constant and the same for everyone
-\begin{align*}
-    Y_i =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i \\
-    \onslide<2->{=& 
-    {\color{HunterPurple} \EE [Y_{0i}]}
-    + (Y_{1i} - Y_{0i}) D_i 
-    + Y_{0i} {\color{HunterPurple} - \EE [Y_{0i}]} \\}
-    \onslide<3->{
-    =& 
-    \underbrace{\EE [Y_{0i}]}_{\alpha}
-    + \underbrace{(Y_{1i} - Y_{0i})}_{\beta} D_i 
-    + \underbrace{Y_{0i} - \EE [Y_{0i}]}_{\eta_i \text{ (Random part of $Y_{0i}$)}} \\}
-    \onslide<4->{
-    =& \alpha + \beta D_i + \eta_i}
-\end{align*}
+% \end{frame}
 
-\onslide<5->
-Evaluate this with the treatment on ($D = 1$) and off ($D = 0$):
-\begin{align*}
-    D = 1 \implies \EE [Y \vert D = 1] 
-    &= \alpha + \beta + \EE [\eta \vert D = 1] \\
-    D = 0 \implies \EE [Y \vert D = 0] 
-    &= \alpha + \EE [\eta \vert D = 0] \\
-\end{align*}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Na{\"i}ve comparison (cont.)}
 
+% Observed difference in health outcomes equals the average treatment effect (ATE) on the treated plus selection bias:
+% \begin{align*}
+% \EE [Y \vert D = 1] - \EE [Y \vert D=0] 
+% % =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
+% =& \underbrace{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{ATE on treated}} 
+% + \underbrace{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}
+% \end{align*}
+% ATE on treated is the average causal effect of hospitalization on those who were hospitalized:
+% \begin{equation*}
+%     \EE [Y_1 \vert D=1] - \EE [Y_0 \vert D = 1] = \EE [Y_1 - Y_0 \vert D = 1]
+% \end{equation*}
+% Selection bias:
+% \begin{equation*}
+%     \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]
+% \end{equation*}
+% \textbf{What do you think selection bias looks like in this example?}
 
-\onslide<6->
-Then: 
-\begin{align*}
-    \EE [Y \vert D = 1] - \EE [Y \vert D = 0] 
-    =& (\alpha + \beta + \EE [\eta \vert D = 1]) - (\alpha + \EE [\eta \vert D = 0]) \\
-    =& \beta + \underbrace{(\EE [\eta \vert D = 1] - \EE [\eta \vert D = 0])}_{\text{selection bias}}
-\end{align*}
+% \pause
+% \begin{itemize}
+%     \item The difference in $Y_{0i}$ between those who were and were not hospitalized
+%     \item The sick are more likely than the healthy to be hospitalized
+%     \begin{itemize}
+%         \item[$\implies$] Those who were hospitalized have worse values of $Y_{0i}$
 
-\onslide<7->
-Selection bias will equal zero if the correlation between the error term and treatment assignment is zero. 
-\begin{itemize}
-    \item If $D$ is randomly assigned, regression of $Y$ onto $D$ (and a constant) yields the causal effect $\beta$
-\end{itemize}
+%         \item[$\implies$] Selection bias is negative
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
 
 
-\end{frame}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Random assignment and selection bias}
+
+% Random assignment will solve the selection problem! 
+
+% \vspace{2ex}
+% Assume potential outcomes are independent of the treatment ($Y_0, Y_1 \perp D$):
+% \begin{align*}
+%     \implies&
+%     \EE [Y_1 \vert D] = \EE [Y_1] \quad\quad
+%     \text{and} \quad\quad \EE [Y_0 \vert D] = \EE [Y_0] \\
+%     \implies&
+%     \EE [Y_1 \vert D] = \EE [Y_0 \vert D] \\
+%     \implies&
+%     \EE [Y_1 \vert D] - \EE [Y_0 \vert D] = 0 \\
+%     \implies&
+%     \text{Selection bias is 0} \\
+%     \implies&
+%     \text{Na{\"i}ve comparison = ATE on treated}
+% \end{align*}
+% $\implies$ Randomization makes treatment and control comparable.
+
+% \vspace{2ex}
+% Na{\"i}ve comparison under randomization:
+% \begin{align*}
+%     \EE [Y \vert D = 1] - \EE [Y \vert D=0]  
+%     =& \EE [Y_1 \vert D = 1] - \EE [Y_0 \vert D = 0] \\
+%     =& \EE [Y_1 \vert D = 1] - \EE [Y_0 \vert D = 1] \\
+%     =& \EE [Y_1 - Y_0 \vert D = 1] \\
+%     =& \EE [Y_1 - Y_0] \\
+%     =& \EE [Y_1] - \EE [Y_0]
+%     % =& \EE [Y_1 - Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0] \\
+%     % =& \EE [Y_1 - Y_0 \vert D = 1] \\
+%     % =& \EE [Y_1 \vert D = 1]
+% \end{align*}
+% Randomization $\implies$ ATE on treated equals ATE
+
+
+% \end{frame}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Randomization}
+
+% Randomization makes treatment and control groups comparable
+% \begin{itemize}
+%     \item This is why randomization is often considered the ``gold standard in causal analysis''
+% \end{itemize}
+
+% \vspace{2ex}
+% Randomization is hard in practice!
+% \begin{itemize}
+%     \item Randomization does hold in the hospitalization example
+%     \item How could you test whether randomization holds?
+
+% \end{itemize}
+
+% \vspace{2ex}
+% In this class we will discuss:
+% \begin{itemize}
+%     \item Importance of randomization from a theoretical perspective
+%     \item What to do when randomization does not hold
+% \end{itemize}
+
+% \end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Optional - Randomization and regression}
+
+% Assume treatment effects are constant and the same for everyone
+% \begin{align*}
+%     Y_i =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i \\
+%     \onslide<2->{=& 
+%     {\color{HunterPurple} \EE [Y_{0i}]}
+%     + (Y_{1i} - Y_{0i}) D_i 
+%     + Y_{0i} {\color{HunterPurple} - \EE [Y_{0i}]} \\}
+%     \onslide<3->{
+%     =& 
+%     \underbrace{\EE [Y_{0i}]}_{\alpha}
+%     + \underbrace{(Y_{1i} - Y_{0i})}_{\beta} D_i 
+%     + \underbrace{Y_{0i} - \EE [Y_{0i}]}_{\eta_i \text{ (Random part of $Y_{0i}$)}} \\}
+%     \onslide<4->{
+%     =& \alpha + \beta D_i + \eta_i}
+% \end{align*}
+
+% \onslide<5->
+% Evaluate this with the treatment on ($D = 1$) and off ($D = 0$):
+% \begin{align*}
+%     D = 1 \implies \EE [Y \vert D = 1] 
+%     &= \alpha + \beta + \EE [\eta \vert D = 1] \\
+%     D = 0 \implies \EE [Y \vert D = 0] 
+%     &= \alpha + \EE [\eta \vert D = 0] \\
+% \end{align*}
+
+
+% \onslide<6->
+% Then: 
+% \begin{align*}
+%     \EE [Y \vert D = 1] - \EE [Y \vert D = 0] 
+%     =& (\alpha + \beta + \EE [\eta \vert D = 1]) - (\alpha + \EE [\eta \vert D = 0]) \\
+%     =& \beta + \underbrace{(\EE [\eta \vert D = 1] - \EE [\eta \vert D = 0])}_{\text{selection bias}}
+% \end{align*}
+
+% \onslide<7->
+% Selection bias will equal zero if the correlation between the error term and treatment assignment is zero. 
+% \begin{itemize}
+%     \item If $D$ is randomly assigned, regression of $Y$ onto $D$ (and a constant) yields the causal effect $\beta$
+% \end{itemize}
+
+
+% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Homework}

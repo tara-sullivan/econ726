@@ -1,15 +1,22 @@
-Week 1 - 9/1 - Introduction
-Week 2 - 9/8 - Probability
-Week 3 - 9/15 - Conditional Expectation
-Week 4 - 9/22 - Potential Outcomes
-Week 5 - 9/29
-Week 6 - 10/6
+Lecture 1 - 9/1 - Introduction
+    * HW (due 9/7): Git/python set-up
+Lecture 2 - 9/8 - Probability
+    * HW (due 9/14): Paper ideas
+Lecture 3 - 9/15 - Conditional Expectation
+    * HW (due 9/21): Probability exercises
+Lecture 4 - 9/22 - Potential Outcomes/regression
+    * Assignment (due 9/28) - Paper selection 
+Lecture 5 - 9/29 - Matching (+ propensity score?)
+    * HW (due 10/5) - Conditional expectaitons + potential outcomes homework
+Lecture 6 - 10/6 - Diff-in-diff
+    * Assignment (due 10/12)  - Project plan
 Week 7 - 10/13 - NO CLASS
-Week 8 - 10/20
-Week 9 - 10/27
-Week 10 - 11/3
-Week 11 - 11/10
-Week 12 - 11/17
-Week 13 - 11/24 - Extended office hours
-Week 12 - 12/1 - Presentation
-Week 13 - 12/8 - Presentation
+Lecture 7 [Week 8]  - 10/20 - Synthetic Control
+Lecture 8 [Week 9] - 10/27 - Regression Discontinuity
+Lecture 9 [Week 10] - 11/3 - IV or ML or Open Data
+    * Assignment (due 11/2) - Replication results
+Lecture 10 [Week 11] - 11/10 - IV or ML or Open Data
+Lecture 11 [Week 12] - 11/17 - IV or ML or Open Data
+Lecture 12 [Week 13] - 11/24 - Extended office hours
+Lecture 13 [Week 14] - 12/1 - Presentation
+Lecture 14 [Week 15] - 12/8 - Presentation

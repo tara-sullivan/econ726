@@ -1,5 +1,5 @@
-% \documentclass[compress, 8pt]{beamer}
-\documentclass[handout, 8pt]{beamer}
+\documentclass[compress, 8pt]{beamer}
+% \documentclass[handout, 8pt]{beamer}
 \usepackage[utf8]{inputenc}
 
 % Notes to self: \nts[color option]{text that is a note}
@@ -140,13 +140,13 @@ This course will cover statistical methods for \textbf{causal inference} to help
 
 \begin{itemize}
     \item Understand the central tenants of causal inference
-    \item Challenge yourself to learn a causal methodology well (both theoretically and in practice)
+    \item Challenge yourself to learn at least one causal methodology well (both theoretically and in practice)
     \begin{itemize}
         \item The empirical project is something you should be able to talk about in job interviews
     \end{itemize}
     \item Learn what it means to share runnable code
-    \item Communicate results effectively
-    \item Learn some basic python
+    \item Communicate results effectively, both in writing and as a presentation
+    \item Learn some basic python (or: learn how to engage with code in a language you don't 100\% understand)
 \end{itemize}
 
 
@@ -202,7 +202,7 @@ The project is based on an empirical paper of your choice which:
  \end{enumerate} 
  
 \vspace{2ex}
-The paper should:
+Your project should:
 \begin{enumerate}
     \item Be based on a paper published in a peer-reviewed journal
     \item Briefly state the research question and discuss the dataset 
@@ -216,7 +216,7 @@ The paper should:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
 
-\textbf{Paper selection}: Due \textbf{September 21} [5\% of final grade]
+\textbf{Paper selection}: Due \textbf{September 28} [5\% of final grade]
 \begin{itemize}
 \item Select your paper. Briefly describe the causal effect of interest and methodology. Discuss what you think you will do for your extension of this paper. 
 \end{itemize}
@@ -225,17 +225,17 @@ The paper should:
 \begin{itemize}
 \item This paper should be your first effort at addressing points (1) and (2) above.
 Summarize the public policy or business context of the paper. Write down the
-specific question the paper is evaluating. Discuss the data your are using (both your replication data, and data for your extension) Discuss the extensions you are considering, and, if necessary, where you will be getting that data. Verify that you’ve read the paper
+specific question the paper is evaluating. Discuss the data your are using (both your replication data, and data for your extension). Verify that you can access the data and replication package. Discuss the extensions you are considering, and, if necessary, where you will be getting that data. Verify that you’ve read the paper.
 \end{itemize} 
 
-\textbf{Replication results}: Due \textbf{November 7}: [10\% of final grade]
+\textbf{Replication results}: Due \textbf{November 2}: [10\% of final grade]
 \begin{itemize}
 \item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
 \end{itemize}
 
 \textbf{Presentation}: Due \textbf{December 1} \& \textbf{December 8} [10\% of final grade]
 \begin{itemize}
-\item Prepare a 5-8 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\item Prepare a 10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
 \end{itemize}
 
 \textbf{Final Paper}: Due \textbf{December 11} [40\% of final grade]
@@ -253,6 +253,9 @@ Your final project should be submitted on Brightspace, and your code and data sh
 Top 5 economics journals:
 \begin{itemize}
     \item American Economic Review
+    \begin{itemize}
+        \item Note: American Economic Review: Papers and Proceedings are short papers and are NOT sufficient for this assignment
+    \end{itemize}
     \item Econometrica
     \item Journal of Political Economy
     \item Quarterly Journal of Economics
@@ -271,6 +274,7 @@ Data used in the Mostly Harmless Econometrics book: \url{https://economics.mit.e
 \begin{itemize}
     \item Note that Krueger (1999) is based on an experiment, and would not be appropriate for this assignment
 \end{itemize}
+Good resource for finding papers (we'll discuss next class): \url{https://paulgp.com/econlit-pipeline/index.html}
 
 \end{frame}
 
@@ -381,11 +385,33 @@ A number of other resources exist on this topic:
 
 \end{frame}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Homework}
+
+Homework due next week (on Brightspace)
+\begin{itemize}
+    \item Create a GitHub account (you can use a student account)
+\end{itemize}
+
+Things you should be working towards:
+\begin{itemize}
+    \item Order Angrist and Pischke (2009); Chapter 1 \& 2 (in 2 weeks)
+    \item Consider which paper you would like to base your empirical project on (homework proposing paper ideas due in 2 weeks)
+    % \begin{itemize}
+    %     \item \textbf{Note:} something you should do in your written analysis is consider what the ideal experiment looks like, and what the selection bias in outcomes is
+    % \end{itemize}
+    
+\end{itemize}
+
+\end{frame}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Schedule today}
 \begin{itemize}
-    \item High-level overview of potential outcomes framework and causal questions
-    \item Brief review of methodologies I recommend you use for your paper
+    \item High-level overview of potential outcomes framework, causal questions
+    \item Brief review of methodologies I recommend you use for your paper (diff-in-diff and synthetic control)
 \end{itemize}
 \end{frame}
 
@@ -780,26 +806,6 @@ Helpful framework for formalizing this problem and finding a solution: \textbf{p
 
 
 % \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Homework}
-
-Homework due next week (on Brightspace)
-\begin{itemize}
-    \item Create a GitHub account (you can use a student account)
-\end{itemize}
-
-Things you should be working towards:
-\begin{itemize}
-    \item Order Angrist and Pischke (2009); Chapter 1 \& 2 (in 2 weeks)
-    \item Consider which paper you would like to base your empirical project on (due in 2 weeks)
-    \begin{itemize}
-        \item \textbf{Note:} something you should do in your written analysis is consider what the ideal experiment looks like, and what the selection bias in outcomes is
-    \end{itemize}
-    
-\end{itemize}
-
-\end{frame}
 
 
 

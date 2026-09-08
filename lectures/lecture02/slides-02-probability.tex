@@ -76,7 +76,8 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 Homework 1:
 \begin{itemize}
-    \item Please revise your submission if you have a 0/1
+    \item Important: \textbf{Include the link to GitHub; this will be penalized in the future} 
+    \item Please submit if you have not! Otherwise you will get a zero (this worked out to 2.5 points on your final grade last year!)
 \end{itemize}
 
 \vspace{3ex}
@@ -87,33 +88,204 @@ Python instruction:
 \end{itemize}
 
 \vspace{3ex}
-Update about final project:
+Homework this week:
 \begin{itemize}
-    \item This course will be taught in python; methods will be taught in python
-    \item You can use any language your want on your final project (obviously I recommend using python)
+    \item Homework this week: submit 1-2 possible papers for your project. Be ambitious and creative!
+    \item Read \emph{Mostly Harmless} Chapter 1 \& 2
+    \item Due in 2 weeks: Probability review questions. please submit a \textbf{handwritten} response.
 \end{itemize}
 
 \vspace{3ex}
-Homework this week:
+Agenda:
 \begin{itemize}
-    \item Start thinking about what paper you'd like to replicate!
-    \item Read \emph{Mostly Harmless} Chapter 1 \& 2
-    \item Probability review questions; please submit a \textbf{handwritten} response
+    \item Discuss resource for looking for papers %: \url{https://www.aeaweb.org/journals}
+    \item Probability review
 \end{itemize}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\miniframesoff
-\begin{frame}{Outline}
-    \tableofcontents
-\end{frame}
-\miniframeson
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Paper}
+
+Recall our goal: replicate and extend a paper using the methods from this class.
+
+\vspace{3ex}
+Methods we'll definitely cover in this class:
+\begin{itemize}
+    \item Causal linear regression (under unconfoundedness/with selection on observables/under conditional independence assumption)
+    \item Matching (especially propensity score matching)
+    \item Panel data methods (especially differences-in-differences; synthetic control)
+\end{itemize}
+
+\vspace{3ex}
+Other methods we may cover:
+\begin{itemize}
+    \item Instrumental variables
+    \item Additional panel data methods (i.e. fixed and random effects models/unobserved effects models)
+    \item Regression discontinuity designs (sharp RD, fuzzy RD)
+    \item Machine learning methods (lasso, random forest)
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{This week's assignment}
+
+Think of causal questions you would like to answer in this class:
+
+\begin{itemize}
+    \item This is your opportunity to be a bit more ambitious 
+
+    \vspace{1ex}
+    \item You will not be locked in to this topic choice; you can always fall back on an easier paper topic later
+
+    \vspace{1ex}
+    \item Remember your goal is to \textbf{replicate} and \textbf{extend} this project 
+    \begin{itemize}
+        \item If you pick a more difficult paper, you can focus on the replication. 
+        \item If you pick an easier paper, you can focus on the extension
+    \end{itemize}
+
+    \vspace{1ex}
+    \item YOUR GOAL IS TO AVOID CLEANING DATA (specifically for the replication part of the assignment). This is far and away the most time intensive part of beginning a project
+    \begin{itemize}
+        \item When you submit your final code, \textbf{I} will not run any code that cleans data
+    \end{itemize}
+
+    \vspace{1ex}
+    \item You want PUBLISHED papers whose data/replication package is posted online
+    \begin{itemize}
+        \item Not NBER working papers
+        \item Not American Economic Review: Papers \& Proceedings
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+Good resource for finding papers (we'll discuss next class): \url{https://paulgp.com/econlit-pipeline/index.html}
+\begin{itemize}
+    \item Look up a methodology ``difference-in-differences''
+    \item Search for a paper with replication data
+
+    \item Don't limit yourself to this website; it was made with AI and might not capture everything!
+\end{itemize}
+
+\vspace{2ex}
+Partial vs full replication data:
+\begin{itemize}
+    \item This likely has not been validated by a person, so proceed with caution, and validate yourself
+    \item For this assignment, you need to replicate \textbf{key results}
+    \item It's okay if data are partially available if it means you can replicate key results!
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Checking data is accessible}
+Suppose you are considering this paper: \url{https://doi-org.proxy.wexler.hunter.cuny.edu/10.1093/qje/qjab004}
+\begin{itemize}
+    \item Very cool and relevant paper
+    \item Data and replication code available on the paper website
+\end{itemize}
+\begin{quote}
+    Code replicating the figures and tables in this article can be found in Miller, Johnson, and Wherry (2021), in the Harvard Dataverse doi: 10.7910/DVN/UEJRKH.
+\end{quote}
+Go to the doi website: \url{https://doi.org/10.7910/DVN/UEJRKH}
+\begin{itemize}
+\item Before doing anything else, find the README
+\end{itemize}
+
+\begin{quote}
+    Restricted-use Census data: The main analysis of this paper relies on the 2008-2013 waves of the American Community Survey linked to the 2018 Q2 Numident File and the 2008-2016 MSIS and TMSIS files from CMS documenting Medicaid enrollment. Refer to Appendix Section 1 for additional information on the years covered by MSIS and TMSIS versions of this file. 
+
+    \vspace{2ex}
+Researchers may obtain access to these data through the Census Federal Statistical Research Data Center (FSRDC) system. Researchers can learn more about how to access restricted use data through the Census FSRDC here: https://www.census.gov/about/adrm/fsrdc.html.
+\end{quote}
+
+$\implies$ \textbf{Sometimes you need to dig deep to figure out if the paper is replicable}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{How to find a paper}
+
+Note on papers
+\begin{itemize}
+    \item Think of topics you are interested in, like the impact of labor supply on wages
+    \item Look through recent issues of top journals. See if anything catches your eye. In the past five or so years, these journals require replication packages: \url{https://www.aeaweb.org/journals}
+
+    \item Try to find papers that use the methods we discuss in class.
+\end{itemize}
+
+\vspace{2ex}
+Where to poke around and look for papers:
+\begin{itemize}
+    \item MHE data archives: you know this data is usable and clean!: \url{https://economics.mit.edu/people/faculty/josh-angrist/mhe-data-archive}
+    \item Angrist, the author of MHE, also has many datasets available on his website for his papers: \url{https://economics.mit.edu/people/faculty/josh-angrist/angrist-data-archive}
+    \item Maybe explore another famous professor's page: \url{https://davidcard.berkeley.edu/papers.html}
+    \item Or look at their students’: \url{https://about.peterhull.net/publications}
+    \item Look for ``code'', ``data'', ``replication package'' etc. That means the data is cleaned; this is huge!
+
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Selecting a paper}
+
+Top 5 economics journals:
+\begin{itemize}
+    \item American Economic Review
+    \begin{itemize}
+        \item Note: American Economic Review: Papers and Proceedings are short papers and are NOT sufficient for this assignment
+    \end{itemize}
+    \item Econometrica
+    \item Journal of Political Economy
+    \item Quarterly Journal of Economics
+    \item Review of Economic Studies
+\end{itemize}
+Also good:
+\begin{itemize}
+    \item American Economic Journal: Applied Economics
+    \item Journal of Public Economics
+    \item Review of Economics and Statistics
+\end{itemize}
+% Here is a random list online of good [economics] journals: \url{https://www.stern.nyu.edu/sites/default/files/assets/documents/Econ%20Top%20Journals%20-%20July%202020.pdf}
+
+
+
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Example of how this reasoning can go}
+
+% Let's say you are interested in the impact of labor supply on wages:
+% item
+% \begin{itemize}
+%     \item David Card wrote a famous paper in 1991: \url{https://davidcard.berkeley.edu/papers/mariel-impact.pdf} 
+%     \item Looks promising, it's methodologically pretty simple!
+%     \item Unfortunately there doesn't appear to be replication code
+%     But some googling leads me to find a different paper that tests these methods using synthetic control, a method we'll cover in this class! \url{https://giovanniperi.ucdavis.edu/data-for-peri-and-yasenov.html}
+%     \begin{itemize}
+%         \item It seems this paper is published at the Journal of Human Resources, but the data online might be from a different version. That's also okay! 
+%     \end{itemize}
+% \end{itemize}
+
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section[Introduction]{Probability and Causality}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Probability and Causality}
@@ -430,7 +602,7 @@ Recall \textbf{marginalization}: For any sets $B_1, B_2, \dots, B_n$ that partit
 
 Note that we can re-write this rule using the definition of conditional probability:
 \begin{equation*}
-    \PP (A) = \sum_{i=1}^n (A \vert B_i) \PP (B_i)
+    \PP (A) = \sum_{i=1}^n \PP (A \vert B_i) \PP (B_i)
 \end{equation*}
 This is the \textbf{Law of Total Probability}.
 
@@ -466,7 +638,7 @@ For a randomly selected person, what is the probability the test is positive, $\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Law of Total Probability Example}
 
-Using the law of total probability, we can re-write $\PP (B)$ as:
+Using the law of total probability, we can re-write $\PP (P)$ as:
 \begin{align*}
     \PP (P = 1) &= \PP (P = 1 \vert M = 0 ) \PP (M = 0) + \PP (P = 1 \vert M = 1) \PP (M=1)
 \end{align*}
@@ -620,7 +792,7 @@ In words, if we know student $S$ aced the test, does that give us any informatio
 
 \pause
 \begin{itemize}
-    \item These variables are \textbf{[unconditionally] dependent}; the occurrence of one impacts the occurrence of the other
+    \item These variables are \textbf{marginally dependent (unconditionally dependent)}; the occurrence of one impacts the occurrence of the other
 \end{itemize}
 
 \end{frame}
@@ -651,7 +823,7 @@ Are $R$ and $S$ independent, conditional on the difficulty of the test? Conditio
 \end{equation*}
 In words, if we know that the test was easy, does the additional information that student $S$ aced the test tell us anything about whether student $R$ aced the test?
 \begin{itemize}
-    \item If all the information you could glean from $S$ is subsumed in knowing the value of $T$, then $R$ and $S$ are independent $conditional$ on $T$
+    \item If all the information you could glean from $S$ is subsumed in knowing the value of $T$, then $R$ and $S$ are independent conditional on $T$
 \end{itemize}
 
 \end{frame}
@@ -675,24 +847,90 @@ In words, this means that learning $Y$ does not provide any additional informati
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Causal Graphs}
+
+\textbf{Simple graph 1 - Mediation}: $A \rightarrow C \rightarrow B$:
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (A) {A};
+\node [draw, circle, right =of A] (C) {C};
+\node [draw, circle, right =of C] (B) {B};
+\draw (A) edge[->] (C);
+\draw (C) edge[->] (B);
+\end{tikzpicture}
+\end{figure}
+\begin{itemize}
+    \item $A$ and $B$ are \textbf{marginally dependent}
+    \item $A$ and $B$ are independent conditional on $C$: $A \perp B \vert C$
+\end{itemize}
+
+\textbf{Simple graph 2 - Mutual dependence}: $A \leftarrow C \rightarrow B$:
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (C) {C};
+\node [draw, circle, below left =of C] (A) {A};
+\node [draw, circle, below right =of C] (B) {B};
+\draw (C) edge[->] (A);
+\draw (C) edge[->] (B);
+\end{tikzpicture}
+\end{figure}
+\begin{itemize}
+    \item $A$ and $B$ are \textbf{marginally dependent} through mutual dependence on $C$
+    \item $A$ and $B$ are independent conditional on $C$: $A \perp B \vert C$
+\end{itemize}
+
+\end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Conditional independence example (cont.)}
+
+% \begin{itemize}
+%     \item $R \in \{0, 1\}$: Student $R$ aced the test
+%     \item $S \in \{0, 1\}$: Student $S$ aced the test
+%     \item $T \in \{0, 1\}$: The test is hard
+% \end{itemize}
+
+% \begin{figure}
+% \begin{tikzpicture}
+% \node [draw, circle] (T) {T};
+% \node [draw, circle, below right =of T] (S) {S};
+% \node [draw, circle, below left =of T] (R) {R};
+% \draw (T) edge[->] (R);
+% \draw (T) edge[->] (S);
+% \end{tikzpicture}
+% \end{figure}
+
+% % Are $R$ and $S$ independent, conditional on the difficulty of the test? Conditional independence means, for example:
+% % \begin{equation*}
+% %     \PP (R = 1\vert S=1, T=0) = \PP (R = 1 \vert T=0)
+% % \end{equation*}
+% % In words, if we know that the test was easy, does the additional information that student $S$ aced the test tell us anything about whether student $R$ aced the test?
+% % \begin{itemize}
+% %     \item If all the information you could glean from $S$ is subsumed in knowing the value of $T$, then $R$ and $S$ are independent $conditional$ on $T$
+% % \end{itemize}
+
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conditional dependence}
 
+Suppose College A requires students to have a high High School GPA or great musical talent in order to be admitted
 \begin{itemize}
-    \item $X \in \{0, 1\}$: There is an accident at an intersection
-    \item $Y \in \{0, 1\}$: There is a long red light at an intersection
-    \item $Z \in \{0, 1\}$: There is traffic at an intersection
+    \item $X \in \{0, 1\}$: A student has a high GPA
+    \item $Y \in \{0, 1\}$: A student is musically talented
+    \item $Z \in \{0, 1\}$: A student is admitted to College A
 \end{itemize}
 \begin{figure}
 \begin{tikzpicture}
 \node [draw, circle] (Z) {Z};
-\node [draw, circle, above right =of T] (Y) {Y};
-\node [draw, circle, above left =of T] (X) {X};
+\node [draw, circle, above right =of Z] (Y) {Y};
+\node [draw, circle, above left =of Z] (X) {X};
 \draw (X) edge[->] (Z);
 \draw (Y) edge[->] (Z);
 \end{tikzpicture}
 \end{figure}
 
-Are $X$ and $Y$ independent of one another? Independence implies, for example, that knowing there has been an accident doesn't influence your probability that there is a long traffic light. 
+Are $X$ and $Y$ independent of one another? Independence implies, for example, that knowing a student has a high GPA doesn't influence your probability that they are musically talented
     \begin{equation*}
     \PP (X =1 \vert Y=1) = \PP (X=1)
     \end{equation*}
@@ -700,12 +938,12 @@ Are $X$ and $Y$ independent of one another? Independence implies, for example, t
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Conditional dependence (cont.)}
 
 \begin{itemize}
-    \item $X \in \{0, 1\}$: There is an accident at an intersection
-    \item $Y \in \{0, 1\}$: There is a long red light at an intersection
-    \item $Z \in \{0, 1\}$: There is traffic at an intersection
+    \item $X \in \{0, 1\}$: A student has a high GPA
+    \item $Y \in \{0, 1\}$: A student is musically talented
+    \item $Z \in \{0, 1\}$: A student is admitted to College A
 \end{itemize}
 \begin{figure}
 \begin{tikzpicture}
@@ -718,8 +956,8 @@ Are $X$ and $Y$ independent of one another? Independence implies, for example, t
 \end{figure}
 
 \begin{itemize}
-    \item Consider the probability of an accident, given that there is traffic: $\PP (X = 1 \vert Z = 1)$
-    \item Now consider the case where know this intersection has a long traffic light, in addition to traffic. You now have reason to think the long light is the cause of the traffic, not a potential accident. Is there reason to think:
+    \item Consider the probability a student has a high GPA, given that they were admitted to this college: $\PP (X = 1 \vert Z = 1)$
+    \item Now consider the case where you know the student is musically talented AND was admitted to this college. You now have reason to think the musical talent is the cause of admission, not the high GPA. Is there reason to think:
 
     \begin{equation*}
     \PP (X =1 \vert Z=1) > \PP (X=1 \vert Y=1, Z=1)
@@ -728,8 +966,59 @@ Are $X$ and $Y$ independent of one another? Independence implies, for example, t
     \item \textbf{Conditional dependence} can happen when two causes have the same effect. You don't want to control on everything!
 \end{itemize}
 
+% \begin{frame}{}
+
+% \begin{itemize}
+%     \item $X \in \{0, 1\}$: There is an accident at an intersection
+%     \item $Y \in \{0, 1\}$: There is a long red light at an intersection
+%     \item $Z \in \{0, 1\}$: There is traffic at an intersection
+% \end{itemize}
+% \begin{figure}
+% \begin{tikzpicture}
+% \node [draw, circle] (Z) {Z};
+% \node [draw, circle, above right =of T] (Y) {Y};
+% \node [draw, circle, above left =of T] (X) {X};
+% \draw (X) edge[->] (Z);
+% \draw (Y) edge[->] (Z);
+% \end{tikzpicture}
+% \end{figure}
+
+% \begin{itemize}
+%     \item Consider the probability of an accident, given that there is traffic: $\PP (X = 1 \vert Z = 1)$
+%     \item Now consider the case where know this intersection has a long traffic light, in addition to traffic. You now have reason to think the long light is the cause of the traffic, not a potential accident. Is there reason to think:
+
+%     \begin{equation*}
+%     \PP (X =1 \vert Z=1) > \PP (X=1 \vert Y=1, Z=1)
+%     \end{equation*}
+
+%     \item \textbf{Conditional dependence} can happen when two causes have the same effect. You don't want to control on everything!
+% \end{itemize}
 
 
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Causal Graphs (cont.)}
+
+
+\textbf{Simple graph 3 - Mutual causation}: $A \rightarrow C \leftarrow B$:
+\begin{figure}
+\begin{tikzpicture}
+\node [draw, circle] (C) {C};
+\node [draw, circle, above left =of C] (A) {A};
+\node [draw, circle, above right =of C] (B) {B};
+\draw (A) edge[->] (C);
+\draw (B) edge[->] (C);
+\end{tikzpicture}
+\end{figure}
+\begin{itemize}
+    \item If nothing is known about $C$, then knowing $A$ yields no additional information about $B$; 
+    \item $A$ and $B$ are \textbf{marginally independent}
+    \item Conditional on $C$, $A$ and $B$ are \textbf{dependent}
+\end{itemize}
 
 \end{frame}
 

@@ -64,7 +64,7 @@ Probability measures are represented as a function $\PP(\cdot)$, and follow a fe
         \item[$\implies$] In our coin example, I'll either flip a heads or a tails, meaning $\Omega = \{H, T\}$. This law means that if I flip a coin, the probability that it comes up heads, or comes up tails, equals 1
     \end{itemize}
     \pause
-    \item Probabilities are less than zero and greater than one. So for some possible outcome A:
+    \item Probabilities are between zero and one. So for some possible outcome A:
     \begin{equation*}
         0 \leq \PP (A) \leq 1
     \end{equation*}
@@ -87,7 +87,7 @@ Probability measures are represented as a function $\PP(\cdot)$, and follow a fe
     \end{equation*}
     For $n$ mutually exclusive events $(A_1, A_2, \dots A_n)$:
     \begin{equation*}
-        \PP \left( \cup_{i=1}^n A_i \right) \sum_{i=1}^n \PP (A_i)
+        \PP \left( \cup_{i=1}^n A_i \right) = \sum_{i=1}^n \PP (A_i)
     \end{equation*}
     
 \end{enumerate}
@@ -182,14 +182,18 @@ Define events $A$ and $B$ as:
     A = \{\text{Roll an even number}\} = \{2, 4, 6\} \quad\quad
     B = \{\text{Roll } \geq 4\} = \{4, 5, 6\}
 \end{equation*}
-% Using the formula above:
-% % \begin{align*}
-% %     \PP (A) &= \PP (\{2, 4, 6\}) = \frac{1}{2} \\
-% %     \PP (B) &= \PP (\{4, 5, 6\}) = \frac{1}{2} \\
-% %     \PP (A \cap B) &= \PP (\{2, 4, 6\} \cap \{4, 5, 6\}) = \PP (\{4, 6\}) = \frac{1}{3} \\
-% % \end{align*}
-\vspace{2ex}
-Finish on board. Practice: HW Question 2
+Using the formula above:
+\begin{align*}
+    \PP (A) &= \PP (\{2, 4, 6\}) = \frac{1}{2} \\
+    \PP (B) &= \PP (\{4, 5, 6\}) = \frac{1}{2} \\
+    \PP (A \cap B) &= \PP (\{2, 4, 6\} \cap \{4, 5, 6\}) = \PP (\{4, 6\}) = \frac{1}{3} \\
+\onslide<3->{
+    \implies
+    \PP (A \cup B) &= \PP (A) + \PP (B) - \PP (A \cap B) \\
+    &= \frac{1}{2} + \frac{1}{2} - \frac{1}{3} \\
+    &= \frac{2}{3}
+}
+\end{align*}
 
 \end{frame}
 
@@ -365,7 +369,7 @@ Similar to how we used the \textbf{PMF} to describe probabilities for discrete r
 \begin{frame}{Probability Density Function}
 
 Suppose $X$ follows a normal distribution with mean $\mu$ and standard deviation $\sigma$. The PDF for $X$, $f_X$, looks like:
-\begin{figure}[width=0.25\textwidth]
+\begin{figure}
 \includegraphics[scale=0.5]{img/normal_distribution.png}
 \end{figure}
 Then the probability that $X$ follows within one standard devation of the mean can be calculated by the area under the curve:

@@ -1,0 +1,72 @@
+
+\documentclass[11 pt]{article}
+
+% % General tex preamble
+\input{preamble.tex}
+% % Spacing and colors
+% \input{preamble-outline.tex}
+% % Figures & bibliography
+% \input{preamble-figs_bibs.tex}
+
+% \setlength{\parindent}{0cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+
+\title{ECON726: Probability Homework}
+\author{}
+% \author{Tara Sullivan%\footnote{
+%}
+% }
+\date{\vspace{-5ex}}
+
+\maketitle
+% \onehalfspacing
+\noindent \textbf{Instructions:} Please submit a \textbf{handwritten} copy of your answers. When using any calculations, please show all of your work. 
+
+\begin{enumerate}
+\item Suppose you have an unfair, two-sided coin. The probability of flipping heads is $\frac{1}{3}$. What is the probability of flipping tails?
+\item In a standard deck of 52 cards, what is the probability of drawing a red card or a face card (Jack, Queen, King)?
+\item Suppose a random variable $X$ follows a normal distribution with mean $\mu$ and a standard deviation $\sigma$. What is the probability that $X$ falls within two standard deviations of the mean?
+\item Suppose you are selecting a card from a standard deck of 52 cards. What is the probability that the card is a spade, given that the card is black?
+\item I have a new AI technology that predicts whether street signs are damaged. Let:
+\begin{itemize}
+    \item $P$ denote whether the street sign is \textbf{predicted} as damaged:
+    \begin{itemize}
+        \item $P = 1:$ the technology predicts the sign is damaged
+        \item $P = 0:$ the technology predicts the sign is not damaged
+    \end{itemize}
+    \item $D$ be the \textbf{ground truth}; whether the sign is actually damaged:
+    \begin{itemize}
+        \item $D=0$: the sign is not damaged 
+        \item $D=1$: the sign is damaged
+    \end{itemize}
+\end{itemize}
+
+Further, suppose:
+\begin{itemize}
+    \item The \textbf{prevalence} of damaged signs is $\frac{1}{100}$:
+    \begin{equation*}
+        \PP (D = 1) = \frac{1}{100}
+    \end{equation*}
+    \item The \textbf{False Positive Rate} is the probability that the AI predicts a sign is damaged when it isn't:
+    \begin{equation*}
+        \PP (P = 1 \vert D = 0) = \frac{1}{50} = 0.02
+    \end{equation*}
+    \item The \textbf{False Negative Rate} is the probability that a sign is predicted as not damaged, when it actually is damaged. Suppose this equals zero:
+    \begin{equation*}
+         \PP (P = 0 \vert D = 1) = 0
+     \end{equation*}
+\end{itemize}
+
+\begin{enumerate}
+\item Find $\PP (P = 1 \vert D = 1)$. This is the probability that actually damaged signs are predicted damaged, known as the \textbf{True Positive Rate}.
+\item Find $\PP (P = 1)$ (Hint: use the Law of Total Expectation)
+\item Find the probability that a sign predicted damaged is actually damaged: $\PP (D = 1 \vert P = 1)$ (Hint: use Bayes' Theorem)
+\item Based on your calculations above, do you think the NYC should invest in this technology?
+\end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}

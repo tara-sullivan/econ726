@@ -1,0 +1,7 @@
+Class 2 - Probability
+* Finished at 9:15
+* Should be more precise about language
+    - Use the term "marginal" more clearly
+    - marginal distribution vs joint distribution
+* Could do a clearer introduction to DAG at the end
+    - Exhaustive vocabularly list seems helpful

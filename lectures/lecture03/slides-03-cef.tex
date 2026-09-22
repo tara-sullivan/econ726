@@ -17,7 +17,7 @@
 \let\Tiny=\tiny
 
 %Information to be included in the title page:
-\title{Expectation}
+\title{Conditional Expectation}
 \subtitle{ECON726}
 \author[]{Tara Sullivan}
 \institute{
@@ -94,106 +94,6 @@ Agenda:
 \end{itemize}
 
 \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Paper}
-
-Recall our goal: replicate and extend a paper using the methods from this class.
-
-\vspace{3ex}
-Methods we'll definitely cover in this class:
-\begin{itemize}
-    \item Causal linear regression (under unconfoundedness/with selection on observables/under conditional independence assumption)
-    \item Matching (especially propensity score matching)
-    \item Panel data methods (especially differences-in-differences)
-    \item Synthetic control
-\end{itemize}
-
-\vspace{3ex}
-Other methods we may cover:
-\begin{itemize}
-    \item Instrumental variables
-    \item Additional panel data methods (i.e. fixed and random effects models/unobserved effects models)
-    \item Regression discontinuity designs (sharp RD, fuzzy RD)
-    \item Heterogeneous effects (quantile regression)
-\end{itemize}
-
-\vspace{3ex}
-There are more methods you could learn about on your own, particularly if you're more comfortable with ML methods! Causal forests, double/debiased ML...
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{This week's assignment}
-
-Think of causal questions you would like to answer in this class:
-
-\begin{itemize}
-    \item This is your opportunity to be a bit more ambitious (though stay realistic)
-
-    \item You will not be locked in to this topic choice; you can always fall back on an easier paper topic later
-
-    \item Remember your goal is to \textbf{replicate} and \textbf{extend} this project 
-    \begin{itemize}
-        \item If you pick a more difficult paper, you can focus on the replication. 
-        \item If you pick an easier paper, you can focus on the extension
-    \end{itemize}
-
-    \item YOUR GOAL IS TO AVOID CLEANING DATA (specifically for the replication part of the assignment). This is far and away the most time intensive part of beginning a project
-
-    \item You want PUBLISHED papers whose data/replication package is posted online
-\end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{How to find a paper}
-
-Note on papers
-\begin{itemize}
-    \item Think of topics you are interested in, like the impact of labor supply on wages
-    \item Look through recent issues of AEA journals. See if anything catches your eye. In the past five or so years, these journals require replication packages: \url{https://www.aeaweb.org/journals}
-    \begin{itemize}
-        \item In particular, look at the American Economic Review, AEJ: Applied, AEJ Economic policy, JEL, JEP
-        \item Other journals to look through: QJE (\url{https://academic.oup.com/qje/issue}); Journal of Political Economy (\url{https://www.journals.uchicago.edu/toc/jpe/current}) 
-    \end{itemize}
-    \item Try to find papers that use the methods we discuss in class.
-\end{itemize}
-Where to poke around and look for papers:
-\begin{itemize}
-    \item MHE data archives: you know this data is usable and clean!: \url{https://economics.mit.edu/people/faculty/josh-angrist/mhe-data-archive}
-    \item Angrist, the author of MHE, also has many datasets available on his website for his papers: \url{https://economics.mit.edu/people/faculty/josh-angrist/angrist-data-archive}
-    \item Maybe explore another famous professor's page: \url{https://davidcard.berkeley.edu/papers.html}
-    \item Or look at their students’: \url{https://about.peterhull.net/publications}
-    \item Look for ``code'', ``data'', ``replication package'' etc. That means the data is cleaned; this is huge!
-
-\end{itemize}
-
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Example of how this reasoning can go}
-
-Let's say you are interested in the impact of labor supply on wages:
-item
-\begin{itemize}
-    \item David Card wrote a famous paper in 1991: \url{https://davidcard.berkeley.edu/papers/mariel-impact.pdf} 
-    \item Looks promising, it's methodologically pretty simple!
-    \item Unfortunately there doesn't appear to be replication code
-    But some googling leads me to find a different paper that tests these methods using synthetic control, a method we'll cover in this class! \url{https://giovanniperi.ucdavis.edu/data-for-peri-and-yasenov.html}
-    \begin{itemize}
-        \item It seems this paper is published at the Journal of Human Resources, but the data online might be from a different version. That's also okay! 
-    \end{itemize}
-\end{itemize}
-
-
-
-
-
-
-\end{frame}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \miniframesoff
@@ -514,7 +414,7 @@ The sample mean of a random sample $X_1, \dots, X_n$ is given by:
 \end{equation*}
 The sample variance is given by:
 \begin{equation*}
-    S_n^2 = \frac{1}{n - 1} \sum_{i=1} (X_i - \bar{X}_n)^2
+    S_n^2 = \frac{1}{n - 1}^n \sum_{i=1} (X_i - \bar{X}_n)^2
 \end{equation*}
 The sample standard deviation is given by:
 \begin{equation*}
@@ -626,6 +526,15 @@ If $X$ and $Y$ are independent random variables, then $\Cov{X, Y} = 0$ and $\rho
     \item Covariance and correlation measure only a particular kind of linear relationship
 \end{itemize}
 
+\vspace{2ex}
+\textbf{Example:} $X$ is uniform between $[-1, 1]$, and $Y=X^2$ (clearly depedendent!)
+\begin{align*}
+    \Cov{X, Y} =& \EE [XY] - \mu_X \mu_Y \\
+    =& \EE [X \cdot X^2] - \EE [X] \cdot \EE [X^2] \\
+    =& \EE [X^3] - 0 \cdot \EE [X^2] \\
+    =& 0 - 0 = 0
+\end{align*}
+
 \end{frame}
 
 
@@ -640,7 +549,7 @@ If $X$ and $Y$ are independent random variables, then $\Cov{X, Y} = 0$ and $\rho
 % \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conditional expectation}
+\section[CEF]{Conditional Expectation Function (CEF)}
 \miniframesoff
 \begin{frame}
     \tableofcontents[currentsection]
@@ -724,7 +633,35 @@ Continuous CEF:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Properties of CEF - Law of Iterated Expectations}
+\section[CEF Properties]{Properties of Conditional Expectation Function}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Law of Iterated Expectations (LIE)}
+
+    Important property: 
+    \begin{equation*}
+    \EE [Y] = \EE_X \left[ \EE [Y \vert X] \right]
+\end{equation*}
+
+\vspace{2ex}
+\textbf{Why is this important?} Suppose $Y$ denotes average earnings, and $X$ denotes gender (say $X=1$ is female). By LIE:
+\begin{itemize}
+    \item Find the average earnings for men in the population $\EE [Y \vert X = 0]$
+    \item Find the average earnings for women in the population $\EE [Y \vert X = 1]$
+    \item Find overall average earnings $\EE [Y]$ by taking the average for men times the proportion male in population, plus the average for women times the proportion female in the population
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Law of Iterated Expectations - Proof}
 
 \begin{equation*}
     \EE [Y] = \EE \left[ \EE [Y \vert X] \right]
@@ -736,9 +673,9 @@ Proof:
     \onslide<3->{
         &=\sum_{j} y_j \left(
             \sum_i {
-            \color<3>{red} \PP (Y = y_i \vert X = x_i) \PP (X = x_i)
+            \color<3>{red} \PP (Y = y_j \vert X = x_i) \PP (X = x_i)
             }
-        \right) &\because\text{ Bayes' Rule }
+        \right) &\because\text{Product Rule}
     } \\
     \onslide<4->{
         &= {\color<4>{blue} \sum_i } \left(
@@ -752,14 +689,14 @@ Proof:
         } \PP (X = x_i)
     } \\
     \onslide<6->{
-        &= \EE [\EE [Y \vert X = x]]
+        &= \EE_X [\EE [Y \vert X]]
     }
 \end{align*}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{CEF example}
+\begin{frame}{LIE example}
 
 \begin{table}
 \begin{tabular}{ccc}
@@ -780,10 +717,212 @@ Note that:
 \end{align*}
 Using the law of iterated expectations:
 \begin{align*}
-    \EE [\text{Score}] &= \EE[ \EE[Score \vert \text{Student} ] \\
+    \EE [\text{Score}] &= \EE[ \EE[\text{Score} \vert \text{Student} ] ]\\
     &= \frac{87.5 + 85}{2} \\
     &= 86.25
 \end{align*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Decomposition}
+
+Any random variable $Y_i$ can be decomposed into the CEF plus a residual:
+\begin{equation*}
+    Y_i = 
+    \underbrace{
+        \EE [Y_i \vert X_i]
+    }_{
+        \onslide<2->{\text{Part of $Y_i$ explained by $X_i$}}
+    } 
+    + \underbrace{
+        \epsilon_i
+    }_{
+        \onslide<2->{\text{Part of $Y_i$ \emph{not} explained by $X_i$}}
+    }
+\end{equation*}
+where:
+\begin{enumerate}
+    \item $\epsilon_i$ is mean-independent of $X_i$ with mean zero, that is $\EE[\epsilon_i \vert X_i] = \EE [\epsilon_i] = 0$.
+    \item $\epsilon_i$ is uncorrelated with any function of $X_i$
+\end{enumerate}
+
+\vspace{2ex}
+\textbf{Why is this important?}
+\begin{itemize}
+    \onslide<2->{\item Allows us to breakdown $Y_i$ into part explained by $X_i$ and part \textbf{not} explained by $X_i$} 
+    \onslide<2->{
+        \item The leftover piece ($\epsilon_i$) is uncorrelated with \emph{any} function of $X_i$
+        \begin{itemize}
+            \item Unlike simple uncorrelatedness (only rules out linear patterns), this rules out \emph{any} systematic relationship between $\epsilon_i$ and $X_i$ - this is a stronger statement.
+            \item We will see that this makes the CEF a very strong predictor
+        \end{itemize}
+        }
+\end{itemize}
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Decomposition Proof}
+
+Any random variable $Y_i$ can be decomposed into the CEF plus a residual:
+\begin{equation*}
+    Y_i = \EE [Y_i \vert X_i] + \epsilon_i
+\end{equation*}
+where $\epsilon_i$ is the part of $Y_i$ \emph{not} explained by $X_i$.
+
+\vspace{2ex}
+\textbf{Property (i):} $\epsilon_i$ is mean-independent of $X_i$:
+\begin{equation*}
+    \EE [\epsilon_i \vert X_i] = \EE [\epsilon_i] = 0
+\end{equation*}
+
+\textbf{Proof:}
+\begin{align*}
+    \epsilon_i &= Y_i - \EE [Y_i \vert X_i] \\
+    \EE [\epsilon_i \vert X_i] &= \EE \left[ Y_i - \EE [Y_i \vert X_i] \; \vert \; X_i \right] \\
+    &= \EE [Y_i \vert X_i] - \EE \left[ \EE [Y_i \vert X_i] \vert X_i \right] \\
+    &= \EE [Y_i \vert X_i] - \EE [Y_i \vert X_i] = 0
+\end{align*}
+Then by the law of iterated expectations:
+\begin{equation*}
+    \EE [\epsilon_i] = \EE \left[ \EE [\epsilon_i \vert X_i] \right] = \EE [0] = 0
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Decomposition Proof (cont.)}
+
+\textbf{Aside:} Two random variables are uncorrelated if $\Cov{X, Y} = 0$, i.e.\ $\EE [XY] = \EE [X] \EE [Y]$. If in addition $\EE [Y] = 0$, then for any function $h(X)$:
+\begin{equation*}
+    \EE [h(X) Y] = \EE [h(X)] \EE [Y] = 0
+\end{equation*}
+
+\vspace{2ex}
+\textbf{Property (ii):} $\epsilon_i$ is uncorrelated with \emph{any} function of $X_i$. Let $h(X_i)$ be a function of $X_i$.
+
+\vspace{1ex}
+\textbf{Proof:} By the law of iterated expectations:
+\begin{align*}
+    \EE [h(X_i) \epsilon_i] &= \EE \left[ \EE [h(X_i) \epsilon_i \vert X_i] \right] \\
+    &= \EE \left[ h(X_i) \EE [\epsilon_i \vert X_i] \right] \\
+    &= \EE [h(X_i) \cdot 0] = 0
+\end{align*}
+Since $\epsilon_i$ is orthogonal to any function of $X_i$, the CEF decomposition splits $Y_i$ into the part explained by $X_i$ and a piece that is unrelated (in this strong sense) to $X_i$.
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Prediction Property}
+
+Let $m(X_i)$ be any function of $X_i$. The conditional expectation function $\EE [Y_i \vert X_i]$ solves:
+\begin{equation*}
+    \EE [Y_i \vert X_i] = \argmin_{m(X_i)} \; \EE \left[ (Y_i - m(X_i))^2 \right]
+\end{equation*}
+$\implies$ the CEF is the \textbf{minimum mean squared error (MSE) predictor} of $Y_i$ given $X_i$:
+
+\vspace{2ex}
+\textbf{Why is this important?}
+\begin{itemize}
+    \item The CEF $\EE [Y_i \vert X_i]$ is a type of \textbf{prediction rule}, where you generate predictions of $Y_i$ as a function of $X_i$. One could use other prediction rules $m(X_i)$ to predict $Y_i$.
+    \item The Mean Squared Error (MSE) is a way of evaluating the difference between predicted $Y_i$ and true $Y_i$. 
+    \item Because the CEF solves the minimum mean squared error prediction problem, the CEF Prediction is the best predictor of $Y_i$ given $X_i$, in a mean squared sense. 
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{CEF Prediction Property Proof}
+
+Let $m(X_i)$ be any function of $X_i$. The CEF solves:
+\begin{equation*}
+    \EE [Y_i \vert X_i] = \argmin_{m(X_i)} \; \EE \left[ (Y_i - m(X_i))^2 \right]
+\end{equation*}
+$\implies$ the CEF is the \textbf{minimum mean squared error (MSE) predictor} of $Y_i$ given $X_i$:
+% \begin{itemize}
+%     \item It provides a representative value of $Y_i$ given $X_i$
+%     \item It solves the minimum mean squared error prediction problem
+% \end{itemize}
+
+\vspace{1ex}
+\textbf{Proof:} Add and subtract $\EE [Y_i \vert X_i]$, then expand:
+\begin{align*}
+    (Y_i - m(X_i))^2 
+    =& \left( 
+        Y_i - \EE [Y_i \vert X_i]
+        + \EE [Y_i \vert X_i] - m(X_i)
+        \right)^2 \\
+    =& \left( 
+        {\color{MainBlue}(Y_i - \EE [Y_i \vert X_i])} 
+        + {\color{Green} (\EE [Y_i \vert X_i] - m(X_i))} 
+       g \right)^2 \\
+    =& 
+        {\color{MainBlue}(Y_i - \EE [Y_i \vert X_i])}^2 
+        + 2 \underbrace{{\color{MainBlue}(Y_i - \EE [Y_i \vert X_i])}}_{\epsilon_i} 
+        \underbrace{{\color{Green} (\EE [Y_i \vert X_i] - m(X_i))}}_{h(X_i)}
+        \\ &\quad + {\color{Green} (\EE [Y_i \vert X_i] - m(X_i))}^2 \\
+    =& 
+        {\color{MainBlue}(Y_i - \EE [Y_i \vert X_i])}^2 
+        + 2 {\color{MainBlue}\epsilon_i} 
+        {\color{Green} h(X_i)}
+        + {\color{Green} (\EE [Y_i \vert X_i] - m(X_i))}^2
+\end{align*}
+Taking expectations, the cross term vanishes since $\EE [h(X_i) \epsilon_i] = 0$ (Property ii):
+\begin{equation*}
+    \EE \left[ (Y_i - m(X_i))^2 \right] = \underbrace{\EE \left[ (Y_i - \EE [Y_i \vert X_i])^2 \right]}_{\text{does not involve } m(X_i)} + \underbrace{\EE \left[ (\EE [Y_i \vert X_i] - m(X_i))^2 \right]}_{\text{minimized at } m(X_i) = \EE [Y_i \vert X_i]}
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{ANOVA Theorem}
+
+The variance of $Y_i$ decomposes as:
+\begin{equation*}
+    \Var{Y_i} = \Var{\EE [Y_i \vert X_i]} + \EE \left[ \Var{Y_i \vert X_i} \right]
+\end{equation*}
+
+\vspace{1ex}
+\textbf{Why is this useful?}
+\begin{itemize}
+    \item Decompositions are helpful tools for summarizing data
+    \item They work in the population as well as in a sample
+    \item They do not rely on any linearity assumption on the CEF
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{ANOVA Theorem (Proof)}
+
+\textbf{Proof:} From the CEF decomposition, $Y_i = \EE [Y_i \vert X_i] + \epsilon_i$, so:
+\begin{align*}
+    \Var{Y_i} &= \Var{\EE [Y_i \vert X_i] + \epsilon_i}
+\end{align*}
+For any two random variables $A$ and $B$:
+\begin{align*}
+    \Var{A + B} &= \Var{A} + \Var{B} + 2 \Cov{A, B}
+\end{align*}
+Applying this to the CEF decomposition: 
+\begin{align*}
+    \Var{Y_i} &= \Var{\EE [Y_i \vert X_i] + \epsilon_i} \\
+    &= \Var{\EE [Y_i \vert X_i]} + \Var{\epsilon_i} + 2 \Cov{\EE [Y_i \vert X_i], \epsilon_i} \\
+    &= \Var{\EE [Y_i \vert X_i]} + \Var{\epsilon_i}
+\end{align*}
+Since $\EE [\epsilon_i] = 0$, $\Var{\epsilon_i} = \EE [\epsilon_i^2]$. By the law of iterated expectations:
+\begin{align*}
+    \EE [\epsilon_i^2] &= \EE \left[ \EE [\epsilon_i^2 \vert X_i] \right] = \EE \left[ \EE \left[ (Y_i - \EE [Y_i \vert X_i])^2 \vert X_i \right] \right] = \EE \left[ \Var{Y_i \vert X_i} \right]
+\end{align*}
+so:
+\begin{equation*}
+    \Var{Y_i} = \Var{\EE [Y_i \vert X_i]} + \EE \left[ \Var{Y_i \vert X_i} \right]
+\end{equation*}
+
+
 
 \end{frame}
 

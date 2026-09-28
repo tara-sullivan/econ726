@@ -2,10 +2,14 @@ Lecture 1 - 9/1 - Introduction
     * HW (due 9/7): Git/python set-up
 Lecture 2 - 9/8 - Probability
     * HW (due 9/14): Paper ideas
-Lecture 3 - 9/15 - Conditional Expectation
+Lecture 3 - 9/15 - Covid (No class)
     * HW (due 9/21): Probability exercises
-Lecture 4 - 9/22 - Potential Outcomes/regression
-    * Assignment (due 9/28) - Paper selection 
+Lecture 4 - 9/22 - Conditional Expectation
+    * Assignment (due 9/28) - Paper selection
+Lecture 4 - 9/22 - Regression
+
+
+
 Lecture 5 - 9/29 - Matching (+ propensity score?)
     * HW (due 10/5) - Conditional expectaitons + potential outcomes homework
 Lecture 6 - 10/6 - Diff-in-diff

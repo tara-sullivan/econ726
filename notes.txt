@@ -5,3 +5,7 @@ Class 2 - Probability
     - marginal distribution vs joint distribution
 * Could do a clearer introduction to DAG at the end
     - Exhaustive vocabularly list seems helpful
+
+Class 3 - Covid! Missed. 
+
+Class 4 - Conditional Expectation   

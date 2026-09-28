@@ -95,6 +95,40 @@ Agenda:
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+\textbf{Paper selection}: Due \textbf{September 28} [5\% of final grade]
+\begin{itemize}
+\item Select your paper. Briefly describe the causal effect of interest and methodology. Discuss what you think you will do for your extension of this paper. 
+\end{itemize}
+
+\textbf{Project plan}: Due \textbf{October 12} [15\% of final grade] 
+\begin{itemize}
+\item This paper should be your first effort at addressing points (1) and (2) above.
+Summarize the public policy or business context of the paper. Write down the
+specific question the paper is evaluating. Discuss the data your are using (both your replication data, and data for your extension). Verify that you can access the data and replication package. Discuss the extensions you are considering, and, if necessary, where you will be getting that data. Verify that you’ve read the paper.
+\end{itemize} 
+
+\textbf{Replication results}: Due \textbf{November 2}: [10\% of final grade]
+\begin{itemize}
+\item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
+\end{itemize}
+
+\textbf{Presentation}: Due \textbf{December 1} \& \textbf{December 8} [10\% of final grade]
+\begin{itemize}
+\item Prepare a 10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\end{itemize}
+
+\textbf{Final Paper}: Due \textbf{December 11} [40\% of final grade]
+\begin{itemize}
+\item Your paper should contain 6-10 pages of text, and 3-6 pages of figures (double spaced, 12 point font).
+You must provide the code and data to replicate your findings. 
+Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
+\end{itemize}
+
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \miniframesoff
 \begin{frame}{Outline}
@@ -479,6 +513,11 @@ Note:
     =& \EE [XY] - \mu_X \EE [Y] - \mu_Y \EE [X] + \mu_X \mu_Y \\
     =& \EE [XY] - \mu_X \mu_Y - \mu_Y \mu_X + \mu_X \mu_Y \\
     =& \EE [XY] - \mu_X \mu_Y
+\end{align*}
+Aside: if $\Cov{X, Y} = 0$, then:
+\begin{align*}
+    0 = \Cov{X, Y} =& \EE [XY] - \mu_X \mu_Y \\
+    \implies \EE [XY] =& \mu_X \mu Y = \EE [X] \EE[Y]
 \end{align*}
 
 \end{frame}

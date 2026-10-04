@@ -87,12 +87,13 @@ Notes/comments are in gray and will be excluded from the presentation.
 \vspace{3ex}
 \textbf{Homework}
 \begin{itemize}
-    \item Read MHE 3.3.1
-    \item Read Chapter 1 of \href{https://causalml-book.org}{Causal ML book}
+    \item Review regression material if needed:
     \begin{itemize}
-        \item Review 3.1. and 3.2., if you're still shaky on the concepts
-        \item 
+        \item Review 3.1. in MHE
+        \item Review Chapter 1 in \href{https://causalml-book.org}{Causal ML book}
     \end{itemize}
+    \item Read MHE 3.2 (skim 3.2.2. and 3.2.3.) and 3.3.1
+    \item Optional: read chapter 2 and chapter 5, section 5.1 in \href{https://causalml-book.org}{Causal ML book}
 \end{itemize}
 
 \vspace{3ex}
@@ -414,21 +415,23 @@ Context:
     \begin{equation*}
         \arg \min_{b} \EE \left[ \left(Y_i - b^\prime \XX_i \right)^2 \right]
     \end{equation*}
-    To find the $b$ that minimizes the MSE, you set the derivative equal to zero. This is called the \textbf{first order condition}. 
+    \onslide<2->
+    To find the $b$ that minimizes the MSE, you set the derivative equal to zero. This is called the \textbf{first order condition}.
 \begin{equation*}
-    \EE [(Y_i - b^\prime \XX_i) \XX_i] = 0
+    \EE [{\color<3->{MainBlue}(Y_i - b^\prime \XX_i)} \XX_i] = 0
 \end{equation*}
 This is also referred to as the \textbf{Normal Equation}.
 
+\onslide<3->
 \vspace{2ex}
 To find the solution, use linear algebra:
 \begin{align*}
-    0 &= \EE[\XX_i (Y_i - b^\prime \XX_i)] \\
-    0 &= \EE [\XX_i Y_i - \XX_i \XX_i^\prime b] \\
-    0 &= \EE [\XX_i Y_i] - \EE [\XX_i \XX_i^\prime b]\\
-    \EE [\XX_i \XX_i^\prime b] &= \EE [\XX_i Y_i] \\
-    \EE [\XX_i \XX_i^\prime] b &= \EE [\XX_i Y_i] \\
-    b &= \EE [\XX_i \XX_i^\prime]^{-1} \EE [\XX_i Y_i]
+    0 &= \EE[\XX_i {\color{MainBlue}(Y_i - b^\prime \XX_i)}] \\
+    \uncover<4->{0} &\uncover<4->{= \EE [\XX_i Y_i - \XX_i \XX_i^\prime b]} \\
+    \uncover<4->{0} &\uncover<4->{= \EE [\XX_i Y_i] - \EE [\XX_i \XX_i^\prime b]}\\
+    \uncover<5->{\EE [\XX_i \XX_i^\prime b]} &\uncover<5->{= \EE [\XX_i Y_i]} \\
+    % \uncover<5->{\EE [\XX_i \XX_i^\prime] b} &\uncover<5->{= \EE [\XX_i Y_i]} \\
+    \uncover<6->{b} &\uncover<6->{= \EE [\XX_i \XX_i^\prime]^{-1} \EE [\XX_i Y_i]}
 \end{align*}
 
 \end{frame}
@@ -439,11 +442,11 @@ To find the solution, use linear algebra:
 \begin{frame}{Population residual}
 Regression coefficient solves:
 \begin{equation*}
-    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i^\prime b\right)^2 \right]
+    \beta = \arg \min_b \EE \left[ \left(Y_i - b^\prime \XX_i\right)^2 \right]
 \end{equation*}
 First order condition / Normal Equation:
 \begin{equation*}
-    \EE [\XX_i (Y_i - \XX_i^\prime b)] = 0
+    \EE [\XX_i (Y_i - b^\prime \XX_i)] = 0
 \end{equation*}
 Solution:
 \begin{equation*}
@@ -506,28 +509,29 @@ where $\epsilon_i$ is \textbf{orthogonal} to $\XX_i$, leading to the decompositi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Regression and CEF - Regression CEF Theorem}
 
-\textbf{Thm. 3.1.6: The regression CEF theorem}: The function $X_i^\prime \beta$ is the \textbf{Best \alert{Linear} Approximation} of $\EE [Y_i \vert \XX_i]$ in an MSE sense. In math:
+\textbf{Thm. 3.1.6: The regression CEF theorem}: The function $\beta^\prime \XX_i$ is the \textbf{Best \alert{Linear} Approximation} of $\EE [Y_i \vert \XX_i]$ in an MSE sense. In math:
 \begin{equation}\label{eq1}
-    \beta = \arg \min_b \EE \left[ \left(\EE[Y_i \vert \XX_i] - \XX_i^\prime b\right)^2 \right]
+    \beta = \arg \min_b \EE \left[ \left({\color<5->{red} \EE[Y_i \vert \XX_i] - b^\prime \XX_i}\right)^2 \right]
 \end{equation}
 
 \vspace{1ex}
-\emph{Proof: } We know $\beta$ solves the population least squares problem:
+\onslide<2->\emph{Proof: } We know $\beta$ solves the population least squares problem:
 \begin{equation}\label{eq2}
-    \beta = \arg \min_b \EE \left[ \left(Y_i - \XX_i^\prime b\right)^2 \right]
+    \beta = \arg \min_b \EE \left[ \left({\color<3->{MainBlue} Y_i - b^\prime \XX_i}\right)^2 \right]
 \end{equation}
 
-Applying the law of iterated expectation to the normal equation from (\ref{eq2}):
+\onslide<3->Applying the law of iterated expectation to the normal equation from (\ref{eq2}):
 % \begin{align*}
 %     \EE \left[ \XX_i (Y_i - \XX_i^\prime b) \right] =& 0 \\
 %     \EE \Big[ \EE \left[ \XX_i (Y_i - \XX_i^\prime b) \right] \Big\vert \XX_i \Big] =& 0 \\
 %     \EE \Big[ \XX_i \left( \EE[Y_i \vert \XX_i ] - \XX_i^\prime b  \right) \Big] =& 0
 % \end{align*}
 \begin{align*}
-    0 =& \EE \left[ \XX_i (Y_i - \XX_i^\prime b) \right] \\
-    =& \EE \Big[ \EE \left[ \XX_i (Y_i - \XX_i^\prime b) \big\vert \XX_i \right] \Big] \\
-    =& \EE \Big[ \XX_i \left( \EE[Y_i \vert \XX_i ] - \XX_i^\prime b  \right) \Big]
+    0 =& \EE \left[ \XX_i ({\color<3->{MainBlue} Y_i - b^\prime \XX_i}) \right] \\
+    \uncover<4->{=}& \uncover<4->{\EE \Big[ \EE \left[ \XX_i (Y_i - b^\prime \XX_i) \big\vert \XX_i \right] \Big]} \\
+    \uncover<5->{=}& \uncover<5->{\EE \Big[ \XX_i \left( {\color<5->{red} \EE[Y_i \vert \XX_i ] - b^\prime \XX_i}  \right) \Big]}
 \end{align*}
+\onslide<6->
 \begin{itemize}
     \item [$\implies$] First order equation (normal equation) for minimizing (\ref{eq1})
     \item [$\implies$] Best Linear Predictor of $Y_i$ is also the Best Linear Predictor for the conditional expectation of $Y_i$ given $\XX_i$
@@ -635,6 +639,7 @@ Link between CEF and regression:
         \item [$\implies$] CEF is the best predictor of $Y$ from $W$ among \emph{all} functions.
         \item \textbf{Question:} what does the BLP $\beta^\prime T(W)$ do when $g(W) = \EE[Y \vert W]$ is nonlinear?
     \end{itemize}
+    \pause
     Specialize the CEF Prediction Property decomposition to $m(W) = b^\prime T(W)$:
     \begin{equation*}
         \EE\big[(Y - b^\prime T(W))^2\big]
@@ -649,6 +654,7 @@ Link between CEF and regression:
     \end{itemize}
 
     \vspace{2ex}
+    \pause
     \textbf{Implication:} minimizing MSE for predicting $Y$ is equivalent to minimizing MSE for approximating $g(W)$:
     \begin{equation*}
         \arg\min_b \EE\big[(Y - b^\prime T(W))^2\big]
@@ -860,22 +866,24 @@ Link between CEF and regression:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Analysis of variance}
-    Analysis of variance involves the decomposition of the variation of $Y$ into explained an unexplained parts. BLP problem's provided decomposition:
+    Analysis of variance involves the decomposition of the variation of $Y$ into explained and unexplained parts. BLP problem's provided decomposition:
     \begin{equation*}
-        Y = \beta^\prime \XX + \epsilon, \quad \EE [\epsilon \XX] = 0
+        Y = \beta^\prime \XX + \epsilon, \quad {\color<3->{MainBlue} \EE [\epsilon \XX] = 0}
     \end{equation*}
     Variation of $Y$ (second moment):
     \begin{align*}
-        \EE[Y^2] =& \EE [(\beta^\prime \XX + \epsilon)^2] \\
-        % =& \EE [(\beta^\prime \XX)^2 + \beta^\prime \XX \epsilon + \epsilon^2] \\
-        =& \EE [(\beta^\prime \XX)^2] + 2 \EE [\beta^\prime \XX \epsilon] + \EE [\epsilon^2] \\
-        =& \EE [(\beta^\prime \XX)^2] + 2 \beta^\prime \EE [\XX \epsilon] + \EE [\epsilon^2] \\
-        =& \underbrace{\EE [(\beta^\prime \XX)^2 ]}_{\text{explained}} + \underbrace{\EE [\epsilon^2]}_{\text{residual}} 
+        \EE[Y^2] ={}& \EE [(\beta^\prime \XX + \epsilon)^2] \\
+        % =& \EE [(\beta^\prime \XX)^2 + \beta^\prime \XX \epsilon + \epsilon^2] \\ 
+        \uncover<2->{=}& \uncover<2->{\EE [(\beta^\prime \XX)^2] + 2 \EE [\beta^\prime \XX \epsilon] + \EE [\epsilon^2]} \\
+        \uncover<2->{=}& \uncover<2->{\EE [(\beta^\prime \XX)^2] + 2 \beta^\prime {\color<3->{MainBlue} \EE [\XX \epsilon]} + \EE [\epsilon^2]} \\
+        \uncover<3->{=}& \uncover<3->{\underbrace{\EE [(\beta^\prime \XX)^2 ]}_{\text{explained}} + \underbrace{\EE [\epsilon^2]}_{\text{residual}}} 
     \end{align*}
+    \onslide<4->
     Decompose variation in $Y$ into \textbf{explained variation} and \textbf{residual variation}.
     \begin{equation*}
         \text{MSE}_{\text{Pop}} = \EE [\epsilon^2]
     \end{equation*}
+    \onslide<5->
     Ratio of explained variation to total variation:
     \begin{equation*}
         R^2_{\text{pop}} = \frac{\EE[(\beta^\prime \XX)^2]}{\EE[Y^2]} = 1 - \frac{\EE [\epsilon^2]}{\EE [Y^2]}
@@ -887,7 +895,7 @@ Link between CEF and regression:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Analysis of variance in sample}
-    Analysis of variance involves the decomposition of the variation of $Y$ into explained an unexplained parts. BLP problem's provided decomposition:
+    Analysis of variance involves the decomposition of the variation of $Y$ into explained and unexplained parts. BLP problem's provided decomposition:
     \begin{equation*}
         Y_i = \hat{\beta}^\prime \XX_i + \hat{\epsilon}_i
     \end{equation*}
@@ -912,7 +920,7 @@ Link between CEF and regression:
 \begin{frame}{Analysis of variance in sample and population}
     By law of large numbers, when $p/n$ is small:
     \begin{equation*}
-        \mathbb{E}_n [\hat{\epsilon}^2] \approx \EE [\epsilon^2], \quad 
+        \mathbb{E}_n [Y^2] \approx \EE [Y^2], \quad 
         \mathbb{E}_n[(\hat{\beta}^\prime \XX)^2] \approx \EE[(\beta^\prime \XX)^2], \quad
         \mathbb{E}_n [\hat{\epsilon}^2] \approx \EE [\epsilon^2]
     \end{equation*}
@@ -968,8 +976,18 @@ Link between CEF and regression:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Overfitting: computational example}
-    Suppose $X \sim N(0, \mathbb{I}_p)$ and $Y \sim N(0, 1)$ are statistically independent. It follows that the best linear predictor of $Y$ is $\beta^\prime X = 0$ (i.e. $\beta = 0$). $R^2_{\text{pop}}$, the proportion of variation of $Y$ explained by the BLP, is 0 ($R^2_{\text{pop}} = 0$).
+    Suppose:
+    \begin{itemize}
+    \item $X \sim N(0, \mathbb{I}_p)$
+    \item $Y \sim N(0, 1)$
+    \item $X$ and $Y$ are statistically independent
+    \item [$\implies$] It follows that the true best linear predictor of $Y$ is $\beta^\prime X = 0$ (i.e. $\beta = 0$)
+    \item [$\implies$] $R^2_{\text{pop}}$, the proportion of variation of $Y$ explained by the BLP, is 0 ($R^2_{\text{pop}} = 0$).
+    \end{itemize}
 
+    \pause
+    \vspace{2ex}
+    Overall:
     \begin{itemize}
         \item If $p=n$, then the typical $R^2_{\text{sample}}$ is $\approx 1$
         \item If $p = n/2$, then the typical $R^2_{\text{sample}}$ is $\approx 0.5$
@@ -1098,31 +1116,31 @@ account for this phenomenon
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Partialing out operation proof}
-    Want to show: ${Y = \nu V + \mu U} \implies \tilde{Y} = \nu \tilde{V} + \mu \tilde{U}$, where:
+    Want to show: ${\color<4->{MainBlue}Y = \nu V + \mu U} \implies \tilde{Y} = \nu \tilde{V} + \mu \tilde{U}$, where:
     \begin{equation*}
         \tilde{V} = V - \gamma_{VW}^\prime W, \quad \gamma_{VW} = \arg \min_{\gamma} \EE [(V - \gamma^\prime W)^2]
     \end{equation*}
-        \textbf{Proof:} $\gamma_{VW}$ is the BLP of $V$ given $W$ $\implies$ $\tilde{V}$ is a residual $\implies$ normal equation:
+        \onslide<2->\textbf{Proof:} $\gamma_{VW}$ is the BLP of $V$ given $W$ $\implies$ $\tilde{V}$ is a residual $\implies$ normal equation:
     \begin{align*}
         % \gamma_{VW} =& \arg \min_{\gamma} \EE [(V - \gamma^\prime W)^2] \\
         % \tilde{V} =&  \underbrace{V - \gamma_{VW} W}_{\text{residual of linear prediction}} \\
-        \EE [\tilde{V} W] = 0
+        {\color<5->{MainBlue}\EE [\tilde{V} W]} = 0 \quad (\text{same for } \tilde{U})
     \end{align*}
-    We will define $\gamma^* = \nu \gamma_{VW} + \mu \gamma_{UW}$ as a candidate BLP of $Y$ given $W$:
+    \onslide<3->We will define ${\color<4->{red}\gamma^* = \nu \gamma_{VW} + \mu \gamma_{UW}}$ as a candidate BLP of $Y$ given $W$:
     \begin{align*}
         \nu \tilde{V} + \mu \tilde{U} =& \nu( V - \gamma_{VW}^\prime W) + \mu ( U - \gamma_{UW}^\prime W) \\
         % =& \nu V - \nu \gamma_{VW}^\prime W + \mu U - \mu \gamma_{UW}^\prime W \\
-        =& \underbrace{\color{MainBlue}\nu V + \mu U}_{\text{Def of $Y$}} - \underbrace{(\nu \gamma_{VW} + \mu \gamma_{UW})^\prime W}_{\text{Linear function of $W$}} \\
-        =& {\color{MainBlue}Y} - {\gamma^*}^\prime W
+        \uncover<4->{=}& \uncover<4->{\underbrace{\color{MainBlue}\nu V + \mu U}_{\text{Def of $Y$}} - \underbrace{{\color{red}(\nu \gamma_{VW} + \mu \gamma_{UW})}^\prime W}_{\text{Linear function of $W$}}} \\
+        \uncover<4->{=}& \uncover<4->{{\color{MainBlue}Y} - {\color{red}{\gamma^*}}^\prime W}
     \end{align*}
-    $\gamma^*$ is the BLP of $Y$ if normal equation holds. \textbf{Check orthogonality.}
+    \onslide<5->$\gamma^*$ is the BLP of $Y$ if normal equation holds. \textbf{Check orthogonality.}
     \begin{equation*}
         \EE\big[W(\nu \tilde{V} + \mu \tilde{U})\big]
-        = \nu \underbrace{\EE[W \tilde{V}]}_{=0} + \mu \underbrace{\EE[W \tilde{U}]}_{=0} = 0 .
+        = \nu \underbrace{\color{MainBlue}\EE[W \tilde{V}]}_{=0} + \mu \underbrace{\color{MainBlue}\EE[W \tilde{U}]}_{=0} = 0 .
     \end{equation*}
-    So $\gamma^*$ solves the normal equations for $Y$, i.e.\ $\gamma^*$ is a valid $\gamma_{YW}$, and
+    \onslide<6->So $\gamma^*$ solves the normal equations for $Y$, i.e.\ $\gamma^*$ is a valid $\gamma_{YW}$, and
     \begin{equation*}
-        \tilde{Y} = Y - {\gamma^*}' W = \nu \tilde{V} + \mu \tilde{U}. 
+        \tilde{Y} = Y - {\gamma^*}^\prime W = \nu \tilde{V} + \mu \tilde{U}.
     \end{equation*}
 
 \end{frame}

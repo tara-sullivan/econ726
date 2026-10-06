@@ -1,0 +1,37 @@
+% Helpers for the "selection on X" figures (Chernozhukov et al. 2025, Figure 5.4)
+% Outcome values (cm on the vertical axis); Y(0) = Y(1) for everyone (no treatment effect)
+% X = 1 units centered at 3.25, X = 0 units centered at 1.15
+% P(D = 1 | X = 1) = 0.8, P(D = 1 | X = 0) = 0.2
+\def\blueD{3.0,3.5}                                  % X = 1, D = 0
+\def\blueT{2.4,2.65,2.85,3.15,3.35,3.65,3.85,4.1}    % X = 1, D = 1
+\def\orangeD{0.3,0.55,0.75,1.05,1.25,1.55,1.75,2.0}  % X = 0, D = 0
+\def\orangeT{0.9,1.4}                                % X = 0, D = 1
+\tikzset{
+    xone/.style={MainBlue, thick},
+    xzero/.style={Orange, thick},
+    faded/.style={opacity=0.15},
+}
+% \soxcross{style}{x}{list}: X = 1 markers (crosses); \soxplus: X = 0 markers (pluses)
+\newcommand{\soxcross}[3]{\foreach \y in #3 {\draw[xone, #1] (#2-.06, \y-.06) -- (#2+.06, \y+.06) (#2-.06, \y+.06) -- (#2+.06, \y-.06);}}
+\newcommand{\soxplus}[3]{\foreach \y in #3 {\draw[xzero, #1] (#2-.08, \y) -- (#2+.08, \y) (#2, \y-.08) -- (#2, \y+.08);}}
+% \soxdens{style}{x}{side (-1 left, 1 right)}{weight on X = 1}{weight on X = 0}{domain}
+\newcommand{\soxdens}[6]{\draw[thick, #1] plot[domain=#6, samples=60, smooth]
+    ({#2 + #3*1.5*(#4*exp(-(\x-3.25)^2/0.405) + #5*exp(-(\x-1.15)^2/0.405))}, \x);}
+% \soxaxis{x}{label}
+\newcommand{\soxaxis}[2]{\draw[thick] (#1, -0.1) -- (#1, 4.4) node[above] {#2};}
+% \soxmarks{x}{style for D = 0 units}{style for D = 1 units}
+\newcommand{\soxmarks}[3]{\soxcross{#2}{#1}{\blueD}\soxplus{#2}{#1}{\orangeD}\soxcross{#3}{#1}{\blueT}\soxplus{#3}{#1}{\orangeT}}
+% \soxselect{from x}{to x}{d}: selection arrow labeled P(D = d | X)
+\newcommand{\soxselect}[3]{\draw[->] (#1, 2.45) -- (#2, 2.45)
+    node[midway, above, align=center, font=\scriptsize] {$\PP(D = #3 \vert X)$\\ selection on $X$};}
+% Legend and world labels
+\newcommand{\soxlegend}{
+    \draw[rounded corners, MainBlue] (-1.45, 4.15) rectangle (-0.25, 4.95);
+    \soxcross{}{-1.25}{{4.75}} \node[right, font=\scriptsize] at (-1.15, 4.75) {$X = 1$};
+    \soxplus{}{-1.25}{{4.35}} \node[right, font=\scriptsize] at (-1.15, 4.35) {$X = 0$};
+    \node[font=\scriptsize, DarkGray] at (0.8, -0.4) {Counterfactual world};
+    \node[font=\scriptsize, DarkGray] at (9.6, -0.4) {Counterfactual world};
+    \node[font=\scriptsize, DarkGray] (obs) at (5.2, -0.4) {Observed world};
+    \draw[->, Green] (obs.west) -- ++(-0.8, 0);
+    \draw[->, Green] (obs.east) -- ++(0.8, 0);
+}

@@ -9,3 +9,14 @@ Class 2 - Probability
 Class 3 - Covid! Missed. 
 
 Class 4 - Conditional Expectation   
+
+Class 5 - Regression
+* I tried to make an agent to add math timing to slides. Unfortunately I think it messed up some of my matrix algebra. I would carefully check that transposes are correct in slides next year. 
+* Really re-worked, and it worked well
+* Used causal ML book for examples
+
+Class 6 - Causal inference (hopefully chp 2 + 5)
+
+Future classes:
+* high dimensional models + causal effects: chp 4 + 5 of 
+* staggered diff-in-diff

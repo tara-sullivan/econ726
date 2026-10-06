@@ -64,6 +64,9 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 \usetikzlibrary{decorations.pathreplacing,calligraphy}
 
+% Helpers for selection-on-X figures (Figure 5.4 of Chernozhukov et al.)
+\input{img/selection_on_x}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}    
 %\beamertemplatenavigationsymbolsempty
@@ -77,7 +80,7 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section[Causality]{Regression and causality}
+\section{Potential Outcomes}
 \miniframesoff
 \begin{frame}
     \tableofcontents[currentsection]
@@ -89,7 +92,7 @@ Notes/comments are in gray and will be excluded from the presentation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Regression and causality}
 
-Regression gives the best linear approximation to the CEF, in a MMSE sense
+Regression gives the best linear approximation to the CEF, in a MSE sense
 \begin{itemize}
     \item But when does a regression represent something causal?
 \end{itemize}
@@ -110,19 +113,24 @@ Consider the relationship between future earnings $Y_i$ and whether $i$ attends 
  
 \begin{table}
 \begin{tabular}{ll}
-$D_i \in \{0, 1\}$ &Binary treatment variable for individual $i$ \\ 
-$Y_i$ &Measure of earnings for individual $i$\\
+$D_i \in \{0, 1\}$ &Binary \textbf{treatment variable} for individual $i$ \\ 
+$Y_i$ &\textbf{Outcome} \\
+&Measure of earnings for individual $i$\\
 % \pause
-$Y_{1i}$ &Earnings if individual $i$ goes to college ($D_i=1$) \\
+\hline
+$Y_{i} (1)$ &\textbf{Treatment potential outcome} \\
+&Earnings if individual $i$ goes to college ($D_i=1$) \\
 &Alternative notation: $Y_i(1)$, $Y_i^1$, $y_{i1}$ \\
-$Y_{0i}$ &Earnings if individual $i$ does not go to college ($D_i=0$)  \\
+\hline
+$Y_{i} (0)$ &\textbf{Control potential outcome} \\
+&Earnings if individual $i$ does not go to college ($D_i=0$)  \\
 &Alternative notation: $Y_i(0)$, $Y_i^0$, $y_{i0}$ \\\\
 \end{tabular}
 \end{table}
 
 \begin{itemize}
-    \item $Y_{0i}$ is earnings of an individual had they not gone to college, \emph{irrespective of whether they actually went}
-    \item Causal effect college attendance for individual $i$ is the difference $Y_{1i} - Y_{0i}$
+    \item $Y_{i} (0)$ is earnings of an individual had they not gone to college, \emph{irrespective of whether they actually went}
+    \item Causal effect college attendance for individual $i$ is the difference $Y_{i} (1) - Y_{i} (0)$
 \end{itemize}
 
 % \pause
@@ -130,12 +138,12 @@ $Y_{0i}$ &Earnings if individual $i$ does not go to college ($D_i=0$)  \\
 Observed outcome $Y_i$ can be written as:
 \begin{align*}
     Y_i =& \begin{cases}
-    Y_{1i} &\text{if} D_i = 1 \\
-    Y_{0i} &\text{if} D_i = 0
+    Y_{i} (1) &\text{if} D_i = 1 \\
+    Y_{i} (0) &\text{if} D_i = 0
     \end{cases} \\
-    =& Y_{0i} + (Y_{1i} - Y_{0i}) D_i
+    =& Y_{i} (0) + (Y_{i} (1) - Y_{i} (0)) D_i
 \end{align*}
-We can see $Y_{0i}$ or $Y_{1i}$ in the data, but never both
+We can see $Y_{i} (0)$ or $Y_{i} (1)$ in the data, but never both
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,16 +155,16 @@ We can see $Y_{0i}$ or $Y_{1i}$ in the data, but never both
 
 \textbf{Problem:}
 \begin{itemize}
-    \item If an individual is treated ($D_i = 1$), we never observe the outcome in which they are not treated ($Y_{i0}$)
-    \item If an individual is not treated ($D_i = 0$), we never observe the outcome in which they are treated ($Y_{1i}$)
+    \item If an individual is treated ($D_i = 1$), we never observe the outcome in which they are not treated ($Y_{i} (0)$)
+    \item If an individual is not treated ($D_i = 0$), we never observe the outcome in which they are treated ($Y_{i} (1)$)
 \end{itemize}
 
 \vspace{2ex}
-\textbf{\color{HunterPurple} The causal effect $\mathbf{Y_1 - Y_0}$ is unidentifiable}
+\textbf{\color{HunterPurple} The causal effect $\mathbf{Y (1) - Y (0)}$ is unidentifiable}
 
 \begin{table}
 \begin{tabular}{lll}
-Group &$Y_1$ &$Y_0$ \\
+Group &$Y (1)$ &$Y (0)$ \\
 $D = 1$ &Observable as $Y$ &Unobservable counterfactual \\
 $D = 0$ &Unobservable counterfactual &Observable as $Y$
 \end{tabular}
@@ -174,28 +182,82 @@ $D = 0$ &Unobservable counterfactual &Observable as $Y$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Stable Unit Treatment Value Assumption (SUTVA)}
+
+To link potential outcomes to observed data, we need two assumptions; together, these are known as \textbf{SUTVA}
+
+\vspace{2ex}
+\textbf{1. Consistency:} we observe $Y_i = Y_i(D_i)$
+\begin{itemize}
+    \item Equivalently, $Y_i = D_i Y_i(1) + (1 - D_i) Y_i(0)$
+    \item Rules out hidden versions of treatment: $D_i = 1$ must mean the same thing for everyone
+    \item e.g., if ``college'' includes both a 2-year and 4-year degree, $Y_i(1)$ is not well-defined
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{2. No interference:} $i$'s potential outcomes depend only on $i$'s own treatment, not on anyone else's
+\begin{itemize}
+    \item Built into the notation $Y_i(d)$, which is indexed only by $i$'s own treatment status
+    \item Rules out spillovers, externalities, and general equilibrium effects
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{When might no interference fail?}
+\begin{itemize}
+    \item Vaccines: if many people are vaccinated, herd immunity protects the unvaccinated too
+    \item College: if many people get a degree, the college wage premium may fall
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Assumptions 2.1.1--2.1.2 and Section 2.4}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Types of comparisons}
+
+    Causal effect of interest in often \textbf{Average Treatment Effect}:
+    \begin{equation*}
+        \EE [Y(1) - Y(0)] = \EE [Y(1)] - \EE [Y(0)]
+    \end{equation*}
+    or \textbf{Averate Treatment Effect on the Treated}:
+    \begin{equation*}
+        \EE [Y(1) - Y(0) \vert D = 1] = \EE [Y(1) \vert D = 1] - \EE [Y(0) \vert D = 0]
+    \end{equation*}
+
+    \vspace{2ex}
+    We often discuss what is directly observable in data as the \textbf{na{i}ve comparison}. In the population this is:
+    \begin{equation*}
+        \EE [Y \vert D = 1] - \EE [Y \vert D = 0]
+    \end{equation*}
+    This is also the \textbf{average predictive effect} of treatment status on outcome.
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Na{\"i}ve comparison: $\EE [Y \vert D = 1] - \EE [Y \vert D=0]$}
 
 
-Let's consider the averages of $Y_{1i}$, $Y_{0i}$, and $Y_i$:
+Let's consider the averages of $Y_i(1)$, $Y_i(0)$, and $Y_i$:
 \begin{align*}
-\EE [ Y \vert D = 1 ] =& \EE [Y_0 + (Y_1 - Y_0) D \vert D = 1]
-&&\because Y = Y_0 + (Y_1 - Y_0) D \\
-=& \alert<2>{\EE[Y_1 \vert D = 1]}\\
+\EE [ Y \vert D = 1 ] =& \EE [Y (0) + (Y(1) - Y (0)) D \vert D = 1]
+&&\because Y = Y(0) + (Y(1) - Y(0)) D \\
+=& \alert<2>{\EE[Y(1) \vert D = 1]}\\
 \EE[Y \vert D = 0] 
-% =& E [Y_0 + (Y_1 - Y_0) D \vert D = 0] \\
-=& \alert<2>{\EE[Y_0 \vert D = 0]}
+% =& E [Y(0) + (Y(1) - Y(0)) D \vert D = 0] \\
+=& \alert<2>{\EE[Y(0) \vert D = 0]}
 \end{align*}
 
 \vspace{2ex}
 
-We can re-write the observed difference in health outcomes as:
+We can re-write the average predictive effect (observed difference) as:
 \begin{align*}
-\EE [Y \vert D = 1] - \EE [Y \vert D=0] 
-\onslide<2->{=& \alert<2>{\EE [Y_1 \vert D=1]} - \alert<2>{\EE [Y_0 \vert D=0]} \\}
-\onslide<3->{=& \EE [Y_1 \vert D=1] \alert<3>{- \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\}
-\onslide<4->{=& \underbrace<5->{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{Avg. treatment effect on treated}} 
-\onslide<4->{+} \underbrace<5->{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}}
+\EE [Y \vert D = 1] -& \EE [Y \vert D=0] 
+\onslide<2->{= \alert<2>{\EE [Y(1) \vert D=1]} - \alert<2>{\EE [Y(0) \vert D=0]} \\}
+\onslide<3->{=& \EE [Y(1) \vert D=1] \alert<3>{- \EE [Y(0) \vert D = 1] + \EE [Y(0) \vert D = 1]}  - \EE [Y(0) \vert D=0] \\}
+\onslide<4->{=& \underbrace<5->{\EE [Y(1) - Y(0) \vert D = 1]}_{\text{Avg. treatment effect on treated}} 
+\onslide<4->{+} \underbrace<5->{\EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D=0]}_{\text{Selection bias}}}
 \end{align*}
 
 \end{frame}
@@ -206,26 +268,26 @@ We can re-write the observed difference in health outcomes as:
 Observed difference in earnings equals the average treatment effect (ATE) on the treated plus selection bias:
 \begin{align*}
 \EE [Y \vert D = 1] - \EE [Y \vert D=0] 
-% =& \EE [Y_1 \vert D=1] { - \EE [Y_0 \vert D = 1] + \EE [Y_0 \vert D = 1]}  - \EE [Y_0 \vert D=0] \\
-=& \underbrace{\EE [Y_1 - Y_0 \vert D = 1]}_{\text{ATE on treated}} 
-+ \underbrace{\EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]}_{\text{Selection bias}}
+% =& \EE [Y(1) \vert D=1] { - \EE [Y(0) \vert D = 1] + \EE [Y(0) \vert D = 1]}  - \EE [Y(0) \vert D=0] \\
+=& \underbrace{\EE [Y(1) - Y(0) \vert D = 1]}_{\text{ATE on treated}} 
++ \underbrace{\EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D=0]}_{\text{Selection bias}}
 \end{align*}
 ATE on treated is the average causal effect of college attendance on those who went to college:
 \begin{equation*}
-    \EE [Y_1 \vert D=1] - \EE [Y_0 \vert D = 1] = \EE [Y_1 - Y_0 \vert D = 1]
+    \EE [Y(1) \vert D=1] - \EE [Y(0) \vert D = 1] = \EE [Y(1) - Y(0) \vert D = 1]
 \end{equation*}
 Selection bias:
 \begin{equation*}
-    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D=0]
+    \EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D=0]
 \end{equation*}
 \textbf{What do you think selection bias looks like in this example?}
 
 \pause
 \begin{itemize}
-    \item The difference in $Y_{0i}$ between those who went to college and those who didn't 
+    \item The difference in $Y_i(0)$ between those who went to college and those who didn't 
     \item Consider someone who went to college. Now assume that person didn't go. Their expected earnings may be higher than those of someone who didn't go to college at all 
     \begin{itemize}
-        \item[$\implies$] Those who didn't go to college, on average, have lower values of $Y_{0i}$
+        \item[$\implies$] Those who didn't go to college, on average, have lower values of $Y_i(0)$
 
         \item[$\implies$] Selection bias is positive
     \end{itemize}
@@ -233,43 +295,281 @@ Selection bias:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example: Marijuana and longevity}
+
+Does smoking marijuana ($D_i$) affect longevity ($Y_i$)?
+\begin{itemize}
+    \item Suppose marijuana has \textbf{no causal effect} on longevity: $Y_i(1) = Y_i(0)$ for everyone
+    \item[$\implies$] ATE on treated $= \EE [Y(1) - Y(0) \vert D = 1] = 0$
+\end{itemize}
+
+\vspace{2ex}
+But smoking is not randomly assigned: people choose whether to smoke
+\begin{itemize}
+    \item Suppose smokers are more likely to make other poor health choices (e.g., drinking alcohol) that shorten life expectancy
+\end{itemize}
+
+\pause
+\vspace{2ex}
+Then smokers would have shorter lives \emph{even if they had not smoked}:
+\begin{equation*}
+    \underbrace{\EE [Y \vert D = 1] - \EE [Y \vert D=0]}_{\text{Na{\"i}ve comparison} \ < \ 0}
+    = \underbrace{0}_{\text{ATE on treated}}
+    + \underbrace{\EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D=0]}_{\text{Selection bias} \ < \ 0}
+\end{equation*}
+
+\begin{itemize}
+    \item Data show a negative relationship between smoking and longevity, even though the causal effect is zero
+    \item Selection bias is negative here; in the college example it was positive
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Example 2.1.2}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Random assignment and selection bias}
 
-Random assignment ($Y_0, Y_1 \perp D$) will solve the selection problem
+\textbf{Random assignment assumption:} treatment status is statistically independent of each potential outcome, and assignment is nontrivial:
+\begin{equation*}
+    D \perp Y(d) \ \text{for} \ d \in \{0, 1\}, \quad \text{and} \quad 0 < P(D = 1) < 1
+\end{equation*}
+\begin{itemize}
+    \item Treatment assignment mechanism is purely random; knowing $D$ tells us nothing about $Y(0)$ or $Y(1)$
+    \item \textbf{Positivity} ($0 < P(D=1) < 1$) ensures there are units in both treatment and control
+\end{itemize}
+
+\vspace{2ex}
+Random assignment ($Y(0), Y(1) \perp D$) will solve the selection problem
 \begin{itemize}
     \item Causes selection bias to equal zero
 \end{itemize}
 \begin{align*}
-    \EE [Y_1 \vert D = 1] = \EE[Y_1 \vert D = 0] = \EE [Y_1] \quad
-    \text{and}& \quad \EE [Y_0 \vert D = 0] = \EE [Y_0 \vert D = 1] = \EE [Y_0] \\
+    \EE [Y(1) \vert D = 1] =& \EE[Y(1) \vert D = 0] = \EE [Y(1)] \quad \\
+    \text{and} \quad \EE [Y(0) \vert D = 0] =& \EE [Y(0) \vert D = 1] = \EE [Y(0)] \\
     \implies&
-    \EE [Y_0 \vert D = 1] - \EE [Y_0 \vert D = 0] = 0 \\
+    \EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D = 0] = 0 \\
     \implies&
     \text{Selection bias is 0} \\
     \implies&
     \text{Na{\"i}ve comparison = ATE on treated}
 \end{align*}
-What do we do when we don't have random assignment?
+
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{The ideal experiment}
+
+A useful first question for any causal claim: \textbf{what experiment would you run if you could?}
+\begin{itemize}
+    \item Who is randomized, into what treatment, and what outcome do you measure?
+    \item If you can't describe the ideal experiment, the causal question may not be well-defined
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Marijuana and longevity:}
+\begin{itemize}
+    \item Randomly assign a group of people to smoke or not smoke marijuana for decades; compare age at death
+    \item Randomization ensures smokers and non-smokers have the same $\EE [Y(0)]$ $\implies$ no selection bias
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{College and earnings:}
+\begin{itemize}
+    \item Randomly admit (and require attendance from) some high school graduates; compare later earnings
+\end{itemize}
+
+\pause
+\vspace{2ex}
+Often the ideal experiment is unethical, infeasible, or too expensive
+\begin{itemize}
+    \item Rest of the course: approximating the ideal experiment with observational data
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Angrist and Pischke (2009), Chapter 1}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Randomization and regression}
+
+Assume treatment effects are constant and the same for everyone
+\begin{align*}
+    Y_i =& Y_{i} (0) + (Y_{i} (1) - Y_{i} (0)) D_i \\
+    \onslide<2->{=& 
+    {\color{HunterPurple} \EE [Y_i(0)]}
+    + (Y_{i} (1) - Y_i(0)) D_i 
+    + Y_i(0) {\color{HunterPurple} - \EE [Y_i(0)]} \\}
+    \onslide<3->{
+    =& 
+    \underbrace{\EE [Y_i(0)]}_{\alpha}
+    + \underbrace{(Y_i(1) - Y_i(0))}_{\beta} D_i 
+    + \underbrace{Y_i(0) - \EE [Y_i(0)]}_{\eta_i \text{ (Random part of $Y_i(0)$)}} \\}
+    \onslide<4->{
+    =& \alpha + \beta D_i + \eta_i}
+\end{align*}
+
+\onslide<5->
+Evaluate this with the treatment on ($D = 1$) and off ($D = 0$):
+\begin{align*}
+    D = 1 \implies \EE [Y \vert D = 1] 
+    &= \alpha + \beta + \EE [\eta \vert D = 1] \\
+    D = 0 \implies \EE [Y \vert D = 0] 
+    &= \alpha + \EE [\eta \vert D = 0] \\
+\end{align*}
+
+
+\onslide<6->
+Then: 
+\begin{align*}
+    \EE [Y \vert D = 1] - \EE [Y \vert D = 0] 
+    =& (\alpha + \beta + \EE [\eta \vert D = 1]) - (\alpha + \EE [\eta \vert D = 0]) \\
+    =& \beta + \underbrace{(\EE [\eta \vert D = 1] - \EE [\eta \vert D = 0])}_{\text{selection bias}}
+\end{align*}
+
+\onslide<7->
+Selection bias will equal zero if the correlation between the error term and treatment assignment is zero. 
+\begin{itemize}
+    \item If $D$ is randomly assigned, regression of $Y$ onto $D$ (and a constant) yields the causal effect $\beta$
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Covariates and pre-treatment heterogeneity}
+    Suppose in addition to outcome ($Y$) and treatment ($D$). there are \textbf{pre-treatment} or \textbf{pre-determined} covariates $W$
+    \begin{itemize}
+        \item e.g. interested in treatment effect across age
+    \end{itemize}
+
+    \vspace{2ex}
+    Treatment effect and naive comparison likely will not match will not match if there is pre-treatment heterogeneity
+    
+    \vspace{2ex}
+    \textbf{Assume:} treatment assignment independent of covariates: 
+    \begin{equation*}
+        D \perp (Y(0), Y(1), W), \quad\text{and} \ 0 \leq P (D = 1) \leq 1
+    \end{equation*}
+    then:
+    \begin{equation*}
+        \EE [Y \vert D = d, W] = \EE [Y(d) \vert D = d, W] = \EE [Y (d) \vert W]
+    \end{equation*}
+    $\implies$ \textbf{conditional average treatment effects} can be estimated from conditional average predictive effects:
+    \begin{equation*}
+        \EE [Y(1) \vert W] - \EE [Y(0) \vert W] = \EE[Y \vert D=1, W] - \EE [Y \vert D=0, W]
+    \end{equation*}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Bad controls}
+
+    \textbf{TODO}
+
+    Sometimes tempting to control for post-treatment covariates
+
+    \vspace{2ex}\textbf{Example:} Interested in the effect of college on earnings
+    \begin{itemize}
+        \item Suppose people can work white-collar or blue-collar job. 
+    \end{itemize}
+    Good controls: can be thought of as having been fixed at the time the regressor of interest was determined. 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Testing covariate balance}
+    Random assignment assumption induces covariate balance. 
+    \begin{itemize}
+        \item Distribution of covariates should be the same under treatment and control:
+    \end{itemize}
+    \begin{equation*}
+        W \vert D = 1 \sim W \vert D = 0
+    \end{equation*}
+    equivalently:
+    \begin{equation*}
+        D \vert W \sim D
+    \end{equation*}
+    Useful implication is:
+    \begin{equation*}
+        \EE [D \vert W ] = \EE [D]
+    \end{equation*}
+    This is testable using regression tools; the $R^2$ of a regression of $D$ on $W$ is 0 under randomization.
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[CIA]{Conditional Independence Assumption}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Random assignment and selection bias}
+
+% Random assignment ($Y(0), Y(1) \perp D$) will solve the selection problem
+% \begin{itemize}
+%     \item Causes selection bias to equal zero
+% \end{itemize}
+% \begin{align*}
+%     \EE [Y(1) \vert D = 1] =& \EE[Y(1) \vert D = 0] = \EE [Y(1)] \quad \\
+%     \text{and} \quad \EE [Y(0) \vert D = 0] =& \EE [Y(0) \vert D = 1] = \EE [Y(0)] \\
+%     \implies&
+%     \EE [Y(0) \vert D = 1] - \EE [Y(0) \vert D = 0] = 0 \\
+%     \implies&
+%     \text{Selection bias is 0} \\
+%     \implies&
+%     \text{Na{\"i}ve comparison = ATE on treated}
+% \end{align*}
+
+
+% \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Impact of chocolate consumption on Nobel laureates?}
+    \includegraphics[width=\textwidth]{img/fig-5-1.png}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Common cause}
+   Common cause creates non-causal association
+   \begin{figure}
+   \includegraphics[width=2in]{img/fig-5-2.png} 
+   \end{figure}
+\begin{itemize}
+    \item Should be comparing Switzerland to a country similar to Switzerland
+\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Conditional Independence Assumption}
 
-Independence of potential outcomes and the treatment:
+Last section: how do we infer causal effects when we have \textbf{random assignment} of treatment.
+
 \begin{itemize}
-     \item [$\implies$] ($Y_0, Y_1 \perp D$)
+    \item [$\implies$] Independence of potential outcomes and the treatment
+     \item [$\implies$] $Y(0), Y(1) \perp D$
      \item [$\implies$] randomization
 \end{itemize} 
-What happens when we don't have independence? Meaning the occurrence of $D$ influences the occurrence of $Y_0$ and $Y_1$ (or vice versa)?
+
+\vspace{2ex}
+What happens when we don't have independence? Meaning the occurrence of $D$ influences the occurrence of $Y(0)$ and $Y(1)$ (or vice versa)?
 
 \vspace{3ex}
-Perhaps we can condition on certain variables $X$, such that the treatment $D_i$ and the potential outcomes $Y_{1i}, Y_{0i}$ LOOK independent
+Perhaps we can condition on certain variables $X$, such that the treatment $D_i$ and the potential outcomes $Y_i(1), Y_i(0)$ LOOK independent
 \begin{equation*}
-    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+    \{Y_i(0), Y_i(1)\} \perp D_i \vert X_i
 \end{equation*}
-
-\vspace{3ex}
+\begin{itemize}
+    \item Think of treatment $D_i$ as generated randomly (independent of potential outcomes) \textbf{conditional} on some pre-treatment variable $X$
+    \item [$\implies$] can learn about average causal treatment effects by regression of $Y_i$ on $D_i$ and $X_i$. 
+\end{itemize}
 
 \end{frame}
 
@@ -278,12 +578,12 @@ Perhaps we can condition on certain variables $X$, such that the treatment $D_i$
 
 Conditional independence assumption: 
 \begin{equation*}
-    \{Y_{0i}, Y_{1i}\} \perp D_i \vert X_i
+    \{Y_i(0), Y_i(1)\} \perp D_i \vert X_i
 \end{equation*}
-Intuitively: occurrence of $D_i$ does not influence the occurrence of $Y_{0i}$ or $Y_{1i}$, or vice versa, conditional on knowing $X_i$:
+Intuitively: occurrence of $D_i$ does not influence the occurrence of $Y_i(0)$ or $Y_i(1)$, or vice versa, conditional on knowing $X_i$:
 \begin{align*}
-    \EE[Y_{0i} \vert D_i, X_i] &= \EE [Y_{0i} \vert X_i] \\
-    \EE[Y_{1i} \vert D_i, X_i] &= \EE [Y_{1i} \vert X_i] 
+    \EE[Y_i(0) \vert D_i, X_i] &= \EE [Y_i(0) \vert X_i] \\
+    \EE[Y_i(1) \vert D_i, X_i] &= \EE [Y_i(1) \vert X_i] 
 \end{align*}
 
 \begin{columns}
@@ -321,18 +621,343 @@ Intuitively: occurrence of $D_i$ does not influence the occurrence of $Y_{0i}$ o
 
 Under conditional independence assumption, selection bias disappears conditional on $X_i$:
 \begin{align*}
-    \EE [Y_{0i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0]
-    =& \EE [Y_{0i} \vert X_i, D_i = 0] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
+    \EE [Y_i(0) \vert X_i, D_i = 1] - \EE [Y_i(0) \vert X_i, D_i = 0]
+    =& \EE [Y_i(0) \vert X_i, D_i = 0] - \EE [Y_i(0) \vert X_i, D_i = 0] \\
     =& 0
 \end{align*}
 So we can write the difference in observed outcomes \textbf{conditional on $X_i$} as:
 \begin{align*}
     \EE [Y_i \vert X_i, D_i = 1] - \EE [Y_i \vert X_i, D_i = 0] 
-    &= \EE [Y_{1i} \vert X_i, D_i = 1] - \EE [Y_{0i} \vert X_i, D_i = 0] \\
-    &= \EE [Y_{1i} \vert X_i] - \EE [Y_{0i} \vert X_i] \\
-    &= \EE [Y_{1i} - Y_{0i} \vert X_i]
+    &= \EE [Y_i(1) \vert X_i, D_i = 1] - \EE [Y_i(0) \vert X_i, D_i = 0] \\
+    &= \EE [Y_i(1) \vert X_i] - \EE [Y_i(0) \vert X_i] \\
+    &= \EE [Y_i(1) - Y_i(0) \vert X_i]
 \end{align*}
 Given the CIA, comparisons of average earnings (conditional on $X_i$) have a causal interpretation
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Example}
+    Suppose you are studying the impact of marijuana on longevity.
+
+\begin{columns}
+\column{0.62\linewidth}
+\begin{itemize}
+    \item As before, assume no causal effect: $Y = Y(0) = Y(1)$, so $\delta = \EE [Y(1)] - \EE [Y(0)] = 0$
+    \item Smoking decisions ($D$) are driven by other behaviors $X$ (e.g., drinking alcohol) that shorten life
+\end{itemize}
+
+\column{0.38\linewidth}
+\begin{figure}
+\begin{tikzpicture}
+\node [draw] (D) {Marijuana ($D$)};
+\node [draw, below =of D] (Y) {Longevity ($Y$)};
+\node [draw, right =0.5cm of D] (X) {Alcohol ($X$)};
+\draw (D) edge[->, dashed] node[left] {\footnotesize $\delta = 0$} (Y);
+\draw (X) edge[->] (D);
+\draw (X) edge[->] (Y);
+\end{tikzpicture}
+\end{figure}
+\end{columns}
+
+\pause
+\vspace{2ex}
+\textbf{Without adjusting for $X$:} higher $D$ predicts higher $X$, which predicts lower $Y$
+\begin{equation*}
+    \EE [Y \vert D = 1] - \EE [Y \vert D = 0] < 0
+\end{equation*}
+\begin{itemize}
+    \item Predictive effect $\neq$ causal effect $\implies$ \textbf{confounding} (selection bias)
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Conditioning on $X$} removes the selection bias:
+\begin{equation*}
+    \EE [Y \vert D = 1, X] - \EE [Y \vert D = 0, X]  = \EE [Y(1) - Y(0) \vert X]
+\end{equation*}
+provided that, conditional on $X$, variation in $D$ is independent of potential outcomes:
+\begin{itemize}
+    \item \textbf{Conditional ignorability:} $D \perp Y(d) \vert X$ for each $d$ \quad (i.e., the CIA)
+    \item \textbf{Consistency:} $Y = Y(D)$
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Section 5.2 and Assumption 5.2.1}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Selection on $X$ creates selection bias}
+
+\begin{figure}
+\begin{tikzpicture}[x=0.88cm, y=0.9cm]
+\soxlegend
+% Counterfactual: Y(0)
+\soxaxis{1.2}{$Y(0)$}
+\soxdens{}{1.2}{-1}{.5}{.5}{0:4.4}
+\soxmarks{1.4}{}{}
+% Counterfactual: Y(1), identical to Y(0)
+\onslide<2->{
+    \soxaxis{9.2}{$Y(1)$}
+    \soxdens{}{9.2}{1}{.5}{.5}{0:4.4}
+    \soxmarks{9.0}{}{}
+}
+% Observed: Y | D = 0
+\onslide<3->{
+    \soxselect{2.0}{3.0}{0}
+    \soxaxis{4.3}{$Y \vert D = 0$}
+    \soxdens{}{4.3}{-1}{.2}{.8}{0:4.4}
+    \soxmarks{4.5}{}{faded}
+    \node at (2.8, 4.6) {$\neq$};
+}
+% Observed: Y | D = 1
+\onslide<4->{
+    \soxselect{8.4}{7.4}{1}
+    \soxaxis{6.1}{$Y \vert D = 1$}
+    \soxdens{}{6.1}{1}{.8}{.2}{0:4.4}
+    \soxmarks{5.9}{faded}{}
+    \node at (7.6, 4.6) {$\neq$};
+}
+% Means
+\onslide<5->{
+    \draw[DarkGray, dashed] (0.2, 2.2) -- (10.2, 2.2);
+    \draw[HunterPurple, ultra thick] (3.8, 1.57) -- (4.8, 1.57);
+    \draw[HunterPurple, ultra thick] (5.6, 2.83) -- (6.6, 2.83);
+}
+\end{tikzpicture}
+\end{figure}
+
+\begin{overprint}
+\onslide<1>
+Potential outcome $Y(0)$ for everyone. Binary covariate $X$: units with $X = 1$ ({\color{MainBlue}$\times$}) tend to have higher outcomes than units with $X = 0$ ({\color{Orange}$+$})
+\onslide<2>
+\textbf{No treatment effect:} each unit's $Y(1)$ equals its $Y(0)$, so $Y(0)$ and $Y(1)$ have identical distributions ($\delta = 0$)
+\onslide<3>
+\textbf{Selection on $X$:} $X = 0$ units are more likely to be untreated, $\PP(D = 0 \vert X = 0) > \PP(D = 0 \vert X = 1)$
+\begin{itemize}
+    \item We only observe $Y(0)$ for the untreated $\implies$ $Y \vert D = 0$ is shifted \emph{down} relative to $Y(0)$
+\end{itemize}
+\onslide<4>
+$X = 1$ units are more likely to be treated, $\PP(D = 1 \vert X = 1) > \PP(D = 1 \vert X = 0)$
+\begin{itemize}
+    \item We only observe $Y(1)$ for the treated $\implies$ $Y \vert D = 1$ is shifted \emph{up} relative to $Y(1)$
+\end{itemize}
+\onslide<5>
+\textbf{\textcolor{HunterPurple}{Na{\"i}ve comparison:}} $\EE [Y \vert D = 1] > \EE [Y \vert D = 0]$, even though $\EE [Y(1)] = \EE [Y(0)]$ (dashed line)
+\begin{itemize}
+    \item Difference is entirely \textbf{selection bias}: the treated and untreated have different mixes of $X$
+\end{itemize}
+\end{overprint}
+
+\vspace{1ex}
+{\footnotesize Source: adapted from Chernozhukov et al. (2025), Figure 5.4}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditioning on $X$ removes selection bias}
+
+\begin{figure}
+\begin{tikzpicture}[x=0.88cm, y=0.9cm]
+\soxlegend
+% Counterfactual: Y(0) | X and Y(1) | X
+\soxaxis{1.2}{$Y(0) \vert X$}
+\soxdens{faded}{1.2}{-1}{.5}{.5}{0:4.4}
+\soxdens{xone}{1.2}{-1}{.6}{0}{2.2:4.4}
+\soxdens{xzero}{1.2}{-1}{0}{.6}{0:2.2}
+\soxmarks{1.4}{}{}
+\soxaxis{9.2}{$Y(1) \vert X$}
+\soxdens{faded}{9.2}{1}{.5}{.5}{0:4.4}
+\soxdens{xone}{9.2}{1}{.6}{0}{2.2:4.4}
+\soxdens{xzero}{9.2}{1}{0}{.6}{0:2.2}
+\soxmarks{9.0}{}{}
+% Observed: Y | D = 0, X
+\onslide<2->{
+    \soxselect{2.0}{3.0}{0}
+    \soxaxis{4.3}{$Y \vert D = 0, X$}
+    \soxdens{faded}{4.3}{-1}{.2}{.8}{0:4.4}
+    \soxdens{xone}{4.3}{-1}{.6}{0}{2.2:4.4}
+    \soxdens{xzero}{4.3}{-1}{0}{.6}{0:2.2}
+    \soxmarks{4.5}{}{faded}
+    \node at (2.8, 4.6) {$\sim$};
+}
+% Observed: Y | D = 1, X
+\onslide<3->{
+    \soxselect{8.4}{7.4}{1}
+    \soxaxis{6.1}{$Y \vert D = 1, X$}
+    \soxdens{faded}{6.1}{1}{.8}{.2}{0:4.4}
+    \soxdens{xone}{6.1}{1}{.6}{0}{2.2:4.4}
+    \soxdens{xzero}{6.1}{1}{0}{.6}{0:2.2}
+    \soxmarks{5.9}{faded}{}
+    \node at (7.6, 4.6) {$\sim$};
+}
+% Within-X means
+\onslide<4->{
+    \draw[xone, dashed] (0.2, 3.25) -- (10.2, 3.25);
+    \draw[xzero, dashed] (0.2, 1.15) -- (10.2, 1.15);
+}
+\end{tikzpicture}
+\end{figure}
+
+\begin{overprint}
+\onslide<1>
+\textbf{Condition on $X$:} split each potential outcome distribution by $X$
+\begin{itemize}
+    \item $Y(0) \vert X = 1$ ({\color{MainBlue}blue}) and $Y(0) \vert X = 0$ ({\color{Orange}orange}); same for $Y(1)$
+\end{itemize}
+\onslide<2>
+\textbf{Within $X = x$, selection is as good as random:} untreated $X = 1$ units look like all $X = 1$ units
+\begin{itemize}
+    \item[$\implies$] $Y \vert D = 0, X$ has the same distribution as $Y(0) \vert X$
+\end{itemize}
+\onslide<3>
+Same for the treated: $Y \vert D = 1, X$ has the same distribution as $Y(1) \vert X$
+\begin{itemize}
+    \item Only the \emph{mix} of $X$ differs between treated and untreated, not outcomes within $X$
+\end{itemize}
+\onslide<4>
+Within each $X = x$, observed means equal potential outcome means (dashed lines):
+\begin{align*}
+    \EE [Y \vert D = 1, X = x] - \EE [Y \vert D = 0, X = x]
+    &= \EE [Y(1) \vert X = x] - \EE [Y(0) \vert X = x] \\
+    &= \delta(x) = 0
+\end{align*}
+\begin{itemize}
+    \item Average $\delta(x)$ over the distribution of $X$ to recover $\delta$
+\end{itemize}
+\end{overprint}
+
+\vspace{1ex}
+{\footnotesize Source: adapted from Chernozhukov et al. (2025), Figure 5.4}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Identification by conditioning}
+
+Ignorability says variation in $D$ is \textbf{as good as random} conditional on $X$
+\begin{itemize}
+    \item Among units with the same covariates ($X = x$), treatment variation $D \vert X = x$ is produced \emph{as if} by an RCT
+    \item ``Ignorable'': distribution of $Y(d)$ depends only on $X$, not on $D$
+    \item Also called \textbf{conditional exogeneity} or the \textbf{conditional independence assumption} (CIA) in econometrics
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Conditioning (adjustment) strategy:} compare treated and control units with identical characteristics $X = x$
+\begin{itemize}
+    \item Produces a different contrast for every value of $X$
+    \item Average these contrasts over the distribution of $X$ to get a summary measure of the causal effect
+\end{itemize}
+
+\pause
+\vspace{2ex}
+For this to work, we need \textbf{both} treated and control units at every value of $X$
+\begin{itemize}
+    \item The \textbf{propensity score} $p(X) := P(D = 1 \vert X)$ plays a key role
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Section 5.2}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Overlap assumption}
+
+\textbf{Overlap (full support):} the propensity score is non-degenerate
+\begin{equation*}
+    p(X) := P(D = 1 \vert X), \qquad P\big(0 < p(X) < 1\big) = 1
+\end{equation*}
+\begin{itemize}
+    \item Requires variation in $D$ at each value $x$ in the support of $X$
+    \item Equivalently: $\text{support}(D, X) = \{0, 1\} \times \text{support}(X)$
+    \item Conditional analogue of \textbf{positivity} under random assignment ($0 < P(D=1) < 1$)
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Without overlap:} at some values $x$ there are only treated (or only control) units
+\begin{itemize}
+    \item Cannot construct a contrast between treated and control at those $x$
+    \item[$\implies$] Cannot learn the conditional average treatment effect at those values of $X$
+    \item[$\implies$] Cannot learn the unconditional average treatment effect either
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Example:} if every heavy drinker smokes marijuana, then $p(\text{heavy drinker}) = 1$
+\begin{itemize}
+    \item No non-smoking heavy drinkers to compare against
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Assumption 5.2.2 and Remark 5.2.1}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Conditioning on $X$ removes selection bias}
+
+\textbf{Assumptions:}
+\begin{enumerate}
+    \item \textbf{Consistency:} $Y = Y(D)$
+    \item \textbf{Conditional ignorability:} $D \perp Y(d) \vert X$ for each $d$
+    \item \textbf{Overlap:} $P\big(0 < p(X) < 1\big) = 1$
+\end{enumerate}
+
+\pause
+\vspace{2ex}
+\textbf{Theorem (conditioning on $X$ removes selection bias):} Under conditional ignorability and overlap,
+\begin{equation*}
+    \EE [Y \vert D = d, X] = \EE [Y(d) \vert D = d, X] = \EE [Y(d) \vert X]
+\end{equation*}
+\begin{itemize}
+    \item The CEF of observed $Y$ given $D = d$ and $X$ recovers the CEF of the potential outcome $Y(d)$ given $X$
+\end{itemize}
+
+\pause
+\vspace{2ex}
+\textbf{Why?}
+\begin{itemize}
+    \item Overlap makes it possible to condition on $\{D = 0, X\}$ and $\{D = 1, X\}$ at every value in the support of $X$
+    \item First equality: consistency
+    \item Second equality: ignorability
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Theorem 5.2.1}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Predictive effects and treatment effects}
+
+\textbf{Predictive effects} (computable from observed data):
+\begin{align*}
+    \text{Conditional avg. predictive effect (CAPE):} \quad & \pi(X) = \EE [Y \vert D=1, X] - \EE [Y \vert D=0, X] \\
+    \text{Avg. predictive effect (APE):} \quad & \pi = \EE [\pi(X)]
+\end{align*}
+\textbf{Treatment effects} (defined by potential outcomes):
+\begin{align*}
+    \text{Conditional avg. treatment effect (CATE):} \quad & \delta(X) = \EE [Y(1) \vert X] - \EE [Y(0) \vert X] \\
+    \text{Avg. treatment effect (ATE):} \quad & \delta = \EE [\delta(X)]
+\end{align*}
+
+\pause
+\vspace{2ex}
+By the theorem, the conditional average predictive effect equals the conditional average treatment effect:
+\begin{equation*}
+    \pi(X) = \delta(X)
+\end{equation*}
+Averaging over $X$, the APE and ATE also agree:
+\begin{equation*}
+    \delta = \EE [\delta(X)] = \EE [\pi(X)] = \pi
+\end{equation*}
+
+\pause
+\vspace{2ex}
+\begin{itemize}
+    \item $\pi(X)$ is computable from data $\implies$ we can learn $\delta(X)$ and $\delta$
+    \item Note: $\pi = \EE[\pi(X)]$ generally differs from the na{\"i}ve comparison $\EE [Y \vert D=1] - \EE [Y \vert D=0]$
+\end{itemize}
+
+\vspace{2ex}
+{\footnotesize Source: Chernozhukov et al. (2025), Section 5.2}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -341,7 +966,7 @@ Given the CIA, comparisons of average earnings (conditional on $X_i$) have a cau
 
 Expanding CIA assumption to relations that can take on more than two values, such as when $s_i = \{0, 1, \dots, 16\}$ equals years of schooling:
 \begin{equation*}
-    Y_{si} = f_i (s)
+    Y_{i} (s) = f_i (s)
 \end{equation*}
 Individual specific function:
 \begin{itemize}
@@ -352,7 +977,7 @@ Individual specific function:
 \vspace{2ex}
 If $s$ could only take on two values, $s=12$ and $s=16$, then we're considering the value of college vs. no college:
 \begin{equation*}
-    Y_{0i} = f_i(12), \quad \quad Y_{1i} = f_i(16)
+    Y_i(0) = f_i(12), \quad \quad Y_i(1) = f_i(16)
 \end{equation*}
 
 \end{frame}
@@ -362,7 +987,7 @@ If $s$ could only take on two values, $s=12$ and $s=16$, then we're considering 
 
 CIA in this more general set-up:
 \begin{equation*}
-    Y_{si} \perp s_i \vert X_i, \quad \forall s_i
+    Y_{i} (s) \perp s_i \vert X_i, \quad \forall s_i
 \end{equation*}
 \begin{itemize}
     \item In randomized experiments (RCTs), $s_i$ is randomly assigned based on covariates $X_i$
@@ -430,5 +1055,31 @@ The residual in the linear causal model $v_i$ is uncorrelated with $s_i$ and $X_
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Regression takeaways}
+
+We just discussed how CIA + linear causal model yields a causal interpretation of CEF
+\begin{itemize}
+    \item Linear causal model: $Y_i = \alpha + \rho s_i + \eta_i$
+    \item If CIA holds given some variables $X_i$: $Y_{0i}, Y_{1i} \perp s_i \vert X_i$
+    \item Our regression function has a causal interpretation: $Y_i = \alpha + \rho s_i + X_i^\prime \gamma + v_i$
+    \begin{itemize}
+        \item $\rho$ is the causal effect of $s_i$ on $Y_i$
+    \end{itemize}
+    \item CEF given by:
+    \begin{equation*}
+        \EE [Y_i \vert X_i, s_i] = \alpha + \rho s_i + X_i^\prime \gamma
+    \end{equation*}
+\end{itemize}
+
+% \textbf{TO DO:} regression example in pyhton; use companion website
+\vspace{3ex}
+\textbf{Thing to note:}
+\begin{itemize}
+    \item CIA is the same as unconfoundedness is the same as selection on observables
+    \item In regression, CIA is the same as exogeneity
+\end{itemize}
+
+\end{frame}
 
 \end{document}

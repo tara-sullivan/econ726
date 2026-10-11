@@ -16,6 +16,9 @@ Class 5 - Regression
 * Used causal ML book for examples
 
 Class 6 - Causal inference (hopefully chp 2 + 5)
+* Add CAPE/CATE notation to the slides (from Causal ML book). Instead I keep saying naive comparison/observed difference, but I think the observed difference is misleading when talking about population moments
+    - probably should drop "observed difference" and just use predictive effect consistently
+* Should add something about "bad controls" / conditioning on post-treatment covariates
 
 Future classes:
 * high dimensional models + causal effects: chp 4 + 5 of 

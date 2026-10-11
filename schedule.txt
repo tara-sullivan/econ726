@@ -4,9 +4,29 @@ Lecture 2 - 9/8 - Probability
     * HW (due 9/14): Paper ideas
 Lecture 3 - 9/15 - Covid (No class)
     * HW (due 9/21): Probability exercises
-Lecture 4 - 9/22 - Conditional Expectation
+Lecture 3 - 9/22 - Conditional Expectation
     * Assignment (due 9/28) - Paper selection
-Lecture 4 - 9/22 - Regression
+
+Lecture 4 - 9/29 - Regression
+
+Lecture 5 - 10/6 - Regression + causality
+
+Lecture 6 - 10/20 - Matching + propensity scores
+
+Lecture 7 - 10/27 - Panel + diff-in-diff
+
+Lecture 8 - 11/3 - Advanced diff-in-diff
+
+Lecture 9 - 11/10 - Synthetic control 
+
+Lecture 10 - 11/17 - Regression discontinuity
+
+Lecture 11 - 11/24 - No class
+
+Lecture 12 - 12/1 - DML
+
+
+
 
 
 

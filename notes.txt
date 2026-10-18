@@ -23,3 +23,7 @@ Class 6 - Causal inference (hopefully chp 2 + 5)
 Future classes:
 * high dimensional models + causal effects: chp 4 + 5 of 
 * staggered diff-in-diff
+
+Next year:
+* Introduce early as terminology: naive comparison (MHE)/average predicted effects (causal ML)/difference in means (mixtape)
+* I should have edited the Project Plan assignment to include a number of prompts. They are now saved in `notes_for_final_project.txt`

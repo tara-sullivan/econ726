@@ -1,0 +1,5 @@
+Limitations of data - should be meaningful! Who isn't this result representing?
+
+Have them include the table/figure from the original paper, it helps a lot
+
+Does SUTVA apply? Why or why not?

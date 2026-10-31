@@ -80,26 +80,26 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 Agenda:
 \begin{itemize}
-    \item Discuss project plans
     \item Discuss next assignment: replication results
     \item Fixed effects and differences-in-differences
 \end{itemize}
 
 Homework:
 \begin{itemize}
-    \item There will be a short homework assignment this week (graded for completion), asking you to describe the conditional independence assumption in your own words, and why that matters for causal inference
-    \begin{itemize}
-        \item You will need to do something like this in your final paper, so please put in the effort!
-    \end{itemize}
-    \item If you haven't, \textbf{run your code}
-    \begin{itemize}
-        \item You should be working on distilling your code to \emph{only} key results/what will be in your final paper
-    \end{itemize}
+    \item Submit project replication file
+    % \item There will be a short homework assignment this week (graded for completion), asking you to describe the conditional independence assumption in your own words, and why that matters for causal inference
+    % \begin{itemize}
+    %     \item You will need to do something like this in your final paper, so please put in the effort!
+    % \end{itemize}
+    % % \item If you haven't, \textbf{run your code}
+    % % \begin{itemize}
+    % %     \item You should be working on distilling your code to \emph{only} key results/what will be in your final paper
+    % % \end{itemize}
 
     \item Reading: 
     \begin{itemize}
-        \item Cunningham Chp. 10: \url{https://mixtape.scunning.com/10-synthetic_control}
-        \item I'll likely also use code from here: \url{https://matheusfacure.github.io/python-causality-handbook/15-Synthetic-Control.html}
+        \item Cunningham Chp. 10: \url{https://mixtape.scunning.com/10-complex_diff_in_diff}
+        % \item I'll likely also use code from here: \url{https://matheusfacure.github.io/python-causality-handbook/15-Synthetic-Control.html}
     \end{itemize}
 \end{itemize}
 
@@ -108,70 +108,36 @@ Homework:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Empirical project}
 
-\textbf{Paper selection}: Due \textbf{September 22} [5\% of final grade]
+\textbf{Paper selection}: Due \textbf{September 28} [5\% of final grade]
 \begin{itemize}
-\item Done! 
+    \item Done!
 \end{itemize}
 
-\textbf{Project plan}: Due \textbf{October 14} [15\% of final grade] 
+\textbf{Project plan}: Due \textbf{October 13} [15\% of final grade] 
 \begin{itemize}
 \item Done!
 \end{itemize} 
 
-\textbf{Replication results}: \textbf{November 3}: [10\% of final grade]
+\textbf{Replication results}: Due \textbf{November 2}: [10\% of final grade]
 \begin{itemize}
 \item You should submit some of your main replication results. The final results should be formatted as tables and charts in a word document or PDF, submitted on Brightspace. Your code and data should accessible on GitHub.
 \end{itemize}
 
-\textbf{Presentation}: Due \textbf{December 2} \& \textbf{December 9} [10\% of final grade]
+\textbf{Presentation}: Due \textbf{December 1} \& \textbf{December 8} [10\% of final grade]
 \begin{itemize}
-\item Prepare a \textbf{5-8} minute presentation on your paper. Focus on the research question, main result, and one extension. 
+\item Prepare a 10 minute presentation on your paper. Focus on the research question, main result, and one extension. 
 \end{itemize}
 
-\textbf{Final Paper}: Due \textbf{December 16} [35\% of final grade]
+\textbf{Final Paper}: Due \textbf{December 11} [40\% of final grade]
 \begin{itemize}
-\item Your paper should contain \sout{5-8 pages} \textbf{6-10 pages} of text, and \sout{5-8 pages} \textbf{3-6 pages} of figures (double spaced, 12 point font).
+\item Your paper should contain 6-10 pages of text, and 3-6 pages of figures (double spaced, 12 point font).
 You must provide the code and data to replicate your findings. 
 Your final project should be submitted on Brightspace, and your code and data should be uploaded to github (note: if your data is too large to upload to github, let me know). 
 \end{itemize}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Project plans}
-
-General feedback:
-\begin{itemize}
-    \item \textbf{These were generously graded}. I wanted to give people credit for staying on track.
-    \begin{itemize}
-        \item 17/20: \textbf{Your plan is sufficient, but your project needs work}
-        \item 20/20: You're on track, but you still may need to address issues
-    \end{itemize}
-\end{itemize}
-\textbf{Read the comments on your assignment!}
-
-\vspace{3ex}
-Overall feedback: 
-\begin{itemize}
-    \item For your final paper, you need to motivate why your method is causal. The authors will say "I use differences-in-differences to identify..." You cannot get away with that. You need to motivate why yor method is causal. If you don't discuss the conditional independence assumption, you will lose a lot of points. \textbf{This will be graded harshly on your final project}
-    
-    \begin{itemize}
-        \item Part of that will include discussing what the ideal randomized experiment is. 
-        \item You need to explain why this method is causal
-    \end{itemize}
-
-    \item Do \textbf{NOT} reference methodologies that you cannot explain why they are important. 
-
-    \begin{itemize}
-        \item These are long, published papers. If you cannot explain in plain language the robustness check, don't include it. 
-    \end{itemize}
-
-    \item You're expected to incorporate parts of the reading into your discussion of causality (and, likely, do readings from secondary sources)
-\end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Next assignments: replication and presentation}
 
 You are expected to replicate key results. 
@@ -194,8 +160,6 @@ When replicating your results, keep in mind your presentation.
 \end{itemize}
 How do you distill this paper to key takeaways?
 \end{frame}
-
-
 
 
 
@@ -242,21 +206,19 @@ Define
     \item $Y_i$: the (log) wages of individual $i$
     \item $D_i$: Union membership
 \end{itemize}
-Does collective bargaining increase wages? Or would those workers have earned more anyway, perhaps because they because are more experienced or skilled?
+Does collective bargaining increase wages? Or would those workers have earned more anyway, perhaps because they are more experienced or skilled?
 
 \vspace{3ex}
-Slight change to potential outcomes notation: $Y_{di}$ will now be $Y_i (d)$
+Potential outcomes:
 \begin{itemize}
-    \item $Y_{1i}$ will now be $Y_i (1)$
+    \item $Y_i (1)$: Treatment potential outcome
     \begin{itemize}
-        \item Treatment potential outcome
         \item The value of $Y_i$ under treatment, irrespective of whether $i$ was treated
         \item Wages for $i$ if unionized, irrespective of whether they were in a union
     \end{itemize}
-    \item $Y_{0i}$ will now be $Y_i (0)$
+    \item $Y_i (0)$: Control potential outcome
     \begin{itemize}
-        \item Control potential outcome
-        \item Wages for $i$ if not unionized, irrespective of $i$ was in a union
+        \item Wages for $i$ if not unionized, irrespective of whether $i$ was in a union
     \end{itemize}
 \end{itemize}
 
@@ -274,7 +236,7 @@ Adding a time dimension to our outcome variable and treatment:
     \begin{itemize}
          \item Assume $A_i$ is an individual's innate ability, and is fixed over time
          \item $A_i$ should include all other time-invariant characteristics, like biological sex
-     \end{itemize} (for example, ability of individual $i$)
+     \end{itemize}
 \end{itemize}
 Potential outcomes: $Y_{it}(d)$
 \begin{itemize}
@@ -285,36 +247,52 @@ Potential outcomes: $Y_{it}(d)$
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Identifying assumptions}
 
 Assume conditional independence holds:
 \begin{equation*}
     \EE [Y_{it} (0) \vert A_i, X_{it}, t, D_{it}] = \EE [Y_{it} (0) \vert A_i, X_{it}, t]
 \end{equation*}
+\vspace{-2ex}
 \begin{itemize}
-    \item Union membership is as good as randomly assigned conditional on $A_i$, and observed covariates 
+    \item Union membership is as good as randomly assigned conditional on $A_i$, $X_{it}$, and $t$
 \end{itemize}
- Assume a linear model for $\EE [Y_{it} (d) \vert \cdot]$, where $A_i$ does not have a time subscript:
- \begin{equation*}
-     \EE [Y_{it} (0) \vert A_i, X_{it}, t] 
-     = \alpha + \lambda_t + A_i^\prime \gamma + X^\prime \beta
- \end{equation*}
+\onslide<2->{%
+Assume a linear model for $\EE [Y_{it} (0) \vert \cdot]$, where $\textcolor<2>{Orange}{A_i}$ does not have a time subscript:
+\begin{equation*}
+    \EE [Y_{it} (0) \vert A_i, X_{it}, t] 
+    = \textcolor<4>{MainBlue}{\alpha + \lambda_t + \textcolor<2>{Orange}{A_i^\prime} \gamma + X_{it}^\prime \beta}
+\end{equation*}
+}%
+\onslide<3->{%
 Assume the causal effect of union membership is a constant, $\rho$:
 \begin{equation*}
-    \EE [Y_{it} (1) \vert A_i, X_{it}, t] = \EE[Y_{it} (0) \vert A_i, X_{it}, t]  + \rho
+    \EE [Y_{it} (1) \vert A_i, X_{it}, t] = \EE[Y_{it} (0) \vert A_i, X_{it}, t]  + \textcolor<4>{Green}{\rho}
 \end{equation*}
+}%
+\onslide<4->{%
 The above equations imply:
 \begin{equation*}
-    \EE [Y_{it} \vert A_i, X_{it}, t, D_{it}] = \alpha + \lambda_t + \rho D_{it} + A_i^\prime \gamma + X_{it}^\prime \beta
+    \EE [Y_{it} \vert A_i, X_{it}, t, D_{it}] = \textcolor<4>{MainBlue}{\alpha + \lambda_t} + \textcolor<4>{Green}{\rho D_{it}} + \textcolor<4>{MainBlue}{A_i^\prime \gamma + X_{it}^\prime \beta}
 \end{equation*}
-Note: these are more restrictive assumptions than we used in previous sections; we are explictly assuming a linear, additive functional form 
+}%
+\onslide<5->{%
+Note: these are more restrictive assumptions than we used in previous sections:
+\begin{itemize}
+    \item We are explicitly assuming a linear, additive functional form
+    \item We are assuming the effect of treatment is the same for everyone, in every period ($\rho$ has no $i$ or $t$ subscript)
+    \begin{itemize}
+        \item {\color{DarkGray}We will relax this next class; it matters a lot for diff-in-diff with staggered timing}
+    \end{itemize}
+\end{itemize}
+}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{The fixed effects model}
 
-Fixed effects model: 
+Fixed effects model:
 \begin{equation*}
     Y_{it} = \alpha_i + \lambda_t + \rho D_{it} + X_{it}^\prime \beta + \epsilon_{it},
 \end{equation*}
@@ -322,15 +300,16 @@ where:
 \begin{equation*}
     \epsilon_{it} \equiv Y_{it} (0) - \EE [Y_{it} (0) \vert A_i, X_{it}, t], \quad \alpha_i = \alpha + A_i^\prime \gamma
 \end{equation*}
+{\color{DarkGray}$\epsilon_{it}$ is the part of $Y_{it}(0)$ not explained by the model}
 
 \vspace{3ex}
 \begin{itemize}
     \item Causal effect of treatment (i.e. union status on wages) is given by $\rho$
-    \item Individual fixed effects $\alpha_i$ is a parameter to be estimated
+    \item Individual fixed effects $\alpha_i$ are parameters to be estimated
     \begin{itemize}
         \item Given by coefficients on dummies for each individual
     \end{itemize}
-    \item Time fixed effects $\lambda_t$ is a parameter to be estimated
+    \item Time fixed effects $\lambda_t$ are parameters to be estimated
     \begin{itemize}
         \item Given by coefficient on dummies for each time period in the model
     \end{itemize}
@@ -339,61 +318,73 @@ where:
 \vspace{3ex}
 Important notes:
 \begin{itemize}
-    \item Each element of $X_{it}$ must vary across time for each cross-section $i$
+    \item $\rho$ is identified only from individuals whose treatment status changes over time (e.g. workers who join or leave a union)
+    \item Each element of $X_{it}$ must vary over time for at least some $i$; time-invariant characteristics are absorbed into $\alpha_i$, and their coefficients cannot be estimated
 \end{itemize}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Estimating fixed effects in practice}
 
 Fixed effects: estimate a coefficient for a dummy on each individual $i$
 \begin{itemize}
     \item This could be a big computational lift
     \begin{itemize}
         \item Example: estimating effect of union membership on wages
-        \item Might use Panel Survey of Income Dynamics (PSID) data, with data on 5,000 men ($N=5,000$) observed for 20 years ($T=20$)
-        \item Estimating coefficients on 4,999 individuals seems computational difficult
+        \item Might use Panel Study of Income Dynamics (PSID) data, with data on 5,000 men ($N=5,000$) observed for 20 years ($T=20$)
+        \item Estimating coefficients on 4,999 individuals seems computationally difficult
     \end{itemize}
     \item In practice, you don't need to estimate all coefficients
 \end{itemize}
-
-\vspace{3ex}
-
 
 \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{The within transformation}
 
 Consider equation with only individual fixed effects:
 \begin{equation*}
-    Y_{it} = \alpha_i + \rho D_{it} + X_{it}^\prime \beta + \epsilon_{it}
+    \textcolor<2>{Green}{Y_{it} = \textcolor<1>{Orange}{\alpha_i} + \rho D_{it} + X_{it}^\prime \beta + \epsilon_{it}}
 \end{equation*}
-Consider the average over all $t$ for individual $i$ e.g. $\bar{Y}_i = \sum_{t=1}^T Y_{it}$
+Consider the average over all $t$ for individual $i$ e.g. $\bar{Y}_i = \frac{1}{T}\sum_{t=1}^T Y_{it}$
 \begin{equation*}
-    \bar{Y}_i = \alpha_i + \rho \bar{D}_i + \bar{X}^\prime \beta + \bar{\epsilon}_i
+    \textcolor<2>{MainBlue}{\bar{Y}_i = \textcolor<1>{Orange}{\alpha_i} + \rho \bar{D}_i + \bar{X}_i^\prime \beta + \bar{\epsilon}_i}
 \end{equation*}
-Subtract the mean equation from the regression, we have the ``de-meaned'' regression:
+\onslide<2->{%
+Subtract the mean equation from the regression, we have the ``de-meaned'' regression:%
+}
 \begin{align*}
-    Y_{it} - \bar{Y}_i =& \alpha_i + \rho D_{it} + X_{it}^\prime \beta + \epsilon_{it} - \left( \alpha_i + \rho \bar{D}_i + \bar{X}^\prime \beta + \bar{\epsilon}_i \right) \\
-    =& (\alpha_i - \alpha_i) 
+    \onslide<2->{
+    \textcolor<2>{Green}{Y_{it}} - \textcolor<2>{MainBlue}{\bar{Y}_i} =& \textcolor<2>{Green}{\textcolor<3>{Orange}{\alpha_i} + \rho D_{it} + X_{it}^\prime \beta + \epsilon_{it}} - \textcolor<2>{MainBlue}{\left( \textcolor<3>{Orange}{\alpha_i} + \rho \bar{D}_i + \bar{X}_i^\prime \beta + \bar{\epsilon}_i \right)}
+    } \\
+    \onslide<3->{
+    =& \textcolor<3>{Orange}{(\alpha_i - \alpha_i)}
     + \rho (D_{it} - \bar{D}_i)
-    + (X_{it} - \bar{X}_i)^\prime \beta 
-    + (\epsilon_{it} - \bar{\epsilon}_i) \\
+    + (X_{it} - \bar{X}_i)^\prime \beta
+    + (\epsilon_{it} - \bar{\epsilon}_i)
+    } \\
+    \onslide<4->{
     =& \rho (D_{it} - \bar{D}_i)
-    + (X_{it} - \bar{X}_i)^\prime \beta 
-    + (\epsilon_{it} - \bar{\epsilon}_i) \\
-    \ddot{Y}_{it} =& \rho \ddot{D}_{it}
-    + \ddot{X}_{it}^\prime \beta 
-    + \ddot{\epsilon}_{it}
+    + (X_{it} - \bar{X}_i)^\prime \beta
+    + (\epsilon_{it} - \bar{\epsilon}_i)
+    } \\
+    \onslide<5->{
+    \alert<5>{\ddot{Y}_{it}} =& \alert<5>{\rho \ddot{D}_{it}
+    + \ddot{X}_{it}^\prime \beta
+    + \ddot{\epsilon}_{it}}
+    }
 \end{align*}
+\onslide<6->{%
 Can estimate $\rho$ from the de-meaned data; much more computationally simple!
 \begin{itemize}
     \item Deviations from the mean kill individual fixed effects
-    \item Fixed effects estimator often called the ``within'' estimator; 
+    \item Gives the \emph{same} estimate of $\rho$ as regressing on dummies for each individual
+    \item Fixed effects estimator often called the ``within'' estimator: it only uses variation \emph{within} each individual over time
+    \item With time fixed effects $\lambda_t$ also included, this is called \textbf{two-way fixed effects} (TWFE)
 \end{itemize}
+}
 
 \end{frame}
 
@@ -402,24 +393,61 @@ Can estimate $\rho$ from the de-meaned data; much more computationally simple!
 
 An alternative to de-meaning is to estimate first differences. Let $\Delta Y_{it} = Y_{it} - Y_{it-1}$:
 \begin{align*}
-    \Delta Y_{it} =& Y_{it} - Y_{it-1} \\
-    =& (\alpha_i - \alpha_i) + \rho (D_{it} - D_{it-1}) + (X_{it} - X_{it-1})^\prime \beta + (\epsilon_{it} - \epsilon_{it-1}) \\
-    =& \rho \Delta D_{it} + \Delta X_{it}^\prime \beta + \Delta \epsilon_{it}
+    \Delta Y_{it} =& \textcolor<2>{Green}{Y_{it}} - \textcolor<2>{MainBlue}{Y_{it-1}} \\
+    \onslide<2->{
+    =& \textcolor<3>{Orange}{(\textcolor<2>{Green}{\alpha_i} - \textcolor<2>{MainBlue}{\alpha_i})}
+    + \rho (\textcolor<2>{Green}{D_{it}} - \textcolor<2>{MainBlue}{D_{it-1}})
+    + (\textcolor<2>{Green}{X_{it}} - \textcolor<2>{MainBlue}{X_{it-1}})^\prime \beta
+    + (\textcolor<2>{Green}{\epsilon_{it}} - \textcolor<2>{MainBlue}{\epsilon_{it-1}})
+    } \\
+    \onslide<4->{
+    =& \alert<4>{\rho \Delta D_{it} + \Delta X_{it}^\prime \beta + \Delta \epsilon_{it}}
+    }
 \end{align*}
+\onslide<5->{%
 When there are only 2 periods, the fixed effects and first differenced estimators will be identical.
     \begin{align*}
-        Y_{i2} - \bar{Y}_i &= Y_{i2} - \frac{Y_{i2} - Y_{i1}}{2} \\
+        Y_{i2} - \bar{Y}_i &= Y_{i2} - \frac{Y_{i2} + Y_{i1}}{2} \\
         &= \frac{2 Y_{i2} - Y_{i2} - Y_{i1}}{2} \\
-        &= \frac{Y_{i2} - Y_{i1}}{2}
+        &= \alert<5>{\frac{Y_{i2} - Y_{i1}}{2}}
     \end{align*}
 \begin{itemize}
     \item  The de-meaned data is proportional to the first-differenced data $\implies$ the fixed effect estimator is the same as the first-differenced estimator
 \end{itemize}
-When there are more than 2 periods, the fixed effects data is likely not equal to the first differenced estimator; this is because of correlation between $\epsilon_{it}$ and $X_{is}$
+}%
+\onslide<6->{%
+When there are more than 2 periods, the two estimators generally give different estimates:
+\begin{itemize}
+    \item Fixed effects compares each period to the individual's \emph{average}; first differences compares each period to the \emph{previous} period
+    \item Both remove $\alpha_i$, and under our assumptions both estimate the same $\rho$
+\end{itemize}
+}
 
 \end{frame}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Do not use fixed effects for these things}
+
+\textbf{1. Reverse causality} (simultaneity)
+\begin{itemize}
+    \item Example: regress county crime rates on police per capita (Cornwell and Trumbull, 1994)
+    \item Becker (1968): more police $\rightarrow$ less crime; but police spending is itself a function of crime rates
+    \item Fixed effects estimate: a \emph{positive} relationship between police and crime
+\end{itemize}
+
+\vspace{2ex}
+\textbf{2. Time-variant unobserved heterogeneity}
+\begin{itemize}
+    \item Fixed effects only remove unobserved confounders that are unchanging over time ($\alpha_i$)
+    \item If there is a \emph{separate} unobserved confounder that changes over time (not part of $\alpha_i$), it stays in $\epsilon_{it}$ and is correlated with $D_{it}$: ``just another form of omitted variable bias''
+    \item Example: effect of marriage on men's wages (Cornwell and Rupert, 1997)
+    \begin{itemize}
+        \item Possible confounder: ``settling down'' --- a shift in priorities that leads men to both marry and invest more in their careers; it changes over time and is unobserved
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Fixed effects estimation}
 
@@ -430,24 +458,10 @@ Go through example here: \url{https://mixtape.scunning.com/08-panel_data}
 
 \end{frame}
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}{Fixed effects pitfalls}
-
-% To do; I don't like the twin example in MHE
-% % \begin{itemize}
-% %     \item Fixed effects control for time-invariant omitted variables
-% %     \item Sometimes economic variables of interest are mostly time invariant
-% %     \begin{itemize}
-% %         \item Union membership is largely constant and varies little yearly
-% %         \item Changes in union membership might be driven 
-% %     \end{itemize}
-% % \end{itemize}
-
-% \end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section[Diff-in-diff]{Differences-in-differences}
+\section[The 2$\times$2]{Differences-in-differences: the 2$\times$2}
 \miniframesoff
 \begin{frame}
     \tableofcontents[currentsection]
@@ -471,7 +485,7 @@ In mid-1800s London, cholera was spreading
 Researcher John Snow suspected that it may be the water supply causing cholera transmission
 \begin{itemize}
     \item Several water companies served different areas of the city
-    \item In 1849, the \textbf{Lambeth (L)} water company moved their pipes upstream, above the main sewage discharge point
+    \item In 1852, the \textbf{Lambeth (L)} water company moved their pipes upstream, above the main sewage discharge point
     \item The \textbf{Southwark and Vauxhall (SV)} Waterworks Company served similar households to the Lambeth Company, and did not move their intake point upstream
 \end{itemize}
 Snow evaluated one of the earliest \textbf{natural experiments}
@@ -495,11 +509,11 @@ Lambeth & $Y = L + D$ \\
 Southwark and Vauxhall & $Y = SV$
 \end{tabular}
 \end{table}
-If estimated causal effect come from simple comparison of outcomes:
+If estimated causal effect comes from simple comparison of outcomes:
 \begin{equation*}
     D + (L - SV)
 \end{equation*}
-We can think of $(L - SV)$ may contain selection bias
+$(L - SV)$ may contain selection bias
 
 \end{frame}
 
@@ -520,7 +534,7 @@ Lambeth before & $Y = L$ \\
 Lambeth after & $Y = L + (T + D)$
 \end{tabular}
 \end{table}
-If estimated causal effect come from simple comparison of outcomes:
+If estimated causal effect comes from simple comparison of outcomes:
 \begin{equation*}
     L + (T + D) - L = T + D
 \end{equation*}
@@ -552,7 +566,7 @@ Let:
 \hline\hline
 Lambeth                &Before &$Y = L$            &\\
 \hline
-Lambeth                &After  &$Y = L + (T + D)$  &$T - D$ &$D$\\
+Lambeth                &After  &$Y = L + (T + D)$  &$T + D$ &$D$\\
 \hline
 Southwark and Vauxhall &Before &$Y = SV$           & \\
 \hline
@@ -576,11 +590,70 @@ Key assumption: \textbf{Parallel trends}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Card and Krueger (1994)}
+
+Setup: in April 1992, NJ increased the state minimum wage from \$4.25 to \$5.05. PA minimum wage stayed at \$4.25
+\begin{itemize}
+    \item Two groups: treatment group ($G=1$) and control ($G=0$)
+    \item Two periods: before ($T=0$) and after ($T=1$)
+    \item Only one group is treated during one period
+\end{itemize}
+
+\vspace{2ex}
+Data: survey of 400 fast food stores in NJ and PA before and after the minimum wage increase
+
+\vspace{2ex}
+Results: Card and Krueger (1994) find no evidence that increasing the minimum wage reduced employment
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Card and Krueger (1994): four averages and three subtractions}
+
+\begin{equation*}
+    \hat\delta^{2\times 2} = \big(\bar y_{NJ}^{post} - \bar y_{NJ}^{pre}\big) - \big(\bar y_{PA}^{post} - \bar y_{PA}^{pre}\big)
+\end{equation*}
+
+Average full-time-equivalent employment per store:
+\begin{table}
+\begin{tabular}{lccc}
+\hline
+ & \textbf{Before} & \textbf{After} & \textbf{After $-$ Before} \\
+\hline\hline
+NJ (treated)  & 20.44 & 21.03 & 0.59 \\
+PA (control)  & 23.33 & 21.17 & $-2.16$ \\
+\hline
+% NJ $-$ PA     & $-2.89$ & $-0.14$ & \\
+% \hline
+\end{tabular}
+\end{table}
+
+\begin{itemize}
+    % \item Cross-sectional comparison (after): $-0.14$
+    \item Pre-post comparison (NJ): $0.59$
+    \item Pre-post comparison (PA): $-2.16$
+    \item Diff-in-diff: $0.59 - (-2.16) = \mathbf{2.76}$
+\end{itemize}
+
+\vspace{2ex}
+\emph{Source: Card and Krueger (1994), Table 3}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Parallel trends]{Parallel trends}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Diff-in-diff using potential outcomes}
 
 Set-up:
 \begin{itemize}
-    \item Two groups (treatment and control): $G=1$ and $G=2$
+    \item Two groups (treatment and control): $G=0$ and $G=1$
     \item Two periods (before and after the treatment): $T=0$ and $T=1$
     \item Only one group is treated during one period
 \end{itemize}
@@ -589,7 +662,7 @@ Set-up:
 Using the potential outcomes framework:
 \begin{itemize}
     \item $D$: treatment indicator, defined by $D = T \cdot G$
-    \item $Y (d)$: potential outomce
+    \item $Y (d)$: potential outcome
     \item $Y$: observed outcome variable
     \begin{equation*}
         Y = D \cdot Y (1) + (1 - D) \cdot Y (0)
@@ -604,7 +677,7 @@ Using the potential outcomes framework:
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Decomposing diff-in-diff}
 
 % \begin{align*}
 % \EE [Y \vert D = 1] - \EE [Y \vert D=0] 
@@ -656,7 +729,7 @@ Recall $Y = D \cdot Y (1) + (1 - D) \cdot Y (0)$ and {\color<3>{orange}$D = T \c
             - \EE [{Y(0)} \vert G = 0, T = 0]
         ) \\}
     \onslide<5->{
-    =& {\color<6>{cyan} \EE [{Y(1)} \vert G = 1, T = 1]} 
+    =& ({\color<6>{cyan} \EE [{Y(1)} \vert G = 1, T = 1]}
             {\color<6>{Green} - \EE [{Y(0)} \vert G = 1, T = 0]}
         ) \\
         & {\color<6>{Orange}- (
@@ -704,12 +777,12 @@ Observed differences in differences equals:
                             - \EE [{Y(0)} \vert G = 0, T = 0]
                         )}}_{\text{Difference for control}}
 \end{multline*}
-For observed differences-in-differences to equal ATT, the latter half of this equation must equal zero:
+The last two terms are the \textbf{non-parallel trends bias}. DiD $=$ ATT only if it is zero:
 \begin{multline*}
     \EE [{Y(0)} \vert G = 1, T = 1] - \EE [{Y(0)} \vert G = 1, T = 0] \\
     = \EE [{Y(0)} \vert G = 0, T = 1] - \EE [{Y(0)} \vert G = 0, T = 0]
 \end{multline*}
-This is known as the \textbf{parallel trends assumption}. If this doesn't equal zero, then bias is due to lack of parallel trends. 
+\emph{In words:} Absent treatment, the treated group would have followe`d the same trend as the control group
 
 \end{frame}
 
@@ -738,23 +811,6 @@ Consider the impact of a training program on earnings:
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Card and Krueger (1994)}
-
-Setup: in Feb. 1992, NJ increased the state minimum wage from \$4.25 to \$5.05. PA minimum wage stayed at \$4.25
-\begin{itemize}
-    \item Two groups: treatment group ($G=1$) and control ($G=0$)
-    \item Two periods: before ($T=0$) and after ($T=1$)
-    \item Only one group is treated during one period
-\end{itemize}
-
-\vspace{2ex}
-Data: survey of 400 fast food stores in NJ and PA before and after the minimum wage increase
-
-\vspace{2ex}
-Results: Card and Krueger (1994) find positive effects of increasing minimum wage on employment
-
-\end{frame}
 
 
 
@@ -781,27 +837,81 @@ Results: Card and Krueger (1994) find positive effects of increasing minimum wag
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\section[Regression]{Regression and event studies}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Under parallel trends, differences in sample averages will estimate ATT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{From the 2$\times$2 to regression}
 
-\vspace{2ex}
-Researchers may want to use multivariate regression instead
-\begin{itemize}
-    \item Can help avoid omitted variable bias from endogenous covariates that vary over time
-    \item By controlling for more appropriate covariates, you can reduce residual variance and improve the precision of your diff-in-diff estimate.
-\end{itemize}
-
-\vspace{2ex}
-With constant state and time fixed effects, can estimate ATT from simple regression:
 \begin{equation*}
     Y = \alpha + \gamma G + \lambda T + \delta (T \times G) + \epsilon
 \end{equation*}
 
+Each of the four averages maps to coefficients:
+\begin{table}
+\begin{tabular}{lccc}
+\hline
+ & \textbf{Before} & \textbf{After} & \textbf{After $-$ Before} \\
+\hline\hline
+NJ ($G=1$) & $\alpha + \gamma$ & $\alpha + \gamma + \lambda + \delta$ & $\lambda + \delta$ \\
+PA ($G=0$) & $\alpha$          & $\alpha + \lambda$                   & $\lambda$ \\
+\hline
+\end{tabular}
+\end{table}
+Diff-in-diff: $(\lambda + \delta) - \lambda = \delta$
+
+\begin{itemize}
+    \item OLS $\hat\delta$ is \emph{numerically identical} to the 2$\times$2: $\hat\delta = 2.76$
+\end{itemize}
+
+\vspace{2ex}
+\textbf{Why use regression?}
+\begin{itemize}
+    \item Same estimate, but delivers standard errors and hypothesis tests
+    \item Easy to extend: covariates, more groups, more periods
+\end{itemize}
+
+\vspace{2ex}
+\textbf{Why use 2x2?}
+\begin{itemize}
+    \item Easy to explain to non-practitioners
+\end{itemize}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Three equivalent regressions}
+
+In the 2$\times$2, all three give the same $\hat\delta$:
+\begin{enumerate}
+    \item Interaction:
+    \begin{equation*}
+        Y_{it} = \alpha + \gamma G_i + \lambda T_t + \delta (T_t \times G_i) + \epsilon_{it}
+    \end{equation*}
+    \item Two-way fixed effects (TWFE), with $D_{it} = T_t \times G_i$:
+    \begin{equation*}
+        Y_{it} = \alpha_i + \lambda_t + \delta D_{it} + \epsilon_{it}
+    \end{equation*}
+    \item Long difference:
+    \begin{equation*}
+        \Delta Y_i = \lambda + \delta G_i + \Delta \epsilon_i
+    \end{equation*}
+\end{enumerate}
+
+\begin{itemize}
+    \item TWFE and first differences are the fixed effects tools from earlier in this lecture
+    \item With more groups and periods, TWFE is the workhorse, but with \alert{staggered timing} it no longer equals a clean 2$\times$2 (next lecture)
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Interpreting $\delta$}
 
 \begin{equation*}
     Y = \alpha + \gamma G + \lambda T + \delta (T \times G) + \epsilon
@@ -815,29 +925,14 @@ With constant state and time fixed effects, can estimate ATT from simple regress
 \end{column}
 
 \begin{column}{.45\textwidth}
-\begin{itemize}
-    \item $\alpha$: Control in pre period
-
-    [PA in Feb.]
-
-    \item $\alpha + \lambda$: Control in post period
-
-    [PA in Nov.]
-
-    \item $\alpha + \gamma$: Treatment in pre period
-
-    [NJ in Feb.]
-
-    \item $\alpha + \gamma + \lambda + \delta$: Treatment in post period
-
-    [NJ in Nov.]
-\end{itemize}
-
 The value $\delta$ equals:
 \begin{equation*}
-    \delta = \EE [Y_{NJ, Post} (1)] - \EE [Y_{NJ, Pre} (0)]
+    \delta = \EE [Y_{NJ, Post} (1)] - \EE [Y_{NJ, Post} (0)]
 \end{equation*}
-Difference between a counterfactual level of employment and the actual level of employment for New Jersey
+Difference between the actual and counterfactual level of employment for New Jersey
+
+\vspace{2ex}
+In Card and Krueger: $\hat\delta = 2.76$
 \end{column}
 
 \end{columns}
@@ -865,7 +960,7 @@ Bertrand, Duflo, and Mullainathan (2004) propose the following solutions:
 
     \item Aggregating the data into one pre and one post period
 
-    \alert{\item Clustering standard errors at the group level} \emph{(You can just do this one)}
+    \item \alert{Clustering standard errors at the group level} \emph{(You can just do this one)}
 
 \end{enumerate}
 
@@ -876,7 +971,7 @@ Bertrand, Duflo, and Mullainathan (2004) propose the following solutions:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Checking for parallel trends}
 
-Checking for parallel trends is fundamentally untestable
+Parallel trends is fundamentally untestable
 \begin{itemize}
     \item Even if trends were the same before the treatment, there is no guarantee they'd be the same after
     \item That said, you can do intuitive checks to see if this assumption is reasonable
@@ -884,45 +979,74 @@ Checking for parallel trends is fundamentally untestable
 
 \vspace{3ex}
 \begin{enumerate}
-    \item Plot the raw data, and inspect whether the pre-treatment dynamics of the treatment group differed from that of the control group units
+    \item Plot the raw data, and inspect whether the pre-treatment dynamics of the treatment group differed from that of the control group
 
-    \item The current way in which authors evaluate the pre-treatment dynamics between a treatment and control group with differential timing is to estimate a regression model that includes treatment leads and lags.
+    \item Estimate an \textbf{event study}: a regression with treatment leads and lags
+    \begin{itemize}
+        \item Leads measure differential pre-trends; lags trace out effects over time
+    \end{itemize}
 \end{enumerate}
 
-
+\vspace{3ex}
+Parallel pre-trends are \emph{suggestive}, not a test: they support, but cannot prove, parallel trends after treatment
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Miller et al. (2019)}
+\section[Case study]{Case study: Medicaid and mortality}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Diff-in-diff in the courtroom}
+
+A diff-in-diff estimate is a \emph{claim}, not evidence
 \begin{itemize}
-    \item Miller et al. (2019) estimated the effect that Medicaid expansion under the ACA had on population mortality
-
-    \item Their focus is on the near-elderly adults in states with and without the Affordable Care Act Medicaid expansions. They find a 0.13-percentage-point decline in annual mortality as a result of the ACA expansion, which is a 9.3\% reduction over the sample mean
-    \begin{itemize}
-        \item \textbf{This means the ACA medicaid expansion saved lives}
-    \end{itemize}
+    \item Parallel trends is untestable, so a table of coefficients alone won't persuade a skeptic
+    \item Build a case that rules out alternative explanations
 \end{itemize}
 
 \vspace{2ex}
- Miller et al. (2019) use diff-in-diff:
- \begin{itemize}
-      \item Evaluate the pre-treatment leads instead of plotting the raw data by treatment and control
-      \item Post-estimation, they plotted regression coefficients with 95\% confidence intervals on their treatment leads and lags
-      \item Allows reader to check comparability pre-treatmnet, as well as see post-treatment dynamics
-  \end{itemize} 
+Elements of a convincing diff-in-diff study:
+\begin{enumerate}
+    \item \textbf{Bite:} the policy changed what it was supposed to change
+    \item \textbf{Event studies:} no differential pre-trends
+    \item \textbf{Falsification:} no effect where there shouldn't be one
+    \item \textbf{Main results}
+    \item \textbf{Mechanisms:} why the effect makes sense
+\end{enumerate}
 
-\begin{equation*}
-    Y_{its} = \gamma_s + \lambda_t  + \sum_{\tau = -q}^{-1} \gamma_\tau D_{s\tau}
-    + \sum_{\tau=0}^m \delta_\tau D_{s\tau} + x_{ist} + \epsilon_{ist}
-\end{equation*}
-\begin{itemize}
-    \item Regression includes $q$ anticipatory leads and $m$ lags (post-treatment effects)
-\end{itemize}
+\vspace{2ex}
+\emph{Source: Cunningham, Mixtape Section 9.7}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Effect of medicaid expansion on medicaid eligibility}
+\begin{frame}{Case study: Medicaid and mortality}
+
+Miller, Johnson, and Wherry (2021): did the ACA Medicaid expansion reduce mortality?
+\begin{itemize}
+    \item Compare near-elderly adults (under 65) in expansion vs.\ non-expansion states
+    \item Link large federal survey data to death records
+\end{itemize}
+
+\vspace{2ex}
+Event-study design:
+\begin{equation*}
+    Y_{ist} = \gamma_s + \lambda_t  + \sum_{\tau = -q}^{-2} \theta_\tau D_{s\tau}
+    + \sum_{\tau=0}^m \delta_\tau D_{s\tau} + x_{ist}'\beta + \epsilon_{ist}
+\end{equation*}
+\begin{itemize}
+    \item $q$ leads (pre-trends) and $m$ lags (post-treatment effects)
+    \item $\tau = -1$ is omitted (reference period); each coefficient is a 2$\times$2 relative to $\tau = -1$
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{1. Bite: Medicaid eligibility}
 
 \begin{figure}
 \includegraphics[scale=0.25]{img/fig-9-4.jpg}
@@ -931,7 +1055,7 @@ Checking for parallel trends is fundamentally untestable
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Effect of medicaid expansion on medicaid coverage}
+\begin{frame}{1. Bite: Medicaid coverage}
 
 \begin{figure}
 \includegraphics[scale=0.25]{img/fig-9-5.jpg}
@@ -940,21 +1064,52 @@ Checking for parallel trends is fundamentally untestable
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Effect of medicaid expansion on percentage of the uninsured population}
+\begin{frame}{1. Bite: uninsured rate}
 
 \begin{figure}
-\includegraphics[scale=0.25]{img/fig-9-5.jpg}
+\includegraphics[scale=0.25]{img/fig-9-6.jpg}
 \end{figure}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Effect of medicaid expansion on mortality}
+\begin{frame}{3. Falsification: adults 65+}
+
+Adults 65+ already have Medicare, so the expansion should not affect them
+\begin{figure}
+\includegraphics[width=\textwidth]{img/fig-placebo-65.png}
+\end{figure}
+\begin{itemize}
+    \item No change in coverage (no bite) $\Rightarrow$ no change in mortality
+\end{itemize}
+
+\emph{Source: Miller, Johnson, and Wherry (2021)}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{2 \& 4. Event study and main result: mortality}
 
 \begin{figure}
-\includegraphics[scale=0.25]{img/fig-907.jpg}
+\includegraphics[scale=0.2]{img/fig-907.jpg}
 \end{figure}
+\begin{itemize}
+    \item 0.13 pp decline in annual mortality (9.3\% of the sample mean)
+    \item Pre-period coefficients are insignificant, but a linear pretrend can't be rejected
+\end{itemize}
 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{5. Mechanism}
+
+Why would Medicaid reduce mortality?
+\begin{itemize}
+    \item Decline driven by fewer disease-related deaths
+    \item Effect grows with time since expansion
+    \item Consistent with newly insured people getting treatment for life-threatening illnesses
+\end{itemize}
+
+\emph{Source: Cunningham, Mixtape Section 9.7}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

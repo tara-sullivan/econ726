@@ -27,3 +27,4 @@ Future classes:
 Next year:
 * Introduce early as terminology: naive comparison (MHE)/average predicted effects (causal ML)/difference in means (mixtape)
 * I should have edited the Project Plan assignment to include a number of prompts. They are now saved in `notes_for_final_project.txt`
+* I now talk about over fitting. Propensity score has some stuff at the end about dimensionality reduction. These shoudl be better integrated. 

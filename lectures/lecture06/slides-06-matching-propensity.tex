@@ -18,7 +18,7 @@
 \let\Tiny=\tiny
 
 %Information to be included in the title page:
-\title{Linear regression + Matching}
+\title{Matching and Propensity Scores}
 \subtitle{ECON726}
 \author[]{Tara Sullivan}
 \institute{
@@ -90,24 +90,19 @@ Notes/comments are in gray and will be excluded from the presentation.
 \vspace{3ex}
 \textbf{Homework}
 \begin{itemize}
-    \item 
+    \item Read MHE 5.1. and 5.2. (Fixed effects and differences-in-differences)
+    \begin{itemize}
+        \item We will focus on diff-in-diff next class, but many of your papers use fixed effects
+    \end{itemize}
+    \item Skim Causal Inference Mixtape:
+    \begin{itemize}
+        \item Chapter 8 : Panel designs (\url{https://mixtape.scunning.com/09-difference_in_differences}
+        \item Chapter 9 : Difference-in-differences fundamentals (\url{https://mixtape.scunning.com/09-difference_in_differences})
+    \end{itemize}
 \end{itemize}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Empirical project}
-
-    I use negative grading. I'm sorry it seems harsh! You all had great starts to your projects!
-
-    \begin{itemize}
-        \item Limitations of data should be meaningful. Who aren't you looking at? 
-        \item Does SUTVA apply?
-        \item Include your paper title, authors etc. Ideally, also include the link! And ideally, in an appendix, include the original figures you're referencing!
-        \item Imagine you are explaining to a coworker who has no idea about the context of your paper. 
-    \end{itemize}
-
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Empirical project}
@@ -140,6 +135,68 @@ Your final project should be submitted on Brightspace, and your code and data sh
 \end{itemize}
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Empirical project}
+
+    General feedback:
+    \begin{itemize}
+        \item \textbf{These were generously graded}. I wanted to give people credit for staying on track. Standards are higher on the final paper!
+        \item \textbf{Read the comments on your assignment!} Note: I use negative grading. I'm sorry if the comments seems harsh! 
+    \end{itemize}
+
+Overall feedback: 
+\begin{itemize}
+    \item For your final paper, you need to motivate why your method is causal. The authors will say "I use differences-in-differences to identify..." You cannot get away with that. You need to motivate why yor method is causal. If you don't discuss the conditional independence assumption, you will lose a lot of points. \textbf{This will be graded harshly on your final project}
+    
+    \begin{itemize}
+        \item Part of that will include discussing what the ideal randomized experiment is. 
+        \item You need to explain why this method is causal
+        \item Does SUTVA apply? 
+        \item Limitations of data should be meaningful. Who aren't you looking at? 
+    \end{itemize}
+
+    \item Do \textbf{NOT} reference methodologies that you cannot explain why they are important. 
+
+    \begin{itemize}
+        \item These are long, published papers. If you cannot explain in plain language the robustness check, don't include it. 
+    \end{itemize}
+
+    \item You're expected to clearly understand everything you state in this paper
+    \begin{itemize}
+        \item Imagine you are explaining to a coworker who has no idea about the context of your paper. 
+    \end{itemize}
+
+    \item You're expected to incorporate parts of the reading into your discussion of causality (and, likely, do readings from secondary sources)
+    \item Include your paper title, authors etc. Ideally, also include the link! And ideally, in an appendix, include the original figures you're referencing!
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Next assignments: replication and presentation}
+
+You are expected to replicate key results. 
+\begin{itemize}
+    \item If you simply upload the replication file for the paper, you will fail
+    \item You need to distill these files to only \textbf{key results}
+    \item I should effectively do \textbf{zero} data cleaning when I re-run your files. You should have a clean file, a few lines of code; that's it
+\end{itemize}
+
+\vspace{2ex}
+When replicating your results, keep in mind your presentation.
+\begin{itemize}
+    \item Your presentation can only be about 3-4 slides. 
+    \begin{enumerate}
+        \item 1 slide with intro/context/question
+        \item 1-2 slide on key points of data/methodology
+        \item 1-2 slide with key results
+        \item 0-1 slide with extension
+    \end{enumerate}
+\end{itemize}
+How do you distill this paper to key takeaways?
+\end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \miniframesoff
@@ -188,7 +245,14 @@ Difference between:
     \item Average earnings of soldiers (observable)
     \item Average earnings of soldiers, had they not served (unobservable)
 \end{itemize}
-Na{\"i}ve comparisons (average predicted effect) will be biased:
+\textbf{Na{\"i}ve comparison} OR \textbf{average predictive effect} OR \textbf{simple difference in outcomes}:
+\begin{equation*}
+    \EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i=0] 
+\end{equation*}
+\begin{itemize}
+\item This is \emph{observable} in the data
+\item Will be biased:
+\end{itemize}
 \begin{align*}
 \EE [Y_i \vert D_i = 1] - \EE [Y_i \vert D_i=0] 
 =& \underbrace{\EE [Y_i(1) - Y_i(0) \vert D_i = 1]}_{\text{ATE on treated}} 
@@ -279,7 +343,7 @@ Consider the parts of this estimator:
 \end{itemize}
 \onslide<4->{
 \vspace{2ex}
-    Define $\delta_X$ to be the average difference in oberved $Y_i$ for treated and untreated with a given value $X_i$:
+    Define $\delta_X$ to be the average difference in observed $Y_i$ for treated and untreated with a given value $X_i$:
     \begin{equation*}
         {\color<5>{MainBlue}\delta_X} \equiv
         \underbrace<4>{\EE [Y_{i} \vert X_i, D_i=1]
@@ -287,6 +351,7 @@ Consider the parts of this estimator:
     \end{equation*}
     \begin{itemize}
         \item Example: difference in mean earnings by veteran status at each value of $X_i$
+        \item Requires both treated and untreated units with $X_i = x$: this is called \textbf{common support}
     \end{itemize}
 }
 % \onslide<5->{
@@ -376,6 +441,7 @@ How do these elements connect to data?
 {Intuitively, what is this matching estimate?
 \begin{itemize}
     \item $X_i$-specific treatment-control comparisons, weighted together to produce a single overall treatment effect
+    \item This is called \textbf{subclassification}: each value of $X_i$ defines a \textbf{cell} (or stratum) (\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#subclassification}{Mixtape})
 \end{itemize}
 }
 \end{frame}
@@ -397,7 +463,7 @@ Effect of treatment on the treated under CIA:
         \delta_X &= {\EE [Y_{i} \vert X_i, D_i=1]}
             - {\EE [Y_{i} \vert X_i, D_i=0]}
 \end{align*}
-Now instead of $X_i$ being a dummy, assume $X_i$ is the result of test of ability/intelligence
+Now instead of $X_i$ being a dummy, assume $X_i$ is the result of a test of ability/intelligence
 \begin{itemize}
     \item $X_i \in \{0, 1, \dots, 100\}$ and measures ability
 \end{itemize}
@@ -424,7 +490,7 @@ Intuitively, what is this matching estimate?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}
 
-Now instead of $X_i$ isn't a single variable, but instead a vector of (discrete) variables
+Now suppose $X_i$ isn't a single variable, but instead a vector of (discrete) variables
 \begin{itemize}
     \item Year of birth, test score, year of application to the military, educational attainment at the time of application
 \end{itemize}
@@ -521,7 +587,7 @@ In general, estimates from matching and from regression will often be similar, b
     \item Regression can be thought of as a type of matching strategy
     \begin{itemize}
         \item Average effects are calculated by covariates $X$: $\delta_X$
-        \item These effects are weighed to produce a weighted average
+        \item These effects are weighted to produce a weighted average
     \end{itemize}
 
     \item Difference in how weights are determined. For ATE on treated:
@@ -534,11 +600,403 @@ In general, estimates from matching and from regression will often be similar, b
 \end{itemize}
 
 \vspace{3ex}
-Note: neither regression nor covariate matching estimands give any weights to covariate cells that do not contain treated and control observations
+Note: neither regression nor covariate matching estimands give any weights to covariate cells that do not contain both treated and control observations
 \begin{itemize}
-    \item Often called \textbf{common support}
+    \item This is the \textbf{common support} condition from before
 \end{itemize}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Estimators]{Matching estimators}
+\miniframesoff
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Curse of dimensionality}
+
+Each additional covariate multiplies the number of cells:
+\begin{itemize}
+    \item 2 binary covariates: $2^2 = 4$ cells
+    \item 10 binary covariates: $2^{10} = 1{,}024$ cells
+    \item Veterans: 10 birth years $\times$ 101 test scores $\times$ 4 education levels $= 4{,}040$ cells
+\end{itemize}
+
+\vspace{2ex}
+Two problems:
+\begin{enumerate}
+    \item Computational cost: more cells to compute and track
+    \item \textbf{Main problem:} many cells contain treated units but no untreated units
+    \begin{itemize}
+        \item $\delta_x$ cannot be computed for those cells
+        \item This is a failure of \textbf{common support}
+        \item With a continuous covariate (e.g., income), exact matches are nearly impossible
+    \end{itemize}
+\end{enumerate}
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#curse-of-dimensionality}{Mixtape})
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Exact matching}
+
+Subclassification compares cells. \textbf{Exact matching} compares units:
+\begin{itemize}
+    \item For each treated unit $i$, find an untreated unit $j(i)$ with the same covariates: $X_{j(i)} = X_i$
+    \item Use $Y_{j(i)}$ to impute $i$'s missing counterfactual $Y_i(0)$
+\end{itemize}
+\begin{equation*}
+    \hat{\delta}_{ToT} = \frac{1}{N_T} \sum_{i: D_i = 1} \left( Y_i - Y_{j(i)} \right)
+\end{equation*}
+\begin{itemize}
+    \item {\color{DarkGray}Notation: $j(i)$ is the untreated unit matched to treated unit $i$; $Y_{j(i)}$ is its outcome; $N_T$ is the number of treated units}
+    \item If several untreated units match, average their outcomes
+    \item This is a sample version of $\sum_x \delta_x \PP(X_i = x \vert D_i = 1)$
+    \item Still requires common support: every treated unit needs an exact match
+\end{itemize}
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#exact-matching}{Mixtape})
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Exact matching: example}
+
+Job training program; selection into training depends only on age
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#exact-matching}{Mixtape}, Tables 5.6--5.7)
+
+\vspace{1ex}
+\begin{center}
+\scriptsize
+\renewcommand{\arraystretch}{0.9}
+\begin{tabular}{ccr|ccr|ccr}
+\multicolumn{3}{c|}{\textbf{Trainees} ($D_i = 1$)} &
+\multicolumn{3}{c|}{\textbf{Comparison} ($D_i = 0$)} &
+\multicolumn{3}{c}{\textbf{Matched sample}} \\
+Unit & Age & Earnings & Unit & Age & Earnings & Unit & Age & Earnings \\
+\hline
+\textbf<2-4>{\textcolor<2-4>{Orange}{1}} & \textbf<2-4>{\textcolor<2-4>{Orange}{18}} & \textbf<2-4>{\textcolor<2-4>{Orange}{9,500}}
+    & 11 & 20 & 8,500
+    & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{24}}} & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{18}}} & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{8,050}}} \\
+\textbf<5-7>{\textcolor<5-7>{Orange}{2}} & \textbf<5-7>{\textcolor<5-7>{Orange}{29}} & \textbf<5-7>{\textcolor<5-7>{Orange}{12,250}}
+    & 12 & 27 & 10,075
+    & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{16}}} & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{29}}} & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{10,525}}} \\
+3 & 24 & 11,000 & 13 & 21 & 8,725  & \uncover<8->{19} & \uncover<8->{24} & \uncover<8->{9,400} \\
+4 & 27 & 11,750 & 14 & 39 & 12,775 & \uncover<8->{12} & \uncover<8->{27} & \uncover<8->{10,075} \\
+\textbf<9-11>{\textcolor<9-11>{Orange}{5}} & \textbf<9-11>{\textcolor<9-11>{Orange}{33}} & \textbf<9-11>{\textcolor<9-11>{Orange}{13,250}}
+    & 15 & 38 & 12,550
+    & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{18, 21}}} & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{33}}} & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{11,425}}} \\
+6 & 22 & 10,500 & \textbf<6-7>{\textcolor<6-7>{Green}{16}} & \textbf<6-7>{\textcolor<6-7>{Green}{29}} & \textbf<6-7>{\textcolor<6-7>{Green}{10,525}} & \uncover<12->{23} & \uncover<12->{22} & \uncover<12->{8,950} \\
+7 & 19 & 9,750  & 17 & 39 & 12,775 & \uncover<12->{27} & \uncover<12->{19} & \uncover<12->{8,275} \\
+8 & 20 & 10,000 & \textbf<10-11>{\textcolor<10-11>{Green}{18}} & \textbf<10-11>{\textcolor<10-11>{Green}{33}} & \textbf<10-11>{\textcolor<10-11>{Green}{11,425}} & \uncover<12->{11} & \uncover<12->{20} & \uncover<12->{8,500} \\
+9 & 21 & 10,250 & 19 & 24 & 9,400  & \uncover<12->{13} & \uncover<12->{21} & \uncover<12->{8,725} \\
+10 & 30 & 12,500 & 20 & 30 & 10,750 & \uncover<12->{20, 28} & \uncover<12->{30} & \uncover<12->{9,875} \\
+ & & & \textbf<10-11>{\textcolor<10-11>{Green}{21}} & \textbf<10-11>{\textcolor<10-11>{Green}{33}} & \textbf<10-11>{\textcolor<10-11>{Green}{11,425}} & & & \\
+ & & & 22 & 36 & 12,100 & & & \\
+ & & & 23 & 22 & 8,950  & & & \\
+ & & & \textbf<3-4>{\textcolor<3-4>{Green}{24}} & \textbf<3-4>{\textcolor<3-4>{Green}{18}} & \textbf<3-4>{\textcolor<3-4>{Green}{8,050}} & & & \\
+ & & & 25 & 43 & 13,675 & & & \\
+ & & & 26 & 39 & 12,775 & & & \\
+ & & & 27 & 19 & 8,275  & & & \\
+ & & & 28 & 30 & 9,000  & & & \\
+ & & & 29 & 51 & 15,475 & & & \\
+ & & & 30 & 48 & 14,800 & & & \\
+\hline
+Mean & 24.3 & \textbf<13>{\textcolor<13>{Orange}{11,075}} & Mean & 31.95 & 11,101.25 & \uncover<13->{Mean} & \uncover<13->{24.3} & \uncover<13->{\textbf<13>{\textcolor<13>{Green}{9,380}}} \\
+\end{tabular}
+\end{center}
+
+Simple difference in outcomes: $11{,}075 - 11{,}101.25 = -26.25$
+
+\onslide<11>{Tie: unit 5 has two exact matches, so average them: $(11{,}425 + 11{,}425)/2 = 11{,}425$}
+
+\onslide<13->{Exact matching: $\hat{\delta}_{ToT} = {\color{Orange}11{,}075} - {\color{Green}9{,}380} = 1{,}695$}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Nearest neighbor matching}
+
+When exact matches don't exist, use the \textbf{closest} untreated unit instead:
+\begin{itemize}
+    \item $j(i)$ is now the untreated unit whose $X_{j(i)}$ is nearest to $X_i$
+    \item Same estimator as exact matching:
+    \begin{equation*}
+        \hat{\delta}_{ToT} = \frac{1}{N_T} \sum_{i: D_i = 1} \left( Y_i - Y_{j(i)} \right)
+    \end{equation*}
+\end{itemize}
+
+\vspace{2ex}
+Trade-off: we no longer need exact matches, but $X_{j(i)} \neq X_i$
+\begin{itemize}
+    \item The gap between $X_i$ and $X_{j(i)}$ is a \textbf{matching discrepancy}
+    \item Larger discrepancies $\implies$ more bias in $\hat{\delta}_{ToT}$
+    \item More covariates $\implies$ nearest neighbors are farther away (curse of dimensionality again)
+\end{itemize}
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#minimizing-matching-discrepancies-with-nearest-neighbors}{Mixtape})
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Nearest neighbor matching: example}
+
+Job training program; selection into training depends only on age
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#minimizing-matching-discrepancies-with-nearest-neighbors}{Mixtape}, Tables 5.8--5.9)
+
+\vspace{1ex}
+\begin{center}
+\scriptsize
+\renewcommand{\arraystretch}{0.9}
+\begin{tabular}{ccr|ccr|cccr}
+\multicolumn{3}{c|}{\textbf{Trainees} ($D_i = 1$)} &
+\multicolumn{3}{c|}{\textbf{Comparison} ($D_i = 0$)} &
+\multicolumn{4}{c}{\textbf{Matched sample}} \\
+Unit & Age & Earnings & Unit & Age & Earnings & Unit & Age & Earnings & Gap \\
+\hline
+\textbf<2-4>{\textcolor<2-4>{Orange}{1}} & \textbf<2-4>{\textcolor<2-4>{Orange}{23}} & \textbf<2-4>{\textcolor<2-4>{Orange}{17,728}}
+    & 11 & 49 & 15,499
+    & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{30}}} & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{23}}} & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{15,238}}} & \uncover<4->{\textbf<4>{\textcolor<4>{Green}{0}}} \\
+\textbf<5-7>{\textcolor<5-7>{Orange}{2}} & \textbf<5-7>{\textcolor<5-7>{Orange}{26}} & \textbf<5-7>{\textcolor<5-7>{Orange}{17,770}}
+    & 12 & 54 & 15,566
+    & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{20, 21}}} & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{27, 25}}} & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{15,265}}} & \uncover<7->{\textbf<7>{\textcolor<7>{Green}{1}}} \\
+3 & 23 & 17,736 & 13 & 47 & 15,487 & \uncover<8->{30} & \uncover<8->{23} & \uncover<8->{15,238} & \uncover<8->{0} \\
+4 & 27 & 17,777 & 14 & 49 & 15,501 & \uncover<8->{20} & \uncover<8->{27} & \uncover<8->{15,281} & \uncover<8->{0} \\
+\textbf<9-11>{\textcolor<9-11>{Orange}{5}} & \textbf<9-11>{\textcolor<9-11>{Orange}{31}} & \textbf<9-11>{\textcolor<9-11>{Orange}{17,832}}
+    & 15 & 55 & 15,554
+    & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{22}}} & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{32}}} & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{15,321}}} & \uncover<11->{\textbf<11>{\textcolor<11>{Green}{1}}} \\
+6 & 25 & 17,758 & 16 & 44 & 15,448 & \uncover<12->{21} & \uncover<12->{25} & \uncover<12->{15,249} & \uncover<12->{0} \\
+7 & 24 & 17,744 & 17 & 34 & 15,352 & \uncover<12->{21, 30} & \uncover<12->{25, 23} & \uncover<12->{15,243.50} & \uncover<12->{1} \\
+8 & 26 & 17,764 & 18 & 50 & 15,509 & \uncover<12->{20, 21} & \uncover<12->{27, 25} & \uncover<12->{15,265} & \uncover<12->{1} \\
+9 & 20 & 17,706 & 19 & 45 & 15,469 & \uncover<12->{30} & \uncover<12->{23} & \uncover<12->{15,238} & \uncover<12->{3} \\
+10 & 30 & 17,805 & \textbf<6-7>{\textcolor<6-7>{Green}{20}} & \textbf<6-7>{\textcolor<6-7>{Green}{27}} & \textbf<6-7>{\textcolor<6-7>{Green}{15,281}} & \uncover<12->{22} & \uncover<12->{32} & \uncover<12->{15,321} & \uncover<12->{2} \\
+ & & & \textbf<6-7>{\textcolor<6-7>{Green}{21}} & \textbf<6-7>{\textcolor<6-7>{Green}{25}} & \textbf<6-7>{\textcolor<6-7>{Green}{15,249}} & & & & \\
+ & & & \textbf<10-11>{\textcolor<10-11>{Green}{22}} & \textbf<10-11>{\textcolor<10-11>{Green}{32}} & \textbf<10-11>{\textcolor<10-11>{Green}{15,321}} & & & & \\
+ & & & 23 & 44 & 15,452 & & & & \\
+ & & & 24 & 35 & 15,354 & & & & \\
+ & & & 25 & 52 & 15,523 & & & & \\
+ & & & 26 & 53 & 15,539 & & & & \\
+ & & & 27 & 44 & 15,454 & & & & \\
+ & & & 28 & 35 & 15,354 & & & & \\
+ & & & 29 & 39 & 15,398 & & & & \\
+ & & & \textbf<3-4>{\textcolor<3-4>{Green}{30}} & \textbf<3-4>{\textcolor<3-4>{Green}{23}} & \textbf<3-4>{\textcolor<3-4>{Green}{15,238}} & & & & \\
+\hline
+Mean & 25.5 & \textbf<13>{\textcolor<13>{Orange}{17,762}} & Mean & 41.8 & 15,427.40 & \uncover<13->{Mean} & \uncover<13->{26.1} & \uncover<13->{\textbf<13>{\textcolor<13>{Green}{15,265.95}}} & \uncover<13->{0.9} \\
+\end{tabular}
+\end{center}
+
+{\color{DarkGray}Gap: $\vert X_i - X_{j(i)} \vert$, the matching discrepancy}
+
+Simple difference in outcomes: $17{,}762 - 15{,}427.40 = 2{,}334.60$
+
+\onslide<7>{No one is age 26; average the two nearest (ages 25, 27): $(15{,}281 + 15{,}249)/2 = 15{,}265$}
+
+\onslide<13->{Nearest neighbor matching: $\hat{\delta}_{ToT} = {\color{Orange}17{,}762} - {\color{Green}15{,}265.95} = 2{,}496.05$}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Measuring ``nearest''}
+
+With $k$ covariates, we need a distance between $X_i$ and $X_j$:
+\begin{itemize}
+    \item \textbf{Euclidean}: $\lVert X_i - X_j \rVert = \sqrt{\sum_{n=1}^k (X_{ni} - X_{nj})^2}$
+    \begin{itemize}
+        \item Depends on units: a 1-point gap in test score counts the same as a 1-year gap in birth year
+    \end{itemize}
+    \item \textbf{Normalized Euclidean}: $\lVert X_i - X_j \rVert = \sqrt{\sum_{n=1}^k \frac{(X_{ni} - X_{nj})^2}{\hat{\sigma}_n^2}}$
+    \begin{itemize}
+        \item Divides each covariate by its sample variance, so units don't matter
+    \end{itemize}
+    \item \textbf{Mahalanobis}: $\lVert X_i - X_j \rVert = \sqrt{(X_i - X_j)^\prime \hat{\Sigma}_X^{-1} (X_i - X_j)}$
+    \begin{itemize}
+        \item {\color{DarkGray}$\hat{\Sigma}_X$: sample variance-covariance matrix of $X$}
+        \item Also accounts for correlation between covariates
+    \end{itemize}
+\end{itemize}
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#nearest-neighbors-in-multiple-dimensions-and-minimized-distance}{Mixtape})
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Nearest neighbors with two confounders}
+
+Now selection into training depends on age \textbf{and} high school GPA
+(\href{https://mixtape.scunning.com/05-causal_cross_sectional_designs\#nearest-neighbors-in-multiple-dimensions-and-minimized-distance}{Mixtape}, Table 5.10)
+
+\vspace{1ex}
+\begin{center}
+\scriptsize
+\renewcommand{\arraystretch}{0.9}
+\begin{tabular}{ccc|ccc}
+\multicolumn{3}{c|}{\textbf{Trainees} ($D_i = 1$)} &
+\multicolumn{3}{c}{\textbf{Comparison} ($D_i = 0$)} \\
+Unit & Age & GPA & Unit & Age & GPA \\
+\hline
+1 & 18 & 1.28 & 11 & 20 & 1.89 \\
+2 & 29 & 2.80 & 12 & 27 & 1.78 \\
+\textbf<2->{\textcolor<2->{Orange}{3}} & \textbf<2->{\textcolor<2->{Orange}{24}} & \textbf<2->{\textcolor<2->{Orange}{3.92}} & 13 & 21 & 1.84 \\
+4 & 27 & 2.29 & 14 & 39 & 1.76 \\
+5 & 33 & 2.50 & 15 & 38 & 1.61 \\
+6 & 22 & 1.34 & 16 & 29 & 1.74 \\
+7 & 19 & 1.66 & 17 & 39 & 1.57 \\
+8 & 20 & 2.60 & \textbf<3->{\textcolor<3->{Green}{18}} & \textbf<3->{\textcolor<3->{Green}{33}} & \textbf<3->{\textcolor<3->{Green}{1.97}} \\
+9 & 21 & 1.94 & \textbf<3->{\textcolor<3->{Green}{19}} & \textbf<3->{\textcolor<3->{Green}{24}} & \textbf<3->{\textcolor<3->{Green}{1.81}} \\
+10 & 30 & 3.37 & \textbf<3->{\textcolor<3->{Green}{20}} & \textbf<3->{\textcolor<3->{Green}{30}} & \textbf<3->{\textcolor<3->{Green}{2.02}} \\
+ & & & 21 & 33 & 1.64 \\
+ & & & 22 & 36 & 1.70 \\
+ & & & 23 & 22 & 1.66 \\
+ & & & 24 & 18 & 1.89 \\
+ & & & 25 & 43 & 1.45 \\
+ & & & 26 & 39 & 1.88 \\
+ & & & 27 & 19 & 1.86 \\
+ & & & 28 & 30 & 1.86 \\
+ & & & 29 & 51 & 1.96 \\
+ & & & 30 & 48 & 1.87 \\
+\hline
+Mean & 24.3 & 2.37 & Mean & 31.95 & 1.79 \\
+\end{tabular}
+\end{center}
+
+\onslide<2->{Who is the nearest neighbor of trainee {\color{Orange}3} (age 24, GPA 3.92)?}
+
+\onslide<3->{
+\begin{itemize}
+    \item Unit {\color{Green}19}: same age, but GPA 2.11 points lower
+    \item Unit {\color{Green}18}: 9 years older, GPA 1.95 points lower
+    \item Unit {\color{Green}20}: 6 years older, GPA 1.90 points lower
+\end{itemize}
+}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{``Nearest'' depends on the distance metric}
+
+Trainee {\color{Orange}3}: age 24, GPA 3.92
+
+\vspace{1ex}
+\begin{center}
+\small
+\begin{tabular}{ccc|cc|cc}
+Candidate & Age & GPA & Age gap & GPA gap & Euclidean & Normalized \\
+\hline
+\textbf<2>{\textcolor<2>{Green}{19}} & 24 & 1.81 & 0 & 2.11
+    & \uncover<2->{\textbf<2>{\textcolor<2>{Green}{2.11}}} & \uncover<3->{3.73} \\
+18 & 33 & 1.97 & 9 & 1.95
+    & \uncover<2->{9.21} & \uncover<3->{3.59} \\
+\textbf<3>{\textcolor<3>{Green}{20}} & 30 & 2.02 & 6 & 1.90
+    & \uncover<2->{6.29} & \uncover<3->{\textbf<3>{\textcolor<3>{Green}{3.42}}} \\
+\end{tabular}
+\end{center}
+
+\vspace{2ex}
+\onslide<2->{
+\textbf{Euclidean}: $\sqrt{(\text{age gap})^2 + (\text{GPA gap})^2}$
+\begin{itemize}
+    \item Unit {\color{Green}19} is nearest: a year of age counts the same as a GPA point
+\end{itemize}
+}
+
+\onslide<3->{
+\textbf{Normalized Euclidean}: $\sqrt{\frac{(\text{age gap})^2}{\hat{\sigma}^2_{age}} + \frac{(\text{GPA gap})^2}{\hat{\sigma}^2_{GPA}}}$, \quad {\color{DarkGray}$\hat{\sigma}_{age} \approx 9.1$, $\hat{\sigma}_{GPA} \approx 0.57$}
+\begin{itemize}
+    \item Unit {\color{Green}20} is nearest: a 2.1-point GPA gap is almost 4 standard deviations
+\end{itemize}
+}
+
+\vspace{2ex}
+\onslide<4->{With more than one confounder, \textbf{the choice of metric determines the match}}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Nearest neighbor matching with Euclidean distance}
+
+Match every trainee to its nearest neighbor using Euclidean distance on (age, GPA)
+
+\vspace{1ex}
+\begin{center}
+\scriptsize
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{cccr|cccr|c|r}
+\multicolumn{4}{c|}{\textbf{Trainees} ($D_i = 1$)} &
+\multicolumn{4}{c|}{\textbf{Nearest neighbor} $j(i)$} & & \\
+Unit & Age & GPA & Earnings & Unit & Age & GPA & Earnings & Distance & $Y_i - Y_{j(i)}$ \\
+\hline
+1  & 18 & 1.28 & 9,500  & 24 & 18 & 1.89 & 8,050  & 0.61 & 1,450 \\
+2  & 29 & 2.80 & 12,250 & 16 & 29 & 1.74 & 10,525 & 1.06 & 1,725 \\
+\textcolor{Orange}{3} & \textcolor{Orange}{24} & \textcolor{Orange}{3.92} & \textcolor{Orange}{11,000}
+    & \textcolor{Green}{19} & \textcolor{Green}{24} & \textcolor{Green}{1.81} & \textcolor{Green}{9,400} & 2.11 & 1,600 \\
+4  & 27 & 2.29 & 11,750 & 12 & 27 & 1.78 & 10,075 & 0.51 & 1,675 \\
+5  & 33 & 2.50 & 13,250 & 18 & 33 & 1.97 & 11,425 & 0.53 & 1,825 \\
+6  & 22 & 1.34 & 10,500 & 23 & 22 & 1.66 & 8,950  & 0.32 & 1,550 \\
+7  & 19 & 1.66 & 9,750  & 27 & 19 & 1.86 & 8,275  & 0.20 & 1,475 \\
+8  & 20 & 2.60 & 10,000 & 11 & 20 & 1.89 & 8,500  & 0.71 & 1,500 \\
+9  & 21 & 1.94 & 10,250 & 13 & 21 & 1.84 & 8,725  & 0.10 & 1,525 \\
+10 & 30 & 3.37 & 12,500 & 20 & 30 & 2.02 & 10,750 & 1.35 & 1,750 \\
+\hline
+Mean & 24.3 & 2.37 & \uncover<2->{\textbf<2>{\textcolor<2>{Orange}{11,075}}}
+    & Mean & 24.3 & 1.85 & \uncover<2->{\textbf<2>{\textcolor<2>{Green}{9,467.50}}}
+    & & \uncover<2->{1,607.50} \\
+\end{tabular}
+\end{center}
+
+\vspace{1ex}
+\begin{itemize}
+    \item Every match has exactly the same age; GPA gaps remain (mean GPA 2.37 vs.\ 1.85)
+    \item Euclidean distance is driven by age, the covariate with the largest units
+\end{itemize}
+
+\vspace{1ex}
+\onslide<2->{Nearest neighbor matching: $\hat{\delta}_{ToT} = {\color{Orange}11{,}075} - {\color{Green}9{,}467.50} = 1{,}607.50$}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Nearest neighbor matching with normalized Euclidean distance}
+
+Match every trainee using normalized Euclidean distance on (age, GPA)
+
+\vspace{1ex}
+\begin{center}
+\scriptsize
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{cccr|cccr|c|r}
+\multicolumn{4}{c|}{\textbf{Trainees} ($D_i = 1$)} &
+\multicolumn{4}{c|}{\textbf{Nearest neighbor} $j(i)$} & & \\
+Unit & Age & GPA & Earnings & Unit & Age & GPA & Earnings & Distance & $Y_i - Y_{j(i)}$ \\
+\hline
+1  & 18 & 1.28 & 9,500  & 23 & 22 & 1.66 & 8,950  & 0.80 & 550 \\
+2  & 29 & 2.80 & 12,250 & 20 & 30 & 2.02 & 10,750 & 1.38 & 1,500 \\
+\textcolor{Orange}{3} & \textcolor{Orange}{24} & \textcolor{Orange}{3.92} & \textcolor{Orange}{11,000}
+    & \textcolor{Green}{20} & \textcolor{Green}{30} & \textcolor{Green}{2.02} & \textcolor{Green}{10,750} & 3.42 & 250 \\
+4  & 27 & 2.29 & 11,750 & 20 & 30 & 2.02 & 10,750 & 0.58 & 1,000 \\
+5  & 33 & 2.50 & 13,250 & 20 & 30 & 2.02 & 10,750 & 0.91 & 2,500 \\
+6  & 22 & 1.34 & 10,500 & 23 & 22 & 1.66 & 8,950  & 0.57 & 1,550 \\
+7  & 19 & 1.66 & 9,750  & 23 & 22 & 1.66 & 8,950  & 0.33 & 800 \\
+8  & 20 & 2.60 & 10,000 & 11 & 20 & 1.89 & 8,500  & 1.26 & 1,500 \\
+9  & 21 & 1.94 & 10,250 & 11 & 20 & 1.89 & 8,500  & 0.14 & 1,750 \\
+10 & 30 & 3.37 & 12,500 & 20 & 30 & 2.02 & 10,750 & 2.39 & 1,750 \\
+\hline
+Mean & 24.3 & 2.37 & \uncover<2->{\textbf<2>{\textcolor<2>{Orange}{11,075}}}
+    & Mean & 25.6 & 1.89 & \uncover<2->{\textbf<2>{\textcolor<2>{Green}{9,760}}}
+    & & \uncover<2->{1,315} \\
+\end{tabular}
+\end{center}
+
+\vspace{1ex}
+\begin{itemize}
+    \item GPA gaps shrink (mean GPA 2.37 vs.\ 1.89), but ages now differ (24.3 vs.\ 25.6)
+    \item Unit 20 is the match for 5 trainees: we match \textbf{with replacement}
+\end{itemize}
+
+\vspace{1ex}
+\onslide<2->{Nearest neighbor matching: $\hat{\delta}_{ToT} = {\color{Orange}11{,}075} - {\color{Green}9{,}760} = 1{,}315$ \quad (Euclidean: 1,607.50)}
+
+\end{frame}
+
 
 
 
@@ -568,13 +1026,17 @@ Under conditional independence assumption (CIA) $\{Y_i(0), Y_i(1)\} \perp D_i \v
     \delta_{ToT} &= \EE [Y_i(1) - Y_i(0) \vert D_i = 1] \\
     &= \sum_x \delta_x \PP(X_i = x \vert D_i = 1) \\
     \delta_{ATE} &= \EE [Y_i(1) - Y_i(0)] \\
-    &= \sum_x \delta x \PP (X_i = x)
+    &= \sum_x \delta_x \PP (X_i = x)
 \end{align*}
 where:
 \begin{equation*}
     \delta_X = \EE [Y_i \vert X_i, D_i = 1] - \EE [Y_i \vert X_i, D_i = 0]
 \end{equation*}
 Note: matching and regression are both weighted averages of covariate specific differences
+\begin{itemize}
+    \item Problem: with many covariates, matching on $X_i$ runs into the curse of dimensionality
+    \item Propensity score: match on a \textbf{single} number instead of the whole vector $X_i$
+\end{itemize}
 
 \end{frame}
 
@@ -615,7 +1077,7 @@ The National Study of Learning Mindsets
 \end{itemize}
 \end{itemize}
 
-Athey and Wagner (2016) generate simulated data: \href{https://arxiv.org/pdf/1902.07409}{link}
+Athey and Wager (2019) generate simulated data: \href{https://arxiv.org/pdf/1902.07409}{link}
 
 \end{frame}
 
@@ -625,7 +1087,7 @@ Athey and Wagner (2016) generate simulated data: \href{https://arxiv.org/pdf/190
 Variables:
 \begin{itemize}
     \item $Y_i$: Outcome variable (achievement score in college)
-    \item $D_i$: Binary treatment dummy variable (participating in ``growth mindset'') seminar
+    \item $D_i$: Binary treatment dummy variable (participating in ``growth mindset'' seminar)
     \item $X_i$: Covariates (individual and school demographics; family characteristics; survey about expectations of future success)
 \end{itemize}
 
@@ -651,6 +1113,7 @@ Define the propensity score (or balancing score) to be:
 
 \vspace{3ex}
 Suppose the CIA holds such that $\{Y_i(0), Y_i(1)\} \perp D_i \vert X_i$. Then $\{Y_i(0), Y_i(1) \} \perp D_i \vert p(X_i)$
+{\color{DarkGray}(Proof: Rosenbaum and Rubin 1983; MHE Theorem 3.3.1)}
 
 \vspace{3ex}\textbf{What does this mean?}
 \begin{itemize}
@@ -664,44 +1127,17 @@ Suppose the CIA holds such that $\{Y_i(0), Y_i(1)\} \perp D_i \vert X_i$. Then $
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[t]{}
 
-{\color{DarkGray}\textbf{Propensity Score Theorem:} Given propensity score:
+{\color{DarkGray}\textbf{Balancing property:} Given propensity score:
 \begin{equation*}
     p(X_i) = \EE [D_i \vert X_i] = \PP (D_i = 1 \vert X_i)
 \end{equation*}
-Suppose the CIA holds such that $\{Y_i(0), Y_i(1)\} \perp D_i \vert X_i$. Then $\{Y_i(0), Y_i(1) \} \perp D_i \vert p(X_i)$
+Treatment is independent of covariates conditional on the propensity score: $D_i \perp X_i \vert p(X_i)$
 }
 
 \vspace{3ex}
 \textbf{Proof:}
 
-First, instead of writing $\{Y_i(0), Y_i(1)\}$, we'll write $Y_i(j)$, where $j \in {0, 1}$.
-
-\vspace{2ex}
-Next, note that the conditional expectation of the treatment variable equals the conditional probability of treatment (because the treatment is binary):
-\begin{align*}
-    \EE [D_i \vert Y_i(j), p(X_i)] =& \sum_{d = 0}^1 d \PP (D_i = d \vert Y_i(j), p(X_i)) \\
-    =& 0 \cdot \PP (D_i = 0 \vert Y_i(j), p(X_i))
-    + 1 \cdot \PP (D_i = 1 \vert Y_i(j), p(X_i)) \\
-    =& \PP (D_i = 1 \vert Y_i(j), p(X_i))
-\end{align*}
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[t]{}
-
-{\color{DarkGray}\textbf{Propensity Score Theorem:} Given propensity score:
-\begin{equation*}
-    p(X_i) = \EE [D_i \vert X_i] = \PP (D_i = 1 \vert X_i)
-\end{equation*}
-Suppose the CIA holds such that $\{Y_i(0), Y_i(1)\} \perp D_i \vert X_i$. Then $\{Y_i(0), Y_i(1) \} \perp D_i \vert p(X_i)$
-}
-
-\vspace{3ex}
-\textbf{Proof:}
-
-We want to show that:
+Because $D_i$ is binary, it is enough to show that:
 \begin{equation*}
     {\color<2>{cyan}\EE [D_i \vert X_i, p(X_i)]}
     = 
@@ -780,6 +1216,7 @@ In words: $p(X_i)$ is a function of $X_i$, so conditioning on $X_i$ and $p(X_i)$
 \begin{itemize}
     \item If I know what $p(X)$ is, then $X$ alone doesn't tell me anything else about what the probability of treatment is
     \item Controlling for $p(X)$ acts the same way as controlling for $X$ directly
+    \item Unlike the CIA, the balancing property is \textbf{testable}: within narrow bands of $p(X)$, treated and untreated units should have similar covariate means
 \end{itemize}
 
 \end{frame}
@@ -817,16 +1254,20 @@ How are propensity scores used in practice?
 Given a propensity score, $p(X_i)$, and the CIA $\{Y_i(0), Y_i(1)\} \perp D_i \vert X_i$:
 \begin{align*}
     \delta_{ToT} =& \EE [Y_i(1) - Y_i(0) \vert D_i = 1] \\
-    =& \EE \left[
+    =& \EE \left[ \left.
         \EE [Y_i \vert p(X_i), D_i = 1]
         - \EE [Y_i\vert p(X_i), D_i = 0]
-    \right]
+    \right\vert D_i = 1 \right]
 \end{align*}
 Just like we did for matching, you can
 \begin{itemize}
-    \item Stratify the sample in to values of $p(X_i)$
+    \item Stratify the sample into values of $p(X_i)$
     \item Find treatment effects conditional on similar $p(X_i)$
-    \item Weigh these treatment effects by the distribution of $p(X_i)$ conditional on treatment
+    \item Weight these treatment effects by the distribution of $p(X_i)$ conditional on treatment
+\end{itemize}
+In practice: nearest neighbor matching on the estimated score $\hat{p}(X_i)$
+\begin{itemize}
+    \item $\hat{p}(X_i)$ is a single number, so there is no distance metric to choose
 \end{itemize}
 
 \end{frame}
@@ -918,7 +1359,7 @@ We've seen:
 \onslide<4->{
 =&  \mathbf{E} \left[ \frac{1}{p(X_i)} \mathbf{E} \left[  \left. Y_i D_i \right\vert X_i \right] \right] \\}
 \onslide<5->{
-=&  \mathbf{E} \left[ \frac{1}{p(X_i)} \mathbf{E} [Y_i(1) \vert X_i ] p(x) \right]
+=&  \mathbf{E} \left[ \frac{1}{p(X_i)} \mathbf{E} [Y_i(1) \vert X_i ] p(X_i) \right]
 &&\because \mathbf{E} [ Y_i D_i \vert X_i ] = \mathbf{E} [Y_i(1) \vert X_i] p(X_i) \\}
 \onslide<6->{
 =&  \mathbf{E} \left[ \frac{p(X_i)}{p(X_i)} \mathbf{E} [Y_i(1) \vert X_i ] \right] \\
@@ -945,7 +1386,7 @@ We've seen:
 
 \vspace{2ex}
 \textbf{Proof:}
-Recall {$Y_i = Y_i(0) + (Y_i(1) - Y_i(0))$}, and note $D_i (1 - D_i) = 0$ for $D_i = 0$ and $D_i = 1$:
+Recall {$Y_i = Y_i(0) + (Y_i(1) - Y_i(0)) D_i$}, and note $D_i (1 - D_i) = 0$ for $D_i = 0$ and $D_i = 1$:
 \begin{align*}
 Y_i (1 - D_i) 
 \onslide<2->{=& (Y_i(0) + (Y_i(1) - Y_i(0)) D_i) (1 - D_i) \\}
@@ -1079,7 +1520,7 @@ We've seen:
 Consider the first element:
 \begin{itemize}
     \onslide<2->{\item {\color<2>{cyan} $Y_i D_i$}: Isolates $Y_i$ that are treated}
-    \onslide<3->{\item {\color<3-4>{cyan} $p(X_i)$}: Inverse probability of being treated
+    \onslide<3->{\item {\color<3-4>{cyan} $1/p(X_i)$}: Inverse probability of being treated
     \onslide<4->{
     \begin{itemize}
         \item Probabilities are between 0 and 1
@@ -1182,7 +1623,7 @@ Hahn (1998) shows there is a cost to propensity score matching in terms of asymp
 \end{itemize}
 
 \vspace{2ex}
-MHE : ``An essential element of  propensity score methods is the use of prior knowledge for dimension reduction. The statistical payoff is an improvement in finite sample behavior. If you're not prepared to smooth, restrict, or otherwise reduce the dimensionality of the matching problem in a manner that has real empirical consequences, the you might as well go for full covariate matching or saturated regression control.''
+MHE : ``An essential element of  propensity score methods is the use of prior knowledge for dimension reduction. The statistical payoff is an improvement in finite sample behavior. If you're not prepared to smooth, restrict, or otherwise reduce the dimensionality of the matching problem in a manner that has real empirical consequences, then you might as well go for full covariate matching or saturated regression control.''
 \begin{itemize}
     \item This is very prescient! Now, in the era of big data, dimensionality reduction is key
     \item Propensity scores have a new value in double-robust machine learning; see chapter 9 of \url{https://chapters.causalml-book.org/CausalML_chap_9.pdf}
@@ -1234,8 +1675,8 @@ We can stack these equations for all $n$ equations in the data:
 \end{equation*}
 To estimate this model using least squares, find the coefficient matrix $\boldsymbol{\beta}$ that minimizes the sum of squared residuals:
 \begin{equation*}
-    \hat{\boldsymbol{\beta}} = \arg \min_{\boldsymbol{\beta}} 
-    = \sum_{i = 1}^n \left( y_i - \sum_{j=1}^K x_{ji} \beta_j \right)^2
+    \hat{\boldsymbol{\beta}} = \arg \min_{\boldsymbol{\beta}}
+    \sum_{i = 1}^n \left( y_i - \beta_0 - \sum_{j=1}^k x_{ji} \beta_j \right)^2
 \end{equation*}
 A more math-y way of saying this using norm notation:
 \begin{equation*}
@@ -1282,14 +1723,14 @@ We could estimate using a linear model:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Logit}
 
-We could estimate using a linear model:
+We could estimate using a logistic model:
 
 \begin{figure}
 \includegraphics[scale=0.5]{img/fig-ols_logit.png}
 \end{figure}
 \begin{itemize}
     \item Logistic line is a better fit
-    \item Less important: output is binary
+    \item Less important: fitted values are probabilities between 0 and 1
 \end{itemize}
 
 \end{frame}
